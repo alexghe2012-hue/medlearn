@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedLearn</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0b1220;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg,#2563eb,#1e3a8a);
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background: #111827;
+  padding: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+section { display:none; padding:20px; }
+.active { display:block; }
+
+.card {
+  background:#1e293b;
+  padding:15px;
+  margin:10px;
+  border-radius:10px;
+}
+
+.option {
+  background:#334155;
+  padding:10px;
+  margin:5px;
+  cursor:pointer;
+  border-radius:8px;
+}
+
+.option:hover { background:#475569; }
+
+.big {
+  font-size:20px;
+}
+
+.heart {
+  cursor:pointer;
+  color:#f87171;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>MedLearn</h1>
+<p>Interactive Medical Learning Platform</p>
+</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('quiz')">Quiz</button>
+<button onclick="show('anatomy')">Anatomy</button>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="active">
+<h2>Welcome 🚀</h2>
+<p>Learn medicine like a real student doctor.</p>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+<h2>🧠 Quiz</h2>
+
+<div class="card">
+<div class="big" id="q">What organ pumps blood?</div>
+
+<div class="option" onclick="ans(false)">Lungs</div>
+<div class="option" onclick="ans(true)">Heart</div>
+<div class="option" onclick="ans(false)">Brain</div>
+
+<p id="r"></p>
+<p>Score: <span id="score">0</span></p>
+
+<button onclick="restart()">Restart</button>
+</div>
+</section>
+
+<!-- ANATOMY -->
+<section id="anatomy">
+<h2>🫀 Anatomy</h2>
+
+<div class="card">
+<h3 class="heart" onclick="alert('Heart pumps blood through the body')">❤️ Heart</h3>
+<p>Click the heart to learn more</p>
+</div>
+
+<div class="card">
+<h3>🫁 Lungs</h3>
+<p>Help you breathe oxygen</p>
+</div>
+
+<div class="card">
+<h3>🧠 Brain</h3>
+<p>Controls everything in your body</p>
+</div>
+</section>
+
+<script>
+
+let score = 0;
+
+function show(page){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+}
+
+function ans(correct){
+  if(correct){
+    score++;
+    document.getElementById("r").innerText="✔ Correct";
+  } else {
+    document.getElementById("r").innerText="✖ Wrong";
+  }
+  document.getElementById("score").innerText=score;
+}
+
+function restart(){
+  score = 0;
+  document.getElementById("score").innerText=score;
+  document.getElementById("r").innerText="";
+}
+
+</script>
+
+</body>
+</html>
