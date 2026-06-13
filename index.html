@@ -1,101 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MedLearn</title>
 
 <style>
 body{
-  margin:0;
-  font-family:Arial;
-  background:#0b1220;
-  color:white;
+margin:0;
+font-family:Arial;
+background:#0b1220;
+color:white;
 }
 
 header{
-  text-align:center;
-  padding:35px;
-  background:linear-gradient(135deg,#2563eb,#1e3a8a);
+text-align:center;
+padding:25px;
+background:linear-gradient(135deg,#2563eb,#1e3a8a);
 }
 
 nav{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  background:#111827;
-  padding:10px;
-  flex-wrap:wrap;
+display:flex;
+justify-content:center;
+gap:8px;
+background:#111827;
+padding:10px;
+flex-wrap:wrap;
 }
 
 button{
-  padding:10px 12px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
+padding:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 
-section{display:none;padding:20px;}
+section{display:none;padding:15px;}
 .active{display:block;}
 
 .card{
-  background:#1e293b;
-  padding:15px;
-  margin:10px auto;
-  border-radius:12px;
-  max-width:500px;
+background:#1e293b;
+padding:15px;
+margin:10px auto;
+border-radius:12px;
+max-width:500px;
 }
 
 .option{
-  background:#334155;
-  padding:10px;
-  margin:5px;
-  border-radius:8px;
-  cursor:pointer;
+background:#334155;
+padding:10px;
+margin:6px;
+border-radius:8px;
+cursor:pointer;
 }
 .option:hover{background:#475569;}
 
+.small{opacity:0.8;}
+
 .lang{
-  position:absolute;
-  top:10px;
-  right:10px;
+position:absolute;
+top:10px;
+right:10px;
 }
 
-.small{
-  opacity:0.8;
+img{
+width:100%;
+border-radius:10px;
 }
 
-.heart{
-  cursor:pointer;
-  color:#f87171;
-}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1 id="title">MedLearn</h1>
-<p id="subtitle">Interactive Medical Learning Platform</p>
+<h1>MedLearn</h1>
+<p id="subtitle">Medical Learning App</p>
 
 <div class="lang">
 <button onclick="setLang('ro')">RO</button>
 <button onclick="setLang('en')">EN</button>
 <button onclick="setLang('fr')">FR</button>
 </div>
-
 </header>
 
 <nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('quiz')">Quiz</button>
-<button onclick="show('anatomy')">Anatomy</button>
+<button onclick="show('home')" id="b1">Home</button>
+<button onclick="show('quiz')" id="b2">Quiz</button>
+<button onclick="show('anat')" id="b3">Anatomy</button>
 </nav>
 
 <!-- HOME -->
 <section id="home" class="active">
-<h2 id="welcome">Welcome 🚀</h2>
-<p class="small" id="desc">Learn medicine step by step like a real student doctor.</p>
+<h2 id="welcome">Welcome</h2>
+<p class="small" id="desc">Learn medicine step by step</p>
+
+<div class="card">
+<input id="username" placeholder="Enter your name..." />
+<button onclick="saveUser()">Save</button>
+<p id="hello"></p>
+</div>
 </section>
 
 <!-- QUIZ -->
@@ -103,114 +103,55 @@ section{display:none;padding:20px;}
 <h2>🧠 Quiz</h2>
 
 <div class="card">
-<div id="question">What organ pumps blood?</div>
+<div id="q">Loading...</div>
 
-<div class="option" onclick="answer(false)">Lungs</div>
-<div class="option" onclick="answer(true)">Heart</div>
-<div class="option" onclick="answer(false)">Brain</div>
+<div id="options"></div>
 
 <p id="result"></p>
 <p>Score: <span id="score">0</span></p>
 
-<button onclick="restart()">Restart</button>
-<button onclick="nextQuestion()">Next</button>
+<button onclick="nextQ()">Next</button>
+<button onclick="reset()">Restart</button>
 </div>
 </section>
 
 <!-- ANATOMY -->
-<section id="anatomy">
+<section id="anat">
 <h2>🫀 Anatomy</h2>
 
 <div class="card">
-<h3 class="heart" onclick="alert(getText('heartInfo'))">❤️ Heart</h3>
-<p class="small" id="heartText">Click for info</p>
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Heart_anterior_exterior_view.jpg" onclick="info('heart')" />
+<p>Click on image</p>
 </div>
 
-<div class="card">
-<h3>🫁 Lungs</h3>
-<p class="small" id="lungText">Breathing system organ</p>
-</div>
-
-<div class="card">
-<h3>🧠 Brain</h3>
-<p class="small" id="brainText">Controls the body</p>
-</div>
 </section>
 
 <script>
 
-let score = 0;
-let current = 0;
+let lang="en";
+let score=0;
+let index=0;
 
-const questions = [
-{
-q:"What organ pumps blood?",
-a:1
-},
-{
-q:"What organ controls the body?",
-a:2
-},
-{
-q:"What organ helps breathing?",
-a:0
-}
+let user="";
+
+const quiz=[
+{q:"What pumps blood?",a:0,o:["Heart","Lungs","Brain"]},
+{q:"What controls body?",a:2,o:["Heart","Liver","Brain"]},
+{q:"What helps breathing?",a:1,o:["Brain","Lungs","Stomach"]},
+{q:"What filters blood?",a:1,o:["Heart","Kidney","Skin"]},
+{q:"What protects brain?",a:0,o:["Skull","Skin","Liver"]}
 ];
 
-const texts = {
-ro:{
-title:"MedLearn",
-subtitle:"Platformă interactivă de medicină",
-welcome:"Bine ai venit 🚀",
-desc:"Învață medicină pas cu pas",
-heart:"Inimă",
-heartInfo:"Inima pompează sângele în corp.",
-lung:"Plămâni",
-brain:"Creier"
-},
-en:{
-title:"MedLearn",
-subtitle:"Interactive Medical Learning Platform",
-welcome:"Welcome 🚀",
-desc:"Learn medicine step by step",
-heart:"Heart",
-heartInfo:"The heart pumps blood through the body.",
-lung:"Lungs",
-brain:"Brain"
-},
-fr:{
-title:"MedLearn",
-subtitle:"Plateforme médicale interactive",
-welcome:"Bienvenue 🚀",
-desc:"Apprenez la médecine étape par étape",
-heart:"Cœur",
-heartInfo:"Le cœur pompe le sang dans le corps.",
-lung:"Poumons",
-brain:"Cerveau"
-}
+const t={
+en:{welcome:"Welcome",desc:"Learn medicine step by step"},
+ro:{welcome:"Bine ai venit",desc:"Învață medicină pas cu pas"},
+fr:{welcome:"Bienvenue",desc:"Apprenez la médecine étape par étape"}
 };
 
-let lang = "en";
-
 function setLang(l){
-lang = l;
-applyLang();
-}
-
-function getText(key){
-return texts[lang][key];
-}
-
-function applyLang(){
-document.getElementById("title").innerText = texts[lang].title;
-document.getElementById("subtitle").innerText = texts[lang].subtitle;
-document.getElementById("welcome").innerText = texts[lang].welcome;
-document.getElementById("desc").innerText = texts[lang].desc;
-
-document.querySelector(".heart").innerText = "❤️ " + texts[lang].heart;
-document.getElementById("heartText").innerText = texts[lang].heartInfo;
-document.getElementById("lungText").innerText = texts[lang].lung;
-document.getElementById("brainText").innerText = texts[lang].brain;
+lang=l;
+document.getElementById("welcome").innerText=t[l].welcome;
+document.getElementById("desc").innerText=t[l].desc;
 }
 
 function show(id){
@@ -218,8 +159,20 @@ document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 }
 
-function answer(correct){
-if(correct){
+function loadQ(){
+let q=quiz[index];
+document.getElementById("q").innerText=q.q;
+
+let html="";
+q.o.forEach((opt,i)=>{
+html+=`<div class='option' onclick='ans(${i})'>${opt}</div>`;
+});
+
+document.getElementById("options").innerHTML=html;
+}
+
+function ans(i){
+if(i===quiz[index].a){
 score++;
 document.getElementById("result").innerText="✔ Correct";
 }else{
@@ -228,21 +181,30 @@ document.getElementById("result").innerText="✖ Wrong";
 document.getElementById("score").innerText=score;
 }
 
-function restart(){
+function nextQ(){
+index++;
+if(index>=quiz.length) index=0;
+loadQ();
+}
+
+function reset(){
 score=0;
-document.getElementById("score").innerText=score;
-document.getElementById("result").innerText="";
+index=0;
+document.getElementById("score").innerText=0;
+loadQ();
 }
 
-function nextQuestion(){
-current++;
-if(current>=questions.length) current=0;
-
-document.getElementById("question").innerText = questions[current].q;
-document.getElementById("result").innerText="";
+function saveUser(){
+user=document.getElementById("username").value;
+localStorage.setItem("user",user);
+document.getElementById("hello").innerText="Hello " + user;
 }
 
-applyLang();
+function info(type){
+alert(type==="heart" ? "Heart pumps blood" : "");
+}
+
+loadQ();
 
 </script>
 
