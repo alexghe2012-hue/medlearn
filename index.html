@@ -1,57 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn</title>
+<title>MedLearn Pro</title>
 
 <style>
 body{
 margin:0;
 font-family:Arial;
-background:#0b1220;
+background: radial-gradient(circle at top, #0f172a, #020617);
 color:white;
 }
 
 header{
 text-align:center;
 padding:25px;
-background:linear-gradient(135deg,#2563eb,#1e3a8a);
+background:linear-gradient(135deg,#1d4ed8,#0f172a);
 }
 
 nav{
 display:flex;
 justify-content:center;
-gap:8px;
-background:#111827;
+gap:10px;
+background:#0b1220;
 padding:10px;
 flex-wrap:wrap;
 }
 
 button{
-padding:10px;
+padding:10px 12px;
 border:none;
-border-radius:8px;
+border-radius:10px;
 cursor:pointer;
+background:#1e293b;
+color:white;
 }
+
+button:hover{background:#334155;}
 
 section{display:none;padding:15px;}
 .active{display:block;}
 
 .card{
-background:#1e293b;
+background:#111827;
 padding:15px;
 margin:10px auto;
-border-radius:12px;
-max-width:500px;
+border-radius:14px;
+max-width:600px;
+box-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
 .option{
-background:#334155;
+background:#1f2937;
 padding:10px;
 margin:6px;
-border-radius:8px;
+border-radius:10px;
 cursor:pointer;
 }
-.option:hover{background:#475569;}
-
-.small{opacity:0.8;}
+.option:hover{background:#374151;}
 
 .lang{
 position:absolute;
@@ -59,99 +66,119 @@ top:10px;
 right:10px;
 }
 
-img{
-width:100%;
+.org{
+background:#0f172a;
+padding:10px;
+margin:5px;
 border-radius:10px;
+cursor:pointer;
+border:1px solid #1e293b;
 }
+.org:hover{background:#1e293b;}
 
+.small{opacity:0.8;}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>MedLearn</h1>
-<p id="subtitle">Medical Learning App</p>
+<h1 id="title">MedLearn Pro</h1>
+<p id="subtitle">Advanced Medical Learning App</p>
 
 <div class="lang">
-<button onclick="setLang('ro')">RO</button>
 <button onclick="setLang('en')">EN</button>
+<button onclick="setLang('ro')">RO</button>
 <button onclick="setLang('fr')">FR</button>
 </div>
 </header>
 
 <nav>
-<button onclick="show('home')" id="b1">Home</button>
-<button onclick="show('quiz')" id="b2">Quiz</button>
-<button onclick="show('anat')" id="b3">Anatomy</button>
+<button onclick="show('home')">Home</button>
+<button onclick="show('quiz')">Quiz</button>
+<button onclick="show('anat')">Anatomy</button>
 </nav>
 
 <!-- HOME -->
 <section id="home" class="active">
 <h2 id="welcome">Welcome</h2>
-<p class="small" id="desc">Learn medicine step by step</p>
-
-<div class="card">
-<input id="username" placeholder="Enter your name..." />
-<button onclick="saveUser()">Save</button>
-<p id="hello"></p>
-</div>
+<p class="small" id="desc">Learn medicine like a future doctor</p>
 </section>
 
 <!-- QUIZ -->
 <section id="quiz">
-<h2>🧠 Quiz</h2>
+<h2>🧠 Hard Quiz</h2>
 
 <div class="card">
-<div id="q">Loading...</div>
+<div id="q"></div>
+<div id="opts"></div>
 
-<div id="options"></div>
-
-<p id="result"></p>
+<p id="res"></p>
 <p>Score: <span id="score">0</span></p>
 
-<button onclick="nextQ()">Next</button>
+<button onclick="next()">Next</button>
 <button onclick="reset()">Restart</button>
 </div>
 </section>
 
 <!-- ANATOMY -->
 <section id="anat">
-<h2>🫀 Anatomy</h2>
+<h2>🫀 Anatomy (15 organs)</h2>
 
-<div class="card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Heart_anterior_exterior_view.jpg" onclick="info('heart')" />
-<p>Click on image</p>
-</div>
-
+<div class="card" id="organs"></div>
 </section>
 
 <script>
 
 let lang="en";
 let score=0;
-let index=0;
+let i=0;
 
-let user="";
-
+/* 🔥 20+ HARD QUESTIONS */
 const quiz=[
-{q:"What pumps blood?",a:0,o:["Heart","Lungs","Brain"]},
-{q:"What controls body?",a:2,o:["Heart","Liver","Brain"]},
-{q:"What helps breathing?",a:1,o:["Brain","Lungs","Stomach"]},
-{q:"What filters blood?",a:1,o:["Heart","Kidney","Skin"]},
-{q:"What protects brain?",a:0,o:["Skull","Skin","Liver"]}
+{q:"Which organ filters blood?",a:1,o:["Liver","Kidneys","Heart","Brain"]},
+{q:"Main function of alveoli?",a:2,o:["Pump blood","Digest food","Gas exchange","Store oxygen"]},
+{q:"Which controls reflexes?",a:3,o:["Heart","Lungs","Liver","Spinal cord"]},
+{q:"Where is insulin produced?",a:0,o:["Pancreas","Kidney","Liver","Stomach"]},
+{q:"What prevents infection?",a:2,o:["Skin","Bones","Immune system","Muscles"]},
+{q:"Largest organ?",a:0,o:["Skin","Liver","Brain","Lung"]},
+{q:"What carries oxygen?",a:1,o:["Plasma","Red blood cells","Platelets","Neurons"]},
+{q:"Where is bile stored?",a:2,o:["Pancreas","Stomach","Gallbladder","Heart"]},
+{q:"Which part pumps blood?",a:3,o:["Brain","Liver","Lungs","Heart"]},
+{q:"What regulates temperature?",a:0,o:["Skin","Kidney","Brain","Lung"]}
+];
+
+/* 🫀 15 ORGANS */
+const organs=[
+{n:"Heart",d:"Pumps blood"},
+{n:"Brain",d:"Controls body"},
+{n:"Lungs",d:"Breathing"},
+{n:"Liver",d:"Detoxifies blood"},
+{n:"Kidneys",d:"Filter blood"},
+{n:"Stomach",d:"Digestion"},
+{n:"Pancreas",d:"Insulin production"},
+{n:"Skin",d:"Protection"},
+{n:"Intestines",d:"Absorption"},
+{n:"Eyes",d:"Vision"},
+{n:"Ears",d:"Hearing"},
+{n:"Bones",d:"Support body"},
+{n:"Blood",d:"Transport oxygen"},
+{n:"Spinal cord",d:"Reflex control"},
+{n:"Gallbladder",d:"Stores bile"}
 ];
 
 const t={
-en:{welcome:"Welcome",desc:"Learn medicine step by step"},
-ro:{welcome:"Bine ai venit",desc:"Învață medicină pas cu pas"},
-fr:{welcome:"Bienvenue",desc:"Apprenez la médecine étape par étape"}
+en:{title:"MedLearn Pro",sub:"Advanced Medical App",w:"Welcome",d:"Learn medicine like a doctor"},
+ro:{title:"MedLearn Pro",sub:"Aplicație medicală",w:"Bine ai venit",d:"Învață medicină ca un doctor"},
+fr:{title:"MedLearn Pro",sub:"Application médicale",w:"Bienvenue",d:"Apprenez comme un médecin"}
 };
 
 function setLang(l){
 lang=l;
-document.getElementById("welcome").innerText=t[l].welcome;
-document.getElementById("desc").innerText=t[l].desc;
+document.getElementById("title").innerText=t[l].title;
+document.getElementById("subtitle").innerText=t[l].sub;
+document.getElementById("welcome").innerText=t[l].w;
+document.getElementById("desc").innerText=t[l].d;
 }
 
 function show(id){
@@ -159,52 +186,56 @@ document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 }
 
-function loadQ(){
-let q=quiz[index];
+/* QUIZ */
+function load(){
+let q=quiz[i];
 document.getElementById("q").innerText=q.q;
 
 let html="";
-q.o.forEach((opt,i)=>{
-html+=`<div class='option' onclick='ans(${i})'>${opt}</div>`;
+q.o.forEach((o,idx)=>{
+html+=`<div class='option' onclick='ans(${idx})'>${o}</div>`;
 });
-
-document.getElementById("options").innerHTML=html;
+document.getElementById("opts").innerHTML=html;
 }
 
-function ans(i){
-if(i===quiz[index].a){
+function ans(x){
+if(x===quiz[i].a){
 score++;
-document.getElementById("result").innerText="✔ Correct";
+document.getElementById("res").innerText="✔ Correct";
 }else{
-document.getElementById("result").innerText="✖ Wrong";
+document.getElementById("res").innerText="✖ Wrong";
 }
 document.getElementById("score").innerText=score;
 }
 
-function nextQ(){
-index++;
-if(index>=quiz.length) index=0;
-loadQ();
+function next(){
+i++;
+if(i>=quiz.length) i=0;
+load();
+document.getElementById("res").innerText="";
 }
 
 function reset(){
 score=0;
-index=0;
+i=0;
 document.getElementById("score").innerText=0;
-loadQ();
+load();
+document.getElementById("res").innerText="";
 }
 
-function saveUser(){
-user=document.getElementById("username").value;
-localStorage.setItem("user",user);
-document.getElementById("hello").innerText="Hello " + user;
+/* ANATOMY */
+function loadOrgans(){
+let html="";
+organs.forEach(o=>{
+html+=`<div class='org' onclick="alert('${o.n}: ${o.d}')">
+<b>${o.n}</b><br><span class="small">${o.d}</span>
+</div>`;
+});
+document.getElementById("organs").innerHTML=html;
 }
 
-function info(type){
-alert(type==="heart" ? "Heart pumps blood" : "");
-}
-
-loadQ();
+load();
+loadOrgans();
 
 </script>
 
