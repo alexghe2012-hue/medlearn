@@ -3,13 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn Pro</title>
+<title>MedLearn Next Level</title>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
 
-<style>
+<body>
+
+<header>🫀 MedLearn</header>
+
+<nav>
+<button onclick="go('home')">Home</button>
+<button onclick="go('quiz')">Quiz</button>
+<button onclick="go('anatomy')">3D Anatomy</button>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+<h2 id="homeTitle">Medical Learning Platform</h2>
+<p id="homeDesc">Study like a future doctor.</p>
+</section>
+
+<section id="quiz" class="page"></section>
+
+<section id="anatomy" class="page">
+<div id="viewer"></div>
+<div id="infoPanel">Click on organ</div>
+</section>
+
+</main>
+
+<script src="i18n.js"></script>
+<script src="quiz.js"></script>
+<script src="anatomy.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
 body{
 margin:0;
 font-family:Arial;
@@ -42,156 +73,88 @@ background:#111827;
 color:white;
 }
 
-.container{padding:15px;}
-
-.page{display:none;}
+.page{display:none;padding:20px;}
 .active{display:block;}
 
-.card{
-background:white;
-border:1px solid #e5e7eb;
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
-}
-
-/* 3D */
 #viewer{
 width:100%;
 height:400px;
 background:black;
 border-radius:12px;
 }
-</style>
-</head>
 
-<body>
-
-<header>🫀 MedLearn Pro</header>
-
-<nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('quiz')">Quiz</button>
-<button onclick="show('anat')">3D Anatomy</button>
-</nav>
-
-<div class="container">
-
-<!-- ================= HOME ================= -->
-<div id="home" class="page active">
-
-<div class="card">
-<h2 id="title">Medical App</h2>
-<p id="desc">Learn medicine like a pro student</p>
-</div>
-
-</div>
-
-<!-- ================= QUIZ ================= -->
-<div id="quiz" class="page">
-
-<div class="card" id="quizBox"></div>
-
-</div>
-
-<!-- ================= ANATOMY ================= -->
-<div id="anat" class="page">
-
-<div class="card">
-<h2>🫀 3D Anatomy</h2>
-<div id="viewer"></div>
-<p id="info">Click on body</p>
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-/* ================= LANGUAGE ================= */
-let lang="en";
+#infoPanel{
+margin-top:10px;
+padding:10px;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:10px;
+}
+function go(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+const lang="en";
 
 const T={
-en:{title:"Medical App",desc:"Learn medicine like a pro"},
-ro:{title:"Aplicație Medicală",desc:"Învață medicină ca un pro"},
-fr:{title:"Application Médicale",desc:"Apprends la médecine"}
+en:{
+homeTitle:"Medical Learning Platform",
+homeDesc:"Study like a future doctor"
+},
+ro:{
+homeTitle:"Platformă Medicală",
+homeDesc:"Învață ca un viitor medic"
+},
+fr:{
+homeTitle:"Plateforme Médicale",
+homeDesc:"Étudie comme un futur médecin"
+}
 };
 
 function setLang(l){
-lang=l;
-document.getElementById("title").innerText=T[l].title;
-document.getElementById("desc").innerText=T[l].desc;
+document.getElementById("homeTitle").innerText=T[l].homeTitle;
+document.getElementById("homeDesc").innerText=T[l].homeDesc;
 }
-
-/* ================= NAV ================= */
-function show(id){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-}
-
-/* ================= QUIZ AUTO ================= */
 let i=0;
 
 const quiz=[
 {q:"Heart function?",o:["Pump blood","Digest food","Think"],a:0},
 {q:"Lungs function?",o:["Gas exchange","Filter blood","Move"],a:0},
-{q:"Brain controls?",o:["Body","Only heart","Only lungs"],a:0},
 {q:"Kidneys do?",o:["Filter blood","Pump blood","Digest"],a:0},
-{q:"Liver role?",o:["Detox","Pump blood","Vision"],a:0}
+{q:"Brain controls?",o:["Body","Only heart","Nothing"],a:0}
 ];
 
-function loadQ(){
-let q=quiz[i];
+function loadQuiz(){
+const q=quiz[i];
 
-let html=`<h3>${q.q}</h3>`;
+let html=`<h2>${q.q}</h2>`;
 
 q.o.forEach((o,idx)=>{
-html+=`<div class="card" onclick="ans(${idx})">${o}</div>`;
+html+=`<div onclick="ans(${idx})" class="card">${o}</div>`;
 });
 
-document.getElementById("quizBox").innerHTML=html;
+document.getElementById("quiz").innerHTML=html;
 }
 
 function ans(x){
-
-if(x===quiz[i].a){
-document.getElementById("quizBox").innerHTML="<p>✔ Correct</p>";
-}else{
-document.getElementById("quizBox").innerHTML="<p>✖ Wrong</p>";
-}
-
 i++;
-
-setTimeout(()=>{
-
 if(i>=quiz.length) i=0;
-
-loadQ();
-
-},600);
+loadQuiz();
 }
 
-/* INIT QUIZ */
-loadQ();
-
-/* ================= 3D ANATOMY ================= */
+loadQuiz();
 const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x000000);
-
 const camera=new THREE.PerspectiveCamera(75,1,0.1,1000);
 
-const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(window.innerWidth-30,400);
+const renderer=new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth,400);
+
 document.getElementById("viewer").appendChild(renderer.domElement);
 
-/* LIGHT */
 scene.add(new THREE.AmbientLight(0xffffff,1));
 
-/* CONTROLS */
 const controls=new THREE.OrbitControls(camera,renderer.domElement);
 
-/* MODEL (real human head placeholder) */
 const loader=new THREE.GLTFLoader();
 
 loader.load(
@@ -203,20 +166,20 @@ scene.add(model);
 
 window.addEventListener("click",(e)=>{
 
-const raycaster=new THREE.Raycaster();
+const ray=new THREE.Raycaster();
 const mouse=new THREE.Vector2();
 
-mouse.x=(e.clientX/(window.innerWidth)) *2-1;
+mouse.x=(e.clientX/window.innerWidth)*2-1;
 mouse.y=-(e.clientY/400)*2+1;
 
-raycaster.setFromCamera(mouse,camera);
+ray.setFromCamera(mouse,camera);
 
-const hit=raycaster.intersectObject(model,true);
+const hit=ray.intersectObject(model,true);
 
-if(hit.length>0){
-document.getElementById("info").innerText="Organ clicked → "+hit[0].object.name;
+if(hit.length){
+document.getElementById("infoPanel").innerText=
+"Selected: "+hit[0].object.name;
 }
-
 });
 
 });
@@ -229,8 +192,3 @@ controls.update();
 renderer.render(scene,camera);
 }
 animate();
-
-</script>
-
-</body>
-</html>
