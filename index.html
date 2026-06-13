@@ -3,202 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn</title>
+<title>MedLearn Next Level</title>
 
 <style>
-/* =========================
-   🌍 GLOBAL (REGINA MARIA STYLE)
-========================= */
-html, body{
+body{
 margin:0;
-padding:0;
-scroll-behavior:smooth;
-font-family:Arial, sans-serif;
+font-family:Arial;
 background:#ffffff;
 color:#111827;
-height:100%;
-overflow-y:scroll;
-scroll-snap-type:y mandatory;
 }
 
-/* =========================
-   🔴 LOGO
-========================= */
-.logo{
-position:fixed;
-top:15px;
-left:15px;
+/* HEADER */
+header{
+background:#e11d48;
+color:white;
+padding:15px;
+text-align:center;
 font-weight:bold;
-color:#e11d48;
-font-size:20px;
-z-index:1000;
 }
 
-/* =========================
-   📱 SCREENS (SWIPE SECTIONS)
-========================= */
+/* SECTIONS */
 section{
-height:100vh;
-scroll-snap-align:start;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
 padding:20px;
-box-sizing:border-box;
+max-width:900px;
+margin:auto;
 }
 
-/* =========================
-   🧠 CARDS
-========================= */
+/* CARD */
 .card{
-width:90%;
-max-width:500px;
-background:#ffffff;
 border:1px solid #e5e7eb;
 border-radius:16px;
-padding:20px;
-box-shadow:0 4px 20px rgba(0,0,0,0.05);
-margin-top:15px;
+padding:15px;
+margin:10px 0;
+box-shadow:0 4px 15px rgba(0,0,0,0.05);
 }
 
-/* =========================
-   🔘 QUIZ OPTIONS
-========================= */
-.option{
-padding:12px;
-margin:8px 0;
-border-radius:12px;
-border:1px solid #e5e7eb;
+/* BUTTONS */
+button{
+padding:10px;
+border:none;
+border-radius:10px;
 cursor:pointer;
-}
-
-.option:hover{
-background:#f3f4f6;
-}
-
-/* =========================
-   🔴 TITLES
-========================= */
-h1,h2{
+background:#111827;
+color:white;
 margin:5px;
 }
 
-.red{
-color:#e11d48;
+button:hover{
+background:#374151;
 }
 
-/* =========================
-   🧭 SMALL TEXT
-========================= */
-.small{
-color:#6b7280;
-font-size:14px;
+/* INPUT */
+input{
+padding:10px;
+border-radius:10px;
+border:1px solid #e5e7eb;
+width:90%;
+margin:5px 0;
 }
 
-/* =========================
-   📱 SCROLL HINT
-========================= */
-.hint{
-position:fixed;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-font-size:12px;
-color:#9ca3af;
+/* PROGRESS BAR */
+.bar{
+height:10px;
+background:#e5e7eb;
+border-radius:10px;
+overflow:hidden;
 }
+
+.fill{
+height:100%;
+background:#e11d48;
+width:0%;
+}
+
+/* ANATOMY IMAGE */
+.anatomy{
+position:relative;
+max-width:400px;
+margin:auto;
+}
+
+.anatomy img{
+width:100%;
+border-radius:12px;
+}
+
+.hotspot{
+position:absolute;
+width:20px;
+height:20px;
+background:red;
+border-radius:50%;
+cursor:pointer;
+}
+
+/* POSITIONS (simplified) */
+#heart{top:45%;left:48%;}
+#brain{top:15%;left:45%;}
+#lungs{top:35%;left:40%;}
+#liver{top:55%;left:50%;}
+#kidney{top:60%;left:60%;}
 </style>
 </head>
 
 <body>
 
-<div class="logo">MedLearn</div>
+<header>
+🫀 MedLearn NEXT LEVEL
+</header>
 
-<div class="hint">Swipe ↓</div>
-
-<!-- ================= HOME ================= -->
-<section>
-<h1 class="red">MedLearn</h1>
-<p class="small">Medical learning app for students</p>
+<!-- ================= LOGIN ================= -->
+<section id="login">
+<h2>Login / Register</h2>
 
 <div class="card">
-<h2>Welcome</h2>
-<p>Swipe down to start learning</p>
+<input id="user" placeholder="Username">
+<button onclick="login()">Enter App</button>
+<p id="msg"></p>
 </div>
 </section>
 
-<!-- ================= QUIZ ================= -->
-<section>
-<h2>🧠 Quiz</h2>
+<!-- ================= DASHBOARD ================= -->
+<section id="dash" style="display:none">
+
+<h2>📊 Student Progress</h2>
 
 <div class="card">
-<div id="q"></div>
-<div id="opts"></div>
-<p id="res"></p>
-<p>Score: <span id="score">0</span></p>
-</div>
-</section>
+<p>User: <span id="uname"></span></p>
 
-<!-- ================= ANATOMY ================= -->
-<section>
-<h2>🫀 Anatomy</h2>
+<div class="bar"><div class="fill" id="xpbar"></div></div>
+<p>XP: <span id="xp">0</span> / 100</p>
+
+<button onclick="addXP()">+ Gain XP</button>
+</div>
+
+<!-- ANATOMY -->
+<h2>🫀 Anatomy Interactive</h2>
 
 <div class="card">
-<p onclick="info('Heart')">❤️ Heart</p>
-<p onclick="info('Brain')">🧠 Brain</p>
-<p onclick="info('Lungs')">🫁 Lungs</p>
-<p onclick="info('Liver')">🟤 Liver</p>
-<p onclick="info('Kidneys')">🟣 Kidneys</p>
-<p onclick="info('Stomach')">🟡 Stomach</p>
+<div class="anatomy">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Heart_anterior_exterior_view.jpg">
+
+<div class="hotspot" id="heart" onclick="info('Heart - pumps blood')"></div>
+<div class="hotspot" id="brain" onclick="info('Brain - controls body')"></div>
+<div class="hotspot" id="lungs" onclick="info('Lungs - breathing')"></div>
+<div class="hotspot" id="liver" onclick="info('Liver - detox')"></div>
+<div class="hotspot" id="kidney" onclick="info('Kidneys - filtration')"></div>
+
 </div>
+</div>
+
 </section>
 
 <script>
 
-/* ================= QUIZ DATA ================= */
-let i=0;
-let score=0;
+/* ================= STATE ================= */
+let user="";
+let xp=0;
 
-const quiz=[
-{q:"Main function of heart?",o:["Pump blood","Digest food","Think","Breathe"],a:0},
-{q:"Where gas exchange happens?",o:["Alveoli","Heart","Liver","Brain"],a:0},
-{q:"Kidneys function?",o:["Filter blood","Pump blood","Vision","Hearing"],a:0},
-{q:"Brain controls?",o:["Body","Only heart","Only lungs","Nothing"],a:0}
-];
+/* ================= LOGIN ================= */
+function login(){
+user=document.getElementById("user").value;
 
-/* ================= LOAD ================= */
-function load(){
-let q=quiz[i];
-document.getElementById("q").innerText=q.q;
+if(!user){
+document.getElementById("msg").innerText="Enter username";
+return;
+}
 
-let html="";
-q.o.forEach((o,idx)=>{
-html+=`<div class='option' onclick='ans(${idx})'>${o}</div>`;
+localStorage.setItem("user",user);
+loadUser();
+
+document.getElementById("login").style.display="none";
+document.getElementById("dash").style.display="block";
+}
+
+/* ================= LOAD USER ================= */
+function loadUser(){
+user=localStorage.getItem("user");
+if(user){
+document.getElementById("uname").innerText=user;
+}
+}
+
+/* ================= XP SYSTEM ================= */
+function addXP(){
+xp+=10;
+
+if(xp>100) xp=100;
+
+document.getElementById("xp").innerText=xp;
+document.getElementById("xpbar").style.width=xp+"%";
+
+localStorage.setItem("xp",xp);
+}
+
+/* ================= ANATOMY INFO ================= */
+function info(text){
+alert(text);
+}
+
+/* LOAD SAVED DATA */
+loadUser();
+
+xp=parseInt(localStorage.getItem("xp")||0);
+document.addEventListener("DOMContentLoaded",()=>{
+document.getElementById("xp").innerText=xp;
+document.getElementById("xpbar").style.width=xp+"%";
 });
-
-document.getElementById("opts").innerHTML=html;
-}
-
-/* ================= ANSWER ================= */
-function ans(x){
-if(x===quiz[i].a){
-score++;
-document.getElementById("res").innerText="✔ Correct";
-}else{
-document.getElementById("res").innerText="✖ Wrong";
-}
-document.getElementById("score").innerText=score;
-i++;
-if(i>=quiz.length) i=0;
-load();
-}
-
-/* ================= ANATOMY ================= */
-function info(x){
-alert(x + " - medical info");
-}
-
-load();
 
 </script>
 
