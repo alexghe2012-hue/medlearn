@@ -3,165 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn V6</title>
+<title>MedLearn Amboss Style</title>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
 body{
 margin:0;
 font-family:Arial;
-background:#ffffff;
+background:#f6f7fb;
 color:#111827;
 }
 
-/* HEADER */
-header{
-background:#e11d48;
-color:white;
-padding:15px;
-text-align:center;
-}
-
-/* TOP BAR */
+/* ===== TOP BAR ===== */
 .topbar{
 display:flex;
 justify-content:space-between;
-padding:10px;
+align-items:center;
+padding:12px 20px;
+background:white;
 border-bottom:1px solid #e5e7eb;
 }
 
-/* BUTTONS */
-button{
-padding:8px 10px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#111827;
-color:white;
+.logo{
+color:#e11d48;
+font-weight:bold;
+font-size:20px;
 }
 
-/* LAYOUT */
+/* ===== LAYOUT ===== */
 .container{
 display:flex;
-gap:20px;
-padding:20px;
+height:calc(100vh - 50px);
 }
 
-/* LEFT PANEL */
-.left{
+/* SIDEBAR */
+.sidebar{
+width:220px;
+background:white;
+border-right:1px solid #e5e7eb;
+padding:15px;
+}
+
+.sidebar button{
+width:100%;
+margin-bottom:8px;
+padding:10px;
+border:none;
+border-radius:8px;
+background:#f3f4f6;
+cursor:pointer;
+}
+
+/* MAIN */
+.main{
 flex:1;
-}
-
-/* RIGHT PANEL (info panel) */
-.right{
-width:300px;
-border-left:1px solid #e5e7eb;
-padding-left:15px;
+padding:20px;
+overflow:auto;
 }
 
 /* CARD */
 .card{
+background:white;
 border:1px solid #e5e7eb;
+border-radius:12px;
 padding:15px;
-border-radius:12px;
-margin-bottom:10px;
+margin-bottom:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
-/* ANATOMY IMAGE */
-.anatomy{
-position:relative;
+/* SEARCH */
+input{
 width:100%;
-max-width:400px;
+padding:10px;
+border:1px solid #e5e7eb;
+border-radius:8px;
 }
 
-.anatomy img{
+/* 3D AREA */
+#scene{
 width:100%;
+height:400px;
 border-radius:12px;
-}
-
-/* HOTSPOTS */
-.hotspot{
-position:absolute;
-width:18px;
-height:18px;
-background:red;
-border-radius:50%;
-cursor:pointer;
-}
-
-/* POSITIONS */
-#h{top:45%;left:48%;}
-#b{top:15%;left:48%;}
-#l{top:40%;left:35%;}
-#lv{top:55%;left:50%;}
-#k{top:60%;left:60%;}
-
-/* LANG SELECT */
-.lang{
-display:flex;
-gap:5px;
+background:#000;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-🫀 MedLearn STARTUP V6
-</header>
-
 <div class="topbar">
-<div class="lang">
-<button onclick="setLang('ro')">RO</button>
-<button onclick="setLang('en')">EN</button>
-<button onclick="setLang('fr')">FR</button>
-</div>
-
-<button onclick="login()">Login (Firebase later)</button>
+<div class="logo">MedLearn</div>
+<div>Amboss-style Medical Learning</div>
 </div>
 
 <div class="container">
 
-<!-- ================= LEFT ================= -->
-<div class="left">
+<!-- SIDEBAR -->
+<div class="sidebar">
+<button onclick="show('dashboard')">Dashboard</button>
+<button onclick="show('quiz')">MCQ</button>
+<button onclick="show('anatomy')">3D Anatomy</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
+<div class="card">
+<h2>Student Dashboard</h2>
+<input placeholder="Search disease, organ, topic...">
+</div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="page" style="display:none;">
+<div class="card">
+<h2>Medical MCQ</h2>
+<p>Coming next (100 questions system)</p>
+</div>
+</div>
+
+<!-- ANATOMY 3D -->
+<div id="anatomy" class="page" style="display:none;">
 
 <div class="card">
-<h2 id="title">Medical App</h2>
-<p id="desc">Study anatomy, track progress, learn medicine.</p>
-</div>
-
-<!-- ANATOMY -->
-<div class="card">
-<h3>🫀 Anatomy Atlas</h3>
-
-<div class="anatomy">
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Heart_anterior_exterior_view.jpg">
-
-<div class="hotspot" id="h" onclick="showInfo('Heart - pumps blood')"></div>
-<div class="hotspot" id="b" onclick="showInfo('Brain - controls body')"></div>
-<div class="hotspot" id="l" onclick="showInfo('Lungs - breathing')"></div>
-<div class="hotspot" id="lv" onclick="showInfo('Liver - detox')"></div>
-<div class="hotspot" id="k" onclick="showInfo('Kidneys - filter blood')"></div>
-
-</div>
-</div>
-
-</div>
-
-<!-- ================= RIGHT ================= -->
-<div class="right">
-
-<h3>📊 Info Panel</h3>
-
-<div class="card" id="infoBox">
-Click on an organ
+<h2>🫀 3D Human Anatomy</h2>
+<p>Click & rotate model (demo)</p>
 </div>
 
 <div class="card">
-<h3>🧠 AI Medical Mode</h3>
-<p>Ask symptoms → get explanation (demo)</p>
-<input id="symptom" placeholder="e.g. chest pain">
-<button onclick="ai()">Analyze</button>
-<p id="aiOut"></p>
+<div id="scene"></div>
+</div>
+
+<div class="card" id="info">
+Click a 3D organ
+</div>
+
 </div>
 
 </div>
@@ -170,51 +149,41 @@ Click on an organ
 
 <script>
 
-/* ================= LANGUAGE ================= */
-let lang="en";
-
-const t={
-en:{title:"Medical App",desc:"Study anatomy and medicine"},
-ro:{title:"Aplicație Medicală",desc:"Studiază anatomia și medicina"},
-fr:{title:"Application Médicale",desc:"Étudier la médecine"}
-};
-
-function setLang(l){
-lang=l;
-document.getElementById("title").innerText=t[l].title;
-document.getElementById("desc").innerText=t[l].desc;
+/* ================= NAV ================= */
+function show(id){
+document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+document.getElementById(id).style.display="block";
 }
 
-/* ================= ANATOMY INFO ================= */
-function showInfo(text){
-document.getElementById("infoBox").innerText=text;
-}
+/* ================= THREE JS 3D ================= */
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 
-/* ================= AI MODE (SIMULAT) ================= */
-function ai(){
-let s=document.getElementById("symptom").value.toLowerCase();
-let out="";
+const renderer = new THREE.WebGLRenderer({alpha:true});
+renderer.setSize(400,400);
+document.getElementById("scene").appendChild(renderer.domElement);
 
-if(s.includes("chest")){
-out="Possible cardiac issue → consult cardiology";
-}
-else if(s.includes("head")){
-out="Possible neurological issue";
-}
-else if(s.includes("pain")){
-out="General symptom → needs evaluation";
-}
-else{
-out="No data available";
-}
+/* BODY (simple model placeholder) */
+const geometry = new THREE.SphereGeometry(1, 32, 32);
+const material = new THREE.MeshBasicMaterial({color:0xe11d48,wireframe:true});
+const body = new THREE.Mesh(geometry, material);
 
-document.getElementById("aiOut").innerText=out;
-}
+scene.add(body);
+camera.position.z = 3;
 
-/* ================= LOGIN (placeholder) ================= */
-function login(){
-alert("Firebase login will be added next step");
+/* LIGHT ROTATION ANIMATION */
+function animate(){
+requestAnimationFrame(animate);
+body.rotation.y += 0.01;
+body.rotation.x += 0.005;
+renderer.render(scene, camera);
 }
+animate();
+
+/* CLICK SIMULATION */
+document.getElementById("scene").addEventListener("click",()=>{
+document.getElementById("info").innerText="Organ clicked → Heart (demo 3D interaction)";
+});
 
 </script>
 
