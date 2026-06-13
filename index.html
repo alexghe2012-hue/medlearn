@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn Next Level</title>
+<title>MedLearn V6</title>
 
 <style>
 body{
@@ -19,68 +19,58 @@ background:#e11d48;
 color:white;
 padding:15px;
 text-align:center;
-font-weight:bold;
 }
 
-/* SECTIONS */
-section{
+/* TOP BAR */
+.topbar{
+display:flex;
+justify-content:space-between;
+padding:10px;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* BUTTONS */
+button{
+padding:8px 10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#111827;
+color:white;
+}
+
+/* LAYOUT */
+.container{
+display:flex;
+gap:20px;
 padding:20px;
-max-width:900px;
-margin:auto;
+}
+
+/* LEFT PANEL */
+.left{
+flex:1;
+}
+
+/* RIGHT PANEL (info panel) */
+.right{
+width:300px;
+border-left:1px solid #e5e7eb;
+padding-left:15px;
 }
 
 /* CARD */
 .card{
 border:1px solid #e5e7eb;
-border-radius:16px;
 padding:15px;
-margin:10px 0;
-box-shadow:0 4px 15px rgba(0,0,0,0.05);
-}
-
-/* BUTTONS */
-button{
-padding:10px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#111827;
-color:white;
-margin:5px;
-}
-
-button:hover{
-background:#374151;
-}
-
-/* INPUT */
-input{
-padding:10px;
-border-radius:10px;
-border:1px solid #e5e7eb;
-width:90%;
-margin:5px 0;
-}
-
-/* PROGRESS BAR */
-.bar{
-height:10px;
-background:#e5e7eb;
-border-radius:10px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-background:#e11d48;
-width:0%;
+border-radius:12px;
+margin-bottom:10px;
 }
 
 /* ANATOMY IMAGE */
 .anatomy{
 position:relative;
+width:100%;
 max-width:400px;
-margin:auto;
 }
 
 .anatomy img{
@@ -88,128 +78,143 @@ width:100%;
 border-radius:12px;
 }
 
+/* HOTSPOTS */
 .hotspot{
 position:absolute;
-width:20px;
-height:20px;
+width:18px;
+height:18px;
 background:red;
 border-radius:50%;
 cursor:pointer;
 }
 
-/* POSITIONS (simplified) */
-#heart{top:45%;left:48%;}
-#brain{top:15%;left:45%;}
-#lungs{top:35%;left:40%;}
-#liver{top:55%;left:50%;}
-#kidney{top:60%;left:60%;}
+/* POSITIONS */
+#h{top:45%;left:48%;}
+#b{top:15%;left:48%;}
+#l{top:40%;left:35%;}
+#lv{top:55%;left:50%;}
+#k{top:60%;left:60%;}
+
+/* LANG SELECT */
+.lang{
+display:flex;
+gap:5px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-🫀 MedLearn NEXT LEVEL
+🫀 MedLearn STARTUP V6
 </header>
 
-<!-- ================= LOGIN ================= -->
-<section id="login">
-<h2>Login / Register</h2>
-
-<div class="card">
-<input id="user" placeholder="Username">
-<button onclick="login()">Enter App</button>
-<p id="msg"></p>
+<div class="topbar">
+<div class="lang">
+<button onclick="setLang('ro')">RO</button>
+<button onclick="setLang('en')">EN</button>
+<button onclick="setLang('fr')">FR</button>
 </div>
-</section>
 
-<!-- ================= DASHBOARD ================= -->
-<section id="dash" style="display:none">
+<button onclick="login()">Login (Firebase later)</button>
+</div>
 
-<h2>📊 Student Progress</h2>
+<div class="container">
+
+<!-- ================= LEFT ================= -->
+<div class="left">
 
 <div class="card">
-<p>User: <span id="uname"></span></p>
-
-<div class="bar"><div class="fill" id="xpbar"></div></div>
-<p>XP: <span id="xp">0</span> / 100</p>
-
-<button onclick="addXP()">+ Gain XP</button>
+<h2 id="title">Medical App</h2>
+<p id="desc">Study anatomy, track progress, learn medicine.</p>
 </div>
 
 <!-- ANATOMY -->
-<h2>🫀 Anatomy Interactive</h2>
-
 <div class="card">
+<h3>🫀 Anatomy Atlas</h3>
+
 <div class="anatomy">
 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Heart_anterior_exterior_view.jpg">
 
-<div class="hotspot" id="heart" onclick="info('Heart - pumps blood')"></div>
-<div class="hotspot" id="brain" onclick="info('Brain - controls body')"></div>
-<div class="hotspot" id="lungs" onclick="info('Lungs - breathing')"></div>
-<div class="hotspot" id="liver" onclick="info('Liver - detox')"></div>
-<div class="hotspot" id="kidney" onclick="info('Kidneys - filtration')"></div>
+<div class="hotspot" id="h" onclick="showInfo('Heart - pumps blood')"></div>
+<div class="hotspot" id="b" onclick="showInfo('Brain - controls body')"></div>
+<div class="hotspot" id="l" onclick="showInfo('Lungs - breathing')"></div>
+<div class="hotspot" id="lv" onclick="showInfo('Liver - detox')"></div>
+<div class="hotspot" id="k" onclick="showInfo('Kidneys - filter blood')"></div>
 
 </div>
 </div>
 
-</section>
+</div>
+
+<!-- ================= RIGHT ================= -->
+<div class="right">
+
+<h3>📊 Info Panel</h3>
+
+<div class="card" id="infoBox">
+Click on an organ
+</div>
+
+<div class="card">
+<h3>🧠 AI Medical Mode</h3>
+<p>Ask symptoms → get explanation (demo)</p>
+<input id="symptom" placeholder="e.g. chest pain">
+<button onclick="ai()">Analyze</button>
+<p id="aiOut"></p>
+</div>
+
+</div>
+
+</div>
 
 <script>
 
-/* ================= STATE ================= */
-let user="";
-let xp=0;
+/* ================= LANGUAGE ================= */
+let lang="en";
 
-/* ================= LOGIN ================= */
-function login(){
-user=document.getElementById("user").value;
+const t={
+en:{title:"Medical App",desc:"Study anatomy and medicine"},
+ro:{title:"Aplicație Medicală",desc:"Studiază anatomia și medicina"},
+fr:{title:"Application Médicale",desc:"Étudier la médecine"}
+};
 
-if(!user){
-document.getElementById("msg").innerText="Enter username";
-return;
-}
-
-localStorage.setItem("user",user);
-loadUser();
-
-document.getElementById("login").style.display="none";
-document.getElementById("dash").style.display="block";
-}
-
-/* ================= LOAD USER ================= */
-function loadUser(){
-user=localStorage.getItem("user");
-if(user){
-document.getElementById("uname").innerText=user;
-}
-}
-
-/* ================= XP SYSTEM ================= */
-function addXP(){
-xp+=10;
-
-if(xp>100) xp=100;
-
-document.getElementById("xp").innerText=xp;
-document.getElementById("xpbar").style.width=xp+"%";
-
-localStorage.setItem("xp",xp);
+function setLang(l){
+lang=l;
+document.getElementById("title").innerText=t[l].title;
+document.getElementById("desc").innerText=t[l].desc;
 }
 
 /* ================= ANATOMY INFO ================= */
-function info(text){
-alert(text);
+function showInfo(text){
+document.getElementById("infoBox").innerText=text;
 }
 
-/* LOAD SAVED DATA */
-loadUser();
+/* ================= AI MODE (SIMULAT) ================= */
+function ai(){
+let s=document.getElementById("symptom").value.toLowerCase();
+let out="";
 
-xp=parseInt(localStorage.getItem("xp")||0);
-document.addEventListener("DOMContentLoaded",()=>{
-document.getElementById("xp").innerText=xp;
-document.getElementById("xpbar").style.width=xp+"%";
-});
+if(s.includes("chest")){
+out="Possible cardiac issue → consult cardiology";
+}
+else if(s.includes("head")){
+out="Possible neurological issue";
+}
+else if(s.includes("pain")){
+out="General symptom → needs evaluation";
+}
+else{
+out="No data available";
+}
+
+document.getElementById("aiOut").innerText=out;
+}
+
+/* ================= LOGIN (placeholder) ================= */
+function login(){
+alert("Firebase login will be added next step");
+}
 
 </script>
 
