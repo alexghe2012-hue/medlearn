@@ -3,134 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn Next Level</title>
+<title>MedLearn Amboss MVP</title>
 
-<link rel="stylesheet" href="styles.css">
-</head>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
 
-<body>
-
-<header>🫀 MedLearn</header>
-
-<nav>
-<button onclick="go('home')">Home</button>
-<button onclick="go('quiz')">Quiz</button>
-<button onclick="go('anatomy')">3D Anatomy</button>
-</nav>
-
-<main>
-
-<section id="home" class="page active">
-<h2 id="homeTitle">Medical Learning Platform</h2>
-<p id="homeDesc">Study like a future doctor.</p>
-</section>
-
-<section id="quiz" class="page"></section>
-
-<section id="anatomy" class="page">
-<div id="viewer"></div>
-<div id="infoPanel">Click on organ</div>
-</section>
-
-</main>
-
-<script src="i18n.js"></script>
-<script src="quiz.js"></script>
-<script src="anatomy.js"></script>
-<script src="app.js"></script>
-
-</body>
-</html>
+<style>
 body{
 margin:0;
 font-family:Arial;
-background:#f5f7fb;
+background:#f6f7fb;
 color:#111827;
 }
 
-header{
-background:#e11d48;
-color:white;
-padding:12px;
-text-align:center;
-font-weight:bold;
-}
-
-nav{
+/* TOPBAR */
+.topbar{
 display:flex;
-gap:10px;
+justify-content:space-between;
+align-items:center;
 padding:10px;
 background:white;
-border-bottom:1px solid #e5e7eb;
+border-bottom:1px solid #ddd;
 }
 
-button{
-padding:8px 10px;
+.logo{color:#e11d48;font-weight:bold;font-size:18px;}
+
+.layout{display:flex;height:calc(100vh - 50px);}
+
+/* SIDEBAR */
+.sidebar{
+width:200px;
+background:white;
+border-right:1px solid #ddd;
+padding:10px;
+}
+
+.sidebar button{
+width:100%;
+margin-bottom:8px;
+padding:10px;
 border:none;
 border-radius:8px;
-cursor:pointer;
 background:#111827;
 color:white;
+cursor:pointer;
 }
 
-.page{display:none;padding:20px;}
+/* MAIN */
+.main{
+flex:1;
+padding:15px;
+overflow:auto;
+}
+
+/* PAGES */
+.page{display:none;}
 .active{display:block;}
 
+/* CARDS */
+.card{
+background:white;
+padding:15px;
+border-radius:12px;
+margin-bottom:10px;
+border:1px solid #eee;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+}
+
+/* 3D */
 #viewer{
-width:100%;
 height:400px;
 background:black;
 border-radius:12px;
 }
+</style>
+</head>
 
-#infoPanel{
-margin-top:10px;
-padding:10px;
-background:white;
-border:1px solid #e5e7eb;
-border-radius:10px;
-}
-function go(id){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
-const lang="en";
+<body>
 
-const T={
-en:{
-homeTitle:"Medical Learning Platform",
-homeDesc:"Study like a future doctor"
-},
-ro:{
-homeTitle:"Platformă Medicală",
-homeDesc:"Învață ca un viitor medic"
-},
-fr:{
-homeTitle:"Plateforme Médicale",
-homeDesc:"Étudie comme un futur médecin"
-}
-};
+<!-- TOP -->
+<div class="topbar">
+<div class="logo">🫀 MedLearn</div>
 
+<input placeholder="Search medical topics...">
+
+<div>
+<button onclick="setLang('en')">EN</button>
+<button onclick="setLang('ro')">RO</button>
+<button onclick="setLang('fr')">FR</button>
+</div>
+</div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<button onclick="show('home')">Dashboard</button>
+<button onclick="show('quiz')">QBank</button>
+<button onclick="show('anat')">3D Anatomy</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- HOME -->
+<section id="home" class="page active">
+<h2 id="title">Dashboard</h2>
+
+<div class="grid">
+<div class="card">🫀 Cardiology</div>
+<div class="card">🧠 Neurology</div>
+<div class="card">🫁 Pulmonology</div>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="page"></section>
+
+<!-- ANATOMY -->
+<section id="anat" class="page">
+<div id="viewer"></div>
+<div class="card" id="info">Click on organ</div>
+</section>
+
+</div>
+</div>
+
+<script>
+
+/* ================= LANGUAGE ================= */
 function setLang(l){
-document.getElementById("homeTitle").innerText=T[l].homeTitle;
-document.getElementById("homeDesc").innerText=T[l].homeDesc;
+const t={
+en:"Dashboard",
+ro:"Panou Medical",
+fr:"Tableau Médical"
+};
+document.getElementById("title").innerText=t[l];
 }
+
+/* ================= NAV ================= */
+function show(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+}
+
+/* ================= QUIZ ================= */
 let i=0;
 
 const quiz=[
-{q:"Heart function?",o:["Pump blood","Digest food","Think"],a:0},
-{q:"Lungs function?",o:["Gas exchange","Filter blood","Move"],a:0},
-{q:"Kidneys do?",o:["Filter blood","Pump blood","Digest"],a:0},
-{q:"Brain controls?",o:["Body","Only heart","Nothing"],a:0}
+{q:"Heart function?",a:["Pump blood","Digest food","Think"],c:0},
+{q:"Lungs function?",a:["Gas exchange","Filter blood","Move"],c:0},
+{q:"Kidneys function?",a:["Filter blood","Pump blood","Vision"],c:0},
+{q:"Brain controls?",a:["Body","Only heart","Nothing"],c:0},
+{q:"Liver does?",a:["Detox","Pump blood","Hear"],c:0}
 ];
 
 function loadQuiz(){
-const q=quiz[i];
+let q=quiz[i];
 
-let html=`<h2>${q.q}</h2>`;
+let html=`<div class="card"><h3>${q.q}</h3></div>`;
 
-q.o.forEach((o,idx)=>{
-html+=`<div onclick="ans(${idx})" class="card">${o}</div>`;
+q.a.forEach((a,idx)=>{
+html+=`<div class="card" onclick="ans(${idx})">${a}</div>`;
 });
 
 document.getElementById("quiz").innerHTML=html;
@@ -142,19 +183,27 @@ if(i>=quiz.length) i=0;
 loadQuiz();
 }
 
+/* INIT QUIZ */
 loadQuiz();
+
+/* ================= 3D ANATOMY ================= */
 const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x000000);
+
 const camera=new THREE.PerspectiveCamera(75,1,0.1,1000);
 
-const renderer=new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth,400);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth-220,400);
 
 document.getElementById("viewer").appendChild(renderer.domElement);
 
+/* LIGHT */
 scene.add(new THREE.AmbientLight(0xffffff,1));
 
+/* CONTROLS */
 const controls=new THREE.OrbitControls(camera,renderer.domElement);
 
+/* LOAD MODEL */
 const loader=new THREE.GLTFLoader();
 
 loader.load(
@@ -169,7 +218,7 @@ window.addEventListener("click",(e)=>{
 const ray=new THREE.Raycaster();
 const mouse=new THREE.Vector2();
 
-mouse.x=(e.clientX/window.innerWidth)*2-1;
+mouse.x=(e.clientX/(window.innerWidth))*2-1;
 mouse.y=-(e.clientY/400)*2+1;
 
 ray.setFromCamera(mouse,camera);
@@ -177,18 +226,25 @@ ray.setFromCamera(mouse,camera);
 const hit=ray.intersectObject(model,true);
 
 if(hit.length){
-document.getElementById("infoPanel").innerText=
+document.getElementById("info").innerText=
 "Selected: "+hit[0].object.name;
 }
+
 });
 
 });
 
 camera.position.z=3;
 
+/* ANIMATION */
 function animate(){
 requestAnimationFrame(animate);
 controls.update();
 renderer.render(scene,camera);
 }
 animate();
+
+</script>
+
+</body>
+</html>
