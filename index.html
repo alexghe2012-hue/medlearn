@@ -1,245 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn Amboss MVP</title>
+<title>MedLearn</title>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
 
 <style>
 body{
 margin:0;
 font-family:Arial;
-background:#f6f7fb;
-color:#111827;
+background:#f4f6fb;
+color:#111;
 }
 
-/* TOPBAR */
-.topbar{
+/* TOP */
+.top{
+background:#fff;
+padding:10px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:10px;
-background:white;
-border-bottom:1px solid #ddd;
+border-bottom:1px solid #eee;
 }
 
-.logo{color:#e11d48;font-weight:bold;font-size:18px;}
+.logo{color:#e11d48;font-weight:bold}
 
-.layout{display:flex;height:calc(100vh - 50px);}
-
-/* SIDEBAR */
-.sidebar{
-width:200px;
-background:white;
-border-right:1px solid #ddd;
+/* NAV */
+.nav{
+display:flex;
+gap:8px;
 padding:10px;
+background:white;
 }
 
-.sidebar button{
-width:100%;
-margin-bottom:8px;
+.btn{
 padding:10px;
 border:none;
-border-radius:8px;
-background:#111827;
+border-radius:10px;
+background:#111;
 color:white;
 cursor:pointer;
 }
 
-/* MAIN */
-.main{
-flex:1;
-padding:15px;
-overflow:auto;
-}
+/* VIEW */
+.view{padding:10px;display:none;}
+.active{display:block}
 
-/* PAGES */
-.page{display:none;}
-.active{display:block;}
-
-/* CARDS */
+/* CARD */
 .card{
 background:white;
 padding:15px;
-border-radius:12px;
-margin-bottom:10px;
-border:1px solid #eee;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
+border-radius:15px;
+margin:10px 0;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
 /* 3D */
-#viewer{
-height:400px;
+#scene{
+height:350px;
 background:black;
-border-radius:12px;
+border-radius:15px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP -->
-<div class="topbar">
+<div class="top">
 <div class="logo">🫀 MedLearn</div>
-
-<input placeholder="Search medical topics...">
-
 <div>
-<button onclick="setLang('en')">EN</button>
-<button onclick="setLang('ro')">RO</button>
-<button onclick="setLang('fr')">FR</button>
+<button class="btn" onclick="lang('en')">EN</button>
+<button class="btn" onclick="lang('ro')">RO</button>
 </div>
 </div>
 
-<div class="layout">
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-<button onclick="show('home')">Dashboard</button>
-<button onclick="show('quiz')">QBank</button>
-<button onclick="show('anat')">3D Anatomy</button>
+<div class="nav">
+<button class="btn" onclick="go('home')">Home</button>
+<button class="btn" onclick="go('quiz')">Quiz</button>
+<button class="btn" onclick="go('anat')">3D</button>
 </div>
-
-<!-- MAIN -->
-<div class="main">
 
 <!-- HOME -->
-<section id="home" class="page active">
-<h2 id="title">Dashboard</h2>
-
-<div class="grid">
-<div class="card">🫀 Cardiology</div>
-<div class="card">🧠 Neurology</div>
-<div class="card">🫁 Pulmonology</div>
+<div id="home" class="view active">
+<div class="card">Medical learning app</div>
+<div class="card">Tap to start learning</div>
 </div>
-</section>
 
 <!-- QUIZ -->
-<section id="quiz" class="page"></section>
+<div id="quiz" class="view"></div>
 
 <!-- ANATOMY -->
-<section id="anat" class="page">
-<div id="viewer"></div>
-<div class="card" id="info">Click on organ</div>
-</section>
-
-</div>
+<div id="anat" class="view">
+<div class="card">3D Anatomy</div>
+<div id="scene"></div>
+<div class="card" id="info">Tap organ</div>
 </div>
 
 <script>
 
-/* ================= LANGUAGE ================= */
-function setLang(l){
-const t={
-en:"Dashboard",
-ro:"Panou Medical",
-fr:"Tableau Médical"
-};
-document.getElementById("title").innerText=t[l];
+/* NAV */
+function go(id){
+document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+document.getElementById(id).classList.add('active');
 }
 
-/* ================= NAV ================= */
-function show(id){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+/* LANG (simplu) */
+function lang(l){
+document.querySelector('.logo').innerText =
+l==='ro' ? '🫀 MedLearn' : '🫀 MedLearn';
 }
 
-/* ================= QUIZ ================= */
+/* QUIZ */
 let i=0;
 
-const quiz=[
-{q:"Heart function?",a:["Pump blood","Digest food","Think"],c:0},
-{q:"Lungs function?",a:["Gas exchange","Filter blood","Move"],c:0},
-{q:"Kidneys function?",a:["Filter blood","Pump blood","Vision"],c:0},
-{q:"Brain controls?",a:["Body","Only heart","Nothing"],c:0},
-{q:"Liver does?",a:["Detox","Pump blood","Hear"],c:0}
+const q=[
+{q:"Heart?",a:["Pump","Digest","Think"],c:0},
+{q:"Lungs?",a:["Gas exchange","Filter","Move"],c:0},
+{q:"Brain?",a:["Control","Sleep","Eat"],c:0}
 ];
 
-function loadQuiz(){
-let q=quiz[i];
+function load(){
+let x=q[i];
+let html=`<div class='card'><b>${x.q}</b></div>`;
 
-let html=`<div class="card"><h3>${q.q}</h3></div>`;
-
-q.a.forEach((a,idx)=>{
-html+=`<div class="card" onclick="ans(${idx})">${a}</div>`;
+x.a.forEach((a,idx)=>{
+html+=`<div class='card' onclick='ans(${idx})'>${a}</div>`;
 });
 
-document.getElementById("quiz").innerHTML=html;
+document.getElementById('quiz').innerHTML=html;
 }
 
 function ans(x){
 i++;
-if(i>=quiz.length) i=0;
-loadQuiz();
+if(i>=q.length)i=0;
+load();
 }
 
-/* INIT QUIZ */
-loadQuiz();
+load();
 
-/* ================= 3D ANATOMY ================= */
+/* 3D */
 const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x000000);
-
 const camera=new THREE.PerspectiveCamera(75,1,0.1,1000);
+const renderer=new THREE.WebGLRenderer();
 
-const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(window.innerWidth-220,400);
+renderer.setSize(window.innerWidth,350);
+document.getElementById("scene").appendChild(renderer.domElement);
 
-document.getElementById("viewer").appendChild(renderer.domElement);
-
-/* LIGHT */
 scene.add(new THREE.AmbientLight(0xffffff,1));
 
-/* CONTROLS */
 const controls=new THREE.OrbitControls(camera,renderer.domElement);
 
-/* LOAD MODEL */
-const loader=new THREE.GLTFLoader();
+const body=new THREE.Mesh(
+new THREE.SphereGeometry(1,32,32),
+new THREE.MeshBasicMaterial({color:0xe11d48,wireframe:true})
+);
 
-loader.load(
-"https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
-function(gltf){
-
-const model=gltf.scene;
-scene.add(model);
-
-window.addEventListener("click",(e)=>{
-
-const ray=new THREE.Raycaster();
-const mouse=new THREE.Vector2();
-
-mouse.x=(e.clientX/(window.innerWidth))*2-1;
-mouse.y=-(e.clientY/400)*2+1;
-
-ray.setFromCamera(mouse,camera);
-
-const hit=ray.intersectObject(model,true);
-
-if(hit.length){
-document.getElementById("info").innerText=
-"Selected: "+hit[0].object.name;
-}
-
-});
-
-});
-
+scene.add(body);
 camera.position.z=3;
 
-/* ANIMATION */
 function animate(){
 requestAnimationFrame(animate);
-controls.update();
+body.rotation.y+=0.01;
 renderer.render(scene,camera);
 }
 animate();
