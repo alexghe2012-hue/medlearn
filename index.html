@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn Pro Max</title>
+<title>MedLearn Pro</title>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
 
 <style>
 body{
@@ -18,7 +20,7 @@ color:#111827;
 header{
 background:#e11d48;
 color:white;
-padding:15px;
+padding:12px;
 text-align:center;
 font-weight:bold;
 }
@@ -32,7 +34,7 @@ border-bottom:1px solid #e5e7eb;
 }
 
 button{
-padding:10px;
+padding:8px 10px;
 border:none;
 border-radius:8px;
 cursor:pointer;
@@ -40,28 +42,32 @@ background:#111827;
 color:white;
 }
 
-.container{padding:20px;}
-
-.card{
-background:white;
-padding:15px;
-border-radius:12px;
-border:1px solid #e5e7eb;
-margin-bottom:10px;
-}
-
-.small{color:#6b7280;}
+.container{padding:15px;}
 
 .page{display:none;}
 .active{display:block;}
+
+.card{
+background:white;
+border:1px solid #e5e7eb;
+padding:12px;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+/* 3D */
+#viewer{
+width:100%;
+height:400px;
+background:black;
+border-radius:12px;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-🫀 MedLearn PRO MAX
-</header>
+<header>🫀 MedLearn Pro</header>
 
 <nav>
 <button onclick="show('home')">Home</button>
@@ -69,46 +75,32 @@ margin-bottom:10px;
 <button onclick="show('anat')">3D Anatomy</button>
 </nav>
 
-<!-- ================= HOME ================= -->
 <div class="container">
 
+<!-- ================= HOME ================= -->
 <div id="home" class="page active">
 
 <div class="card">
-<h2 id="title">Welcome</h2>
-<p id="desc">Medical learning platform</p>
-</div>
-
-<div class="card">
-<h3>📊 Student Progress</h3>
-<p>XP: <span id="xp">0</span></p>
-<button onclick="addXP()">Gain XP</button>
+<h2 id="title">Medical App</h2>
+<p id="desc">Learn medicine like a pro student</p>
 </div>
 
 </div>
-<!-- QUIZ -->
+
+<!-- ================= QUIZ ================= -->
 <div id="quiz" class="page">
 
-<div class="card">
-<h2>🧠 Medical Quiz</h2>
-
-<div id="q"></div>
-<div id="opts"></div>
-
-<p id="res"></p>
-<p>Score: <span id="score">0</span></p>
-
-<button onclick="nextQ()">Next</button>
-</div>
+<div class="card" id="quizBox"></div>
 
 </div>
-<!-- ANATOMY -->
+
+<!-- ================= ANATOMY ================= -->
 <div id="anat" class="page">
 
 <div class="card">
 <h2>🫀 3D Anatomy</h2>
-<div id="scene" style="height:400px;background:black;border-radius:12px;"></div>
-<p id="info">Click organ</p>
+<div id="viewer"></div>
+<p id="info">Click on body</p>
 </div>
 
 </div>
@@ -117,24 +109,20 @@ margin-bottom:10px;
 
 <script>
 
-/* ================= STATE ================= */
-let xp=0;
-let score=0;
-let i=0;
+/* ================= LANGUAGE ================= */
+let lang="en";
 
-/* ================= LANG ================= */
-const t={
-en:{title:"Welcome",desc:"Medical platform"},
-ro:{title:"Bine ai venit",desc:"Platformă medicală"},
-fr:{title:"Bienvenue",desc:"Plateforme médicale"}
+const T={
+en:{title:"Medical App",desc:"Learn medicine like a pro"},
+ro:{title:"Aplicație Medicală",desc:"Învață medicină ca un pro"},
+fr:{title:"Application Médicale",desc:"Apprends la médecine"}
 };
 
-/* ================= QUIZ ================= */
-const quiz=[
-{q:"Heart function?",o:["Pump blood","Digest","Breathe"],a:0},
-{q:"Lungs do?",o:["Gas exchange","Filter blood","Think"],a:0},
-{q:"Kidneys?",o:["Filter blood","Pump blood","Vision"],a:0}
-];
+function setLang(l){
+lang=l;
+document.getElementById("title").innerText=T[l].title;
+document.getElementById("desc").innerText=T[l].desc;
+}
 
 /* ================= NAV ================= */
 function show(id){
@@ -142,71 +130,105 @@ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
 document.getElementById(id).classList.add("active");
 }
 
-/* ================= XP ================= */
-function addXP(){
-xp+=10;
-document.getElementById("xp").innerText=xp;
-}
+/* ================= QUIZ AUTO ================= */
+let i=0;
 
-/* ================= QUIZ ================= */
-function load(){
+const quiz=[
+{q:"Heart function?",o:["Pump blood","Digest food","Think"],a:0},
+{q:"Lungs function?",o:["Gas exchange","Filter blood","Move"],a:0},
+{q:"Brain controls?",o:["Body","Only heart","Only lungs"],a:0},
+{q:"Kidneys do?",o:["Filter blood","Pump blood","Digest"],a:0},
+{q:"Liver role?",o:["Detox","Pump blood","Vision"],a:0}
+];
+
+function loadQ(){
 let q=quiz[i];
-document.getElementById("q").innerText=q.q;
 
-let html="";
+let html=`<h3>${q.q}</h3>`;
+
 q.o.forEach((o,idx)=>{
-html+=`<div onclick="ans(${idx})" class="card">${o}</div>`;
+html+=`<div class="card" onclick="ans(${idx})">${o}</div>`;
 });
 
-document.getElementById("opts").innerHTML=html;
+document.getElementById("quizBox").innerHTML=html;
 }
 
 function ans(x){
+
 if(x===quiz[i].a){
-score++;
-document.getElementById("res").innerText="Correct";
+document.getElementById("quizBox").innerHTML="<p>✔ Correct</p>";
 }else{
-document.getElementById("res").innerText="Wrong";
-}
-document.getElementById("score").innerText=score;
+document.getElementById("quizBox").innerHTML="<p>✖ Wrong</p>";
 }
 
-function nextQ(){
 i++;
+
+setTimeout(()=>{
+
 if(i>=quiz.length) i=0;
-load();
+
+loadQ();
+
+},600);
 }
 
-/* ================= 3D (REAL ENGINE READY) ================= */
+/* INIT QUIZ */
+loadQ();
+
+/* ================= 3D ANATOMY ================= */
 const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x000000);
+
 const camera=new THREE.PerspectiveCamera(75,1,0.1,1000);
 
-const renderer=new THREE.WebGLRenderer();
-renderer.setSize(400,400);
-document.getElementById("scene").appendChild(renderer.domElement);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth-30,400);
+document.getElementById("viewer").appendChild(renderer.domElement);
 
-/* BODY MODEL (placeholder now, real GLTF next step) */
-const body=new THREE.Mesh(
-new THREE.SphereGeometry(1,32,32),
-new THREE.MeshBasicMaterial({color:0xe11d48,wireframe:true})
-);
+/* LIGHT */
+scene.add(new THREE.AmbientLight(0xffffff,1));
 
-scene.add(body);
+/* CONTROLS */
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+
+/* MODEL (real human head placeholder) */
+const loader=new THREE.GLTFLoader();
+
+loader.load(
+"https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
+function(gltf){
+
+const model=gltf.scene;
+scene.add(model);
+
+window.addEventListener("click",(e)=>{
+
+const raycaster=new THREE.Raycaster();
+const mouse=new THREE.Vector2();
+
+mouse.x=(e.clientX/(window.innerWidth)) *2-1;
+mouse.y=-(e.clientY/400)*2+1;
+
+raycaster.setFromCamera(mouse,camera);
+
+const hit=raycaster.intersectObject(model,true);
+
+if(hit.length>0){
+document.getElementById("info").innerText="Organ clicked → "+hit[0].object.name;
+}
+
+});
+
+});
+
 camera.position.z=3;
 
 function animate(){
 requestAnimationFrame(animate);
-body.rotation.y+=0.01;
+controls.update();
 renderer.render(scene,camera);
 }
 animate();
-
-document.getElementById("scene").addEventListener("click",()=>{
-document.getElementById("info").innerText="Heart clicked (demo)";
-});
-
-/* INIT */
-load();
 
 </script>
 
