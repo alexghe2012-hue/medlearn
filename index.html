@@ -1,169 +1,226 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MedLearn Swipe</title>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 
 <style>
-body{
+html,body{
 margin:0;
 font-family:Arial;
-background:#f4f6fb;
-color:#111;
+height:100%;
+overflow-y:scroll;
+scroll-snap-type:y mandatory;
+background:#fff;
 }
 
 /* TOP */
 .top{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:55px;
 background:#fff;
-padding:10px;
-display:flex;
-justify-content:space-between;
-align-items:center;
 border-bottom:1px solid #eee;
-}
-
-.logo{color:#e11d48;font-weight:bold}
-
-/* NAV */
-.nav{
 display:flex;
-gap:8px;
-padding:10px;
-background:white;
+align-items:center;
+padding:0 15px;
+font-weight:bold;
+color:#e11d48;
+z-index:10;
 }
 
-.btn{
-padding:10px;
-border:none;
-border-radius:10px;
-background:#111;
-color:white;
-cursor:pointer;
+/* SWIPE SCREENS */
+.screen{
+height:100vh;
+scroll-snap-align:start;
+display:flex;
+flex-direction:column;
+justify-content:center;
+padding:80px 20px 20px;
 }
-
-/* VIEW */
-.view{padding:10px;display:none;}
-.active{display:block}
 
 /* CARD */
 .card{
-background:white;
-padding:15px;
-border-radius:15px;
+background:#fff;
+border:1px solid #eee;
+padding:14px;
+border-radius:14px;
 margin:10px 0;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* QUIZ OPTIONS */
+.opt{
+padding:12px;
+margin-top:8px;
+background:#f3f4f6;
+border-radius:10px;
+cursor:pointer;
+}
+.opt:hover{background:#e5e7eb}
+
+/* BUTTON */
+button{
+padding:10px 14px;
+border:none;
+border-radius:10px;
+background:#e11d48;
+color:#fff;
+cursor:pointer;
+margin-top:10px;
 }
 
 /* 3D */
 #scene{
-height:350px;
-background:black;
-border-radius:15px;
+width:100%;
+height:420px;
+background:#000;
+border-radius:14px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="top">
-<div class="logo">🫀 MedLearn</div>
-<div>
-<button class="btn" onclick="lang('en')">EN</button>
-<button class="btn" onclick="lang('ro')">RO</button>
+<div class="top">🫀 MedLearn</div>
+
+<!-- ================= HOME ================= -->
+<div class="screen">
+<div class="card">
+<h2>MedLearn Platform</h2>
+<p>Swipe down → Quiz → Anatomy</p>
 </div>
 </div>
 
-<div class="nav">
-<button class="btn" onclick="go('home')">Home</button>
-<button class="btn" onclick="go('quiz')">Quiz</button>
-<button class="btn" onclick="go('anat')">3D</button>
+<!-- ================= QUIZ ================= -->
+<div class="screen">
+<h2>QBank</h2>
+
+<div id="quizBox"></div>
+
+<div class="card">
+Score: <span id="score">0</span>
 </div>
 
-<!-- HOME -->
-<div id="home" class="view active">
-<div class="card">Medical learning app</div>
-<div class="card">Tap to start learning</div>
+<button onclick="restart()">Restart Quiz</button>
 </div>
 
-<!-- QUIZ -->
-<div id="quiz" class="view"></div>
-
-<!-- ANATOMY -->
-<div id="anat" class="view">
-<div class="card">3D Anatomy</div>
+<!-- ================= ANATOMY ================= -->
+<div class="screen">
+<h2>3D Anatomy</h2>
 <div id="scene"></div>
-<div class="card" id="info">Tap organ</div>
+<div class="card">Rotate model</div>
 </div>
 
 <script>
 
-/* NAV */
-function go(id){
-document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
+/* ================= QUIZ FIXED ================= */
+let i = 0;
+let score = 0;
 
-/* LANG (simplu) */
-function lang(l){
-document.querySelector('.logo').innerText =
-l==='ro' ? '🫀 MedLearn' : '🫀 MedLearn';
-}
-
-/* QUIZ */
-let i=0;
-
-const q=[
-{q:"Heart?",a:["Pump","Digest","Think"],c:0},
-{q:"Lungs?",a:["Gas exchange","Filter","Move"],c:0},
-{q:"Brain?",a:["Control","Sleep","Eat"],c:0}
+const quiz = [
+{q:"Where does gas exchange occur?", a:["Alveoli","Trachea","Bronchi"], c:0},
+{q:"Heart pumps what?", a:["Blood","Air","Food"], c:0},
+{q:"Kidney function?", a:["Filter blood","Make bones","Digest"], c:0},
+{q:"RBC carries?", a:["Oxygen","Sugar","Hormones"], c:0},
+{q:"Brain controls?", a:["Body","Only heart","Only lungs"], c:0},
+{q:"Insulin produced by?", a:["Pancreas","Liver","Lung"], c:0},
+{q:"Arteries carry blood?", a:["Away from heart","To heart","Random"], c:0},
+{q:"Veins carry blood?", a:["To heart","Away","Air"], c:0},
+{q:"SA node is?", a:["Pacemaker","Filter","Pump"], c:0},
+{q:"Skin function?", a:["Protection","Digestion","Breathing"], c:0}
 ];
 
-function load(){
-let x=q[i];
-let html=`<div class='card'><b>${x.q}</b></div>`;
+function loadQuiz(){
 
-x.a.forEach((a,idx)=>{
-html+=`<div class='card' onclick='ans(${idx})'>${a}</div>`;
+let q = quiz[i];
+
+let html = `<div class="card"><h3>${q.q}</h3></div>`;
+
+q.a.forEach((a,idx)=>{
+html += `<div class="opt" onclick="answer(${idx})">${a}</div>`;
 });
 
-document.getElementById('quiz').innerHTML=html;
+document.getElementById("quizBox").innerHTML = html;
 }
 
-function ans(x){
+function answer(x){
+
+if(x === quiz[i].c){
+score++;
+document.getElementById("score").innerText = score;
+}
+
 i++;
-if(i>=q.length)i=0;
-load();
+
+if(i >= quiz.length){
+alert("Finished! Score: " + score + "/" + quiz.length);
+i = 0;
+score = 0;
+document.getElementById("score").innerText = 0;
 }
 
-load();
+loadQuiz();
+}
 
-/* 3D */
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(75,1,0.1,1000);
-const renderer=new THREE.WebGLRenderer();
+function restart(){
+i = 0;
+score = 0;
+document.getElementById("score").innerText = 0;
+loadQuiz();
+}
 
-renderer.setSize(window.innerWidth,350);
+loadQuiz();
+
+/* ================= 3D FIXED ================= */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf5f7fb);
+
+const camera = new THREE.PerspectiveCamera(60,1,0.1,1000);
+camera.position.z = 4;
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth,420);
+
 document.getElementById("scene").appendChild(renderer.domElement);
 
-scene.add(new THREE.AmbientLight(0xffffff,1));
+scene.add(new THREE.AmbientLight(0xffffff,1.3));
 
-const controls=new THREE.OrbitControls(camera,renderer.domElement);
+const light = new THREE.DirectionalLight(0xffffff,1);
+light.position.set(3,3,3);
+scene.add(light);
 
-const body=new THREE.Mesh(
-new THREE.SphereGeometry(1,32,32),
-new THREE.MeshBasicMaterial({color:0xe11d48,wireframe:true})
+const controls = new THREE.OrbitControls(camera,renderer.domElement);
+
+/* SIMPLE BODY */
+const body = new THREE.Group();
+
+const torso = new THREE.Mesh(
+new THREE.CylinderGeometry(0.8,0.9,2),
+new THREE.MeshStandardMaterial({color:0xe11d48,wireframe:true})
 );
 
+const head = new THREE.Mesh(
+new THREE.SphereGeometry(1.5,32,32),
+new THREE.MeshStandardMaterial({color:0xe11d48,wireframe:true})
+);
+
+head.position.y = 1.5;
+
+body.add(torso);
+body.add(head);
 scene.add(body);
-camera.position.z=3;
 
 function animate(){
 requestAnimationFrame(animate);
-body.rotation.y+=0.01;
+body.rotation.y += 0.005;
+controls.update();
 renderer.render(scene,camera);
 }
 animate();
