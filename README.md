@@ -1,2 +1,2 @@
-# medlearn
-Medical learning platform for students
+# Medlearn
+Medical learning platform for students.
