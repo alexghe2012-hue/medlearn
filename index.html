@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MedLearn PRO</title>
+<title>MedLearn</title>
 
 <style>
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:linear-gradient(135deg,#eef7ff,#dcefff,#ffe9e9);
+scroll-behavior:smooth;
 }
 
 .hero{
@@ -22,9 +23,15 @@ text-align:center;
 }
 
 .hero h1{
-font-size:110px;
+font-size:120px;
 color:#d90429;
 margin:0;
+font-weight:900;
+}
+
+.hero p{
+font-size:20px;
+color:#333;
 }
 
 button{
@@ -35,177 +42,264 @@ background:#e31229;
 color:white;
 cursor:pointer;
 margin:6px;
+font-size:15px;
 }
 
+/* QUIZ */
 section{
 min-height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:40px;
+padding:80px 20px;
+text-align:center;
 }
 
 .card{
 background:white;
-padding:60px;
-border-radius:25px;
-width:850px;
-box-shadow:0 15px 40px rgba(0,0,0,0.15);
+padding:70px;
+border-radius:32px;
+width:900px;
+min-height:420px;
+box-shadow:0 15px 50px rgba(0,0,0,0.18);
+position:relative;
 }
 
 .option{
 background:#f3f3f3;
-padding:14px;
-margin-top:10px;
+padding:16px;
+margin-top:12px;
 border-radius:12px;
 cursor:pointer;
+font-weight:600;
+transition:0.2s;
 }
 
-.option:hover{background:#ffe5e5}
+.option:hover{
+transform:scale(1.03);
+background:#ffe5e5;
+}
+
+#question{
+font-size:22px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+/* EXPLANATION BIGGER */
+#explanation{
+margin-top:25px;
+min-height:260px;
+font-size:18px;
+color:#333;
+line-height:1.8;
+font-weight:500;
+}
 
 /* BADGE */
 .badge{
+position:absolute;
+top:-15px;
+left:-15px;
 padding:6px 12px;
 border-radius:20px;
-color:white;
+font-size:12px;
 font-weight:bold;
+color:white;
 }
 .green{background:#2ecc71}
 .yellow{background:#f1c40f}
 .red{background:#e74c3c}
 
-/* TOP BAR */
-.top{
+/* SCORE */
+.score-bottom{
+margin-top:25px;
+font-size:20px;
+font-weight:700;
+color:#333;
+}
+
+/* ANATOMY FIXED */
+.anatomy-card{
+background:white;
+padding:50px;
+border-radius:30px;
+width:95%;
+max-width:1400px;
+box-shadow:0 20px 60px rgba(0,0,0,0.18);
 display:flex;
-justify-content:space-between;
-width:850px;
-margin-bottom:10px;
-font-weight:bold;
+flex-direction:column;
+gap:70px;
 }
 
-/* PROGRESS */
-.progress{
-width:850px;
-height:12px;
-background:#ddd;
-border-radius:10px;
-overflow:hidden;
-margin-bottom:20px;
+.anatomy-item h3{
+font-size:34px;
+margin:0;
+color:#111;
 }
 
-.progress-bar{
-height:100%;
-width:0%;
-background:#e31229;
-transition:0.3s;
-}
-
-/* REVIEW */
-.review{
-margin-top:20px;
-background:#fff5f5;
-padding:20px;
-border-radius:15px;
-display:none;
+iframe{
+width:100%;
+height:800px;
+border:none;
+border-radius:25px;
+box-shadow:0 10px 40px rgba(0,0,0,0.15);
 }
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
-<p>Medical learning platform</p>
-<button onclick="start()">Start</button>
+<p>Medical learning platform for students</p>
+<button onclick="goQuiz()">Start Quiz</button>
 </div>
 
+<!-- QUIZ -->
 <section id="quiz">
 
-<div class="top">
-<div>XP: <span id="xp">0</span> | Level: <span id="level">1</span></div>
-<div>🔥 Streak: <span id="streak">0</span></div>
-</div>
-
-<div class="progress"><div class="progress-bar" id="bar"></div></div>
+<h2>🧠 Question <span id="qnr">1</span> / 30</h2>
 
 <div class="card">
-
 <div id="badge" class="badge green">EASY</div>
 
-<h2 id="q"></h2>
-
+<div id="question"></div>
 <div id="options"></div>
-
-<div id="exp"></div>
-
+<div id="explanation"></div>
 </div>
 
-<button onclick="next()">NEXT</button>
-<button onclick="restart()">RESTART</button>
+<div class="score-bottom">
+Score: <span id="score">0</span>
+</div>
 
-<div class="review" id="reviewBox"></div>
+</section>
 
+<!-- ANATOMY -->
+<section id="anatomy">
+
+<h2 style="font-size:60px;color:#d90429;margin-bottom:40px;">
+🫀 Anatomy Explorer
+</h2>
+
+<div class="anatomy-card">
+
+<div class="anatomy-item">
+<h3>Human Body</h3>
+<iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
+</div>
+
+<div class="anatomy-item">
+<h3>Heart Anatomy</h3>
+<iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
+</div>
+
+<div class="anatomy-item">
+<h3>Human Organs</h3>
+<iframe src="https://sketchfab.com/3d-models/human-anatomy-organs-pack-7fd440196fe3480587de330967737848/embed"></iframe>
+</div>
+
+</div>
 </section>
 
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood."},
-{q:"Heart function?",a:["Pump blood","Digest","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC carries oxygen."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body."}
+{
+q:"Where does gas exchange occur?",
+a:["Alveoli","Heart","Liver","Trachea"],
+c:0,
+e:{
+easy:"Alveoli are tiny air sacs where oxygen enters blood.",
+medium:"Gas exchange happens in alveoli where oxygen diffuses into capillaries and carbon dioxide leaves blood due to pressure gradients.",
+hard:"Alveoli provide a massive surface area (~70m²) with extremely thin epithelial walls enabling rapid diffusion of oxygen into pulmonary capillaries and removal of CO2 from blood based on partial pressure differences."
+}
+},
+
+{
+q:"Heart function?",
+a:["Pump blood","Digest food","Store oxygen","Make bile"],
+c:0,
+e:{
+easy:"Heart pumps blood.",
+medium:"The heart is a muscular organ that pumps blood through pulmonary and systemic circulation to deliver oxygen and nutrients.",
+hard:"Through coordinated contraction of myocardium, the heart generates pressure gradients maintaining systemic and pulmonary circulation essential for oxygen delivery, waste removal, and homeostasis."
+}
+},
+
+{
+q:"Kidney unit?",
+a:["Nephron","Neuron","Cell","Tissue"],
+c:0,
+e:{
+easy:"Nephron filters blood.",
+medium:"Nephrons are microscopic functional units of the kidney responsible for filtration and urine formation.",
+hard:"Each nephron performs ultrafiltration, selective reabsorption, and secretion, regulating osmotic balance, electrolyte concentration, and acid-base homeostasis."
+}
+},
+
+{
+q:"RBC carries?",
+a:["Oxygen","Sugar","Fat","CO2"],
+c:0,
+e:{
+easy:"RBC carries oxygen.",
+medium:"Red blood cells transport oxygen using hemoglobin.",
+hard:"Hemoglobin’s iron-containing heme groups bind oxygen reversibly, enabling efficient oxygen transport from lungs to tissues."
+}
+},
+
+{
+q:"Skin function?",
+a:["Protection","Digestion","Respiration","Circulation"],
+c:0,
+e:{
+easy:"Protects body.",
+medium:"Skin acts as a protective barrier and regulates temperature.",
+hard:"The integumentary system provides immune defense, thermoregulation via sweat glands, and prevents dehydration through lipid-rich epidermal layers."
+}
+}
+
 ];
 
 let i=0;
-let xp=0;
-let level=1;
-let streak=0;
-let wrong=[];
-let correctSound=new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
-let wrongSound=new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+let score=0;
+let locked=false;
 
-function start(){
+function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
-loadStreak();
 }
 
-function loadStreak(){
-let last=localStorage.getItem("last");
-let today=new Date().toDateString();
+function setBadge(){
+let b=document.getElementById("badge");
 
-if(last!==today){
-streak++;
-localStorage.setItem("last",today);
+if(i<10){
+b.innerText="EASY";
+b.className="badge green";
 }
-document.getElementById("streak").innerText=streak;
+else if(i<20){
+b.innerText="MEDIUM";
+b.className="badge yellow";
 }
-
-function updateXP(){
-xp+=10;
-if(xp>=50){
-level++;
-xp=0;
+else{
+b.innerText="HARD";
+b.className="badge red";
 }
-document.getElementById("xp").innerText=xp;
-document.getElementById("level").innerText=level;
-}
-
-function progress(){
-document.getElementById("bar").style.width=(i/quiz.length)*100+"%";
-}
-
-function speak(text){
-let u=new SpeechSynthesisUtterance(text);
-speechSynthesis.speak(u);
 }
 
 function load(){
+locked=false;
 
 let q=quiz[i];
-document.getElementById("q").innerText=q.q;
+
+document.getElementById("qnr").innerText=i+1;
+document.getElementById("question").innerText=q.q;
+document.getElementById("score").innerText=score;
+
+setBadge();
 
 let html="";
 q.a.forEach((a,idx)=>{
@@ -213,57 +307,37 @@ html+=`<div class="option" onclick="answer(${idx})">${a}</div>`;
 });
 
 document.getElementById("options").innerHTML=html;
-document.getElementById("exp").innerText="";
-progress();
+document.getElementById("explanation").innerText="";
 }
 
 function answer(idx){
+if(locked) return;
+locked=true;
+
+let exp = quiz[i].e;
 
 if(idx===quiz[i].c){
-xp+=10;
-updateXP();
-correctSound.play();
-speak(quiz[i].e);
+score++;
+}
+
+document.getElementById("score").innerText=score;
+
+if(i<10){
+document.getElementById("explanation").innerText=exp.easy;
+}
+else if(i<20){
+document.getElementById("explanation").innerText=exp.medium;
 }
 else{
-wrong.push(quiz[i]);
-wrongSound.play();
+document.getElementById("explanation").innerText=exp.hard;
 }
 
-document.getElementById("exp").innerText=quiz[i].e;
-
-document.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
-}
-
-function next(){
-i++;
-if(i>=quiz.length){
-showReview();
-return;
-}
-load();
-}
-
-function showReview(){
-let box=document.getElementById("reviewBox");
-box.style.display="block";
-
-let html="<h3>🧠 Review greșeli</h3>";
-
-wrong.forEach(w=>{
-html+=`<p>❌ ${w.q}<br>👉 ${w.e}</p>`;
+document.querySelectorAll(".option").forEach(o=>{
+o.style.pointerEvents="none";
 });
-
-box.innerHTML=html;
 }
 
-function restart(){
-i=0;
-xp=0;
-level=1;
-wrong=[];
-load();
-}
+window.onload=load;
 
 </script>
 
