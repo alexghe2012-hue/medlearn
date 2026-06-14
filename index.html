@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,19 +9,24 @@
 <style>
 body{
 margin:0;
-font-family:Arial;
-background:#fff;
+font-family:Arial, sans-serif;
+
+background: linear-gradient(180deg,#f5f7ff 0%,#e8f0ff 50%,#fff3f3 100%);
+
 scroll-snap-type:y mandatory;
 overflow-y:scroll;
+scroll-behavior:smooth;
 }
 
 section{
 height:100vh;
 scroll-snap-align:start;
+
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+
 padding:30px;
 text-align:center;
 }
@@ -42,21 +48,27 @@ margin:5px;
 }
 
 .card{
-background:#f7f7f7;
+background:white;
 padding:20px;
-border-radius:14px;
+border-radius:20px;
 width:320px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 .option{
-background:#eee;
-padding:10px;
-margin-top:8px;
-border-radius:10px;
+background:#f3f3f3;
+padding:12px;
+margin-top:10px;
+border-radius:12px;
 cursor:pointer;
+transition:0.2s;
+font-weight:600;
 }
 
-.option:hover{background:#ddd}
+.option:hover{
+transform:scale(1.03);
+background:#ffe5e5;
+}
 
 #explanation{
 margin-top:10px;
@@ -70,6 +82,7 @@ width:100%;
 height:400px;
 border:none;
 border-radius:12px;
+max-width:900px;
 }
 </style>
 </head>
@@ -85,90 +98,57 @@ border-radius:12px;
 
 <!-- QUIZ -->
 <section>
-
 <h2>🧠 Question <span id="qnr">1</span>/30</h2>
 
 <div class="card">
 <div id="question">Loading...</div>
 <div id="options"></div>
-
 <div id="explanation"></div>
 </div>
 
 <p>Score: <span id="score">0</span></p>
 
-
 <button onclick="restart()">Restart</button>
-
 </section>
 
 <!-- ANATOMY -->
 <section>
 <h2>🫀 Anatomy</h2>
-
 <p>Interactive 3D Heart Model</p>
 
 <iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
-
 </section>
 
 <script>
 
-/* ================= 30 QUESTIONS ================= */
-
+/* QUIZ */
 const quiz = [
-
-/* EASY 1-10 */
-{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,e:"Gas exchange happens in alveoli due to thin membranes."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood through the body."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron is functional unit of kidney."},
-{q:"RBC carries?",a:["Oxygen","Glucose","Waste","Hormones"],c:0,e:"RBC transports oxygen."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin is the largest organ."},
+{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,e:"Gas exchange happens in alveoli."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron is kidney unit."},
+{q:"RBC carries?",a:["Oxygen","Glucose","Waste","Hormones"],c:0,e:"RBC carries oxygen."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin is largest organ."},
 {q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Pancreas produces insulin."},
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,e:"Arteries carry blood away from heart."},
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to heart."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs perform gas exchange."},
-{q:"Brain controls?",a:["Body","Only heart","Only lungs","Nothing"],c:0,e:"Brain controls body functions."},
-
-/* MEDIUM 11-20 */
-{q:"Functional kidney unit?",a:["Nephron","Neuron","Alveolus","Lobule"],c:0,e:"Nephron filters blood."},
-{q:"SA node function?",a:["Pacemaker","Filter","Pump","Sensor"],c:0,e:"SA node controls heartbeat."},
-{q:"Platelets function?",a:["Clotting","Oxygen","Hormones","Digestion"],c:0,e:"Platelets help blood clot."},
-{q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Liver detoxifies blood."},
-{q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Digestion starts in mouth."},
-{q:"Neuron function?",a:["Signal","Blood flow","Digestion","Clotting"],c:0,e:"Neurons transmit signals."},
-{q:"Hemoglobin carries?",a:["Oxygen","Glucose","Fat","Hormones"],c:0,e:"Hemoglobin binds oxygen."},
-{q:"Cerebellum controls?",a:["Balance","Vision","Digestion","Speech only"],c:0,e:"Cerebellum controls coordination."},
-{q:"Blood pressure highest in?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries have highest pressure."},
-{q:"CNS includes?",a:["Brain + spinal cord","Nerves","Heart","Muscles"],c:0,e:"CNS = brain + spinal cord."},
-
-/* HARD 21-30 */
-{q:"Heart pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"SA node initiates heartbeat."},
-{q:"Urea formed in?",a:["Liver","Kidney","Heart","Lung"],c:0,e:"Liver produces urea."},
-{q:"Pulmonary circulation?",a:["Heart-lungs-heart","Heart-body-heart","Lungs-brain-heart","Heart-liver"],c:0,e:"It oxygenates blood in lungs."},
-{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"RBC lives ~120 days."},
-{q:"Gas exchange driven by?",a:["Diffusion","Active transport","Osmosis","Filtration"],c:0,e:"Diffusion drives gas exchange."},
-{q:"Blood glucose hormone?",a:["Insulin","Adrenaline","Thyroxine","Melatonin"],c:0,e:"Insulin lowers glucose."},
-{q:"Nephron function?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,e:"Nephron filters blood."},
-{q:"Oxygen binds to?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"O2 binds iron in hemoglobin."},
-{q:"Veins pressure?",a:["Low","High","Equal","None"],c:0,e:"Veins have low pressure."},
-{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Skin protects body."}
-
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,e:"Arteries go away from heart."},
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins go to heart."},
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs do gas exchange."},
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls body."}
 ];
 
 let i = 0;
 let score = 0;
 
-/* LOAD QUESTION */
+/* LOAD */
 function load(){
 let q = quiz[i];
 
 document.getElementById("qnr").innerText = i+1;
 document.getElementById("question").innerText = q.q;
 
-let html="";
-q.a.forEach((a,idx)=>{
-html += `<div class="option" onclick="answer(${idx})">${a}</div>`;
+let html = "";
+
+q.a.forEach((ans,idx)=>{
+html += `<div class="option" onclick="answer(${idx})">${ans}</div>`;
 });
 
 document.getElementById("options").innerHTML = html;
@@ -176,56 +156,31 @@ document.getElementById("explanation").innerText = "";
 }
 
 /* ANSWER */
-function function answer(x){
+function answer(x){
 let q = quiz[i];
 
-// scor
 if(x === q.c){
 score++;
 document.getElementById("score").innerText = score;
 }
 
-// arată explicația
 document.getElementById("explanation").innerText = q.e;
 
-// blochează click rapid (anti spam)
-let options = document.querySelectorAll(".option");
-options.forEach(o => o.style.pointerEvents = "none");
+document.querySelectorAll(".option")
+.forEach(o=>o.style.pointerEvents="none");
 
-// AUTO NEXT după 1.5 secunde
 setTimeout(()=>{
 i++;
 
 if(i >= quiz.length){
-alert("Final Score: " + score + "/30");
+alert("Final Score: " + score + "/" + quiz.length);
 i = 0;
 score = 0;
 document.getElementById("score").innerText = 0;
 }
 
 load();
-}, 1500);
-}{
-let q = quiz[i];
-
-if(x === q.c){
-score++;
-document.getElementById("score").innerText = score;
-}
-
-document.getElementById("explanation").innerText = q.e;
-}
-
-/* NEXT AUTO STYLE */
-function next(){
-i++;
-if(i >= quiz.length){
-alert("Final Score: " + score + "/30");
-i = 0;
-score = 0;
-document.getElementById("score").innerText = 0;
-}
-load();
+},1200);
 }
 
 /* RESTART */
@@ -238,11 +193,16 @@ load();
 
 /* START */
 function startQuiz(){
-document.querySelectorAll("section")[1].scrollIntoView({behavior:"smooth"});
+document.querySelectorAll("section")[1]
+.scrollIntoView({behavior:"smooth"});
 load();
 }
+
+/* AUTO LOAD */
+window.onload = load;
 
 </script>
 
 </body>
 </html>
+```
