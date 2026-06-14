@@ -45,6 +45,7 @@ margin:6px;
 font-size:15px;
 }
 
+/* QUIZ */
 section{
 min-height:100vh;
 display:flex;
@@ -55,7 +56,6 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* QUIZ */
 .card{
 background:white;
 padding:70px;
@@ -96,7 +96,43 @@ line-height:1.8;
 font-weight:500;
 }
 
-/* ANATOMY – FIX MARE */
+/* DIFFICULTY BADGE */
+.badge{
+position:absolute;
+top:-15px;
+left:-15px;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+color:white;
+}
+
+.green{background:#2ecc71}
+.yellow{background:#f1c40f}
+.red{background:#e74c3c}
+
+/* BUTTONS ROW */
+.button-row{
+display:flex;
+justify-content:center;
+gap:20px;
+margin-top:20px;
+}
+
+.button-row button{
+width:140px;
+}
+
+/* SCORE */
+.score-bottom{
+margin-top:25px;
+font-size:20px;
+font-weight:700;
+color:#333;
+}
+
+/* ANATOMY */
 .anatomy-card{
 background:white;
 padding:50px;
@@ -107,12 +143,6 @@ box-shadow:0 20px 60px rgba(0,0,0,0.18);
 display:flex;
 flex-direction:column;
 gap:80px;
-}
-
-.anatomy-item{
-display:flex;
-flex-direction:column;
-gap:20px;
 }
 
 .anatomy-item h3{
@@ -128,32 +158,24 @@ border:none;
 border-radius:25px;
 box-shadow:0 10px 40px rgba(0,0,0,0.15);
 }
-
-/* SCORE */
-.score-bottom{
-margin-top:25px;
-font-size:20px;
-font-weight:700;
-color:#333;
-}
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 <button onclick="goQuiz()">Start Quiz</button>
 </div>
 
-<!-- QUIZ -->
 <section id="quiz">
 
 <h2>🧠 Question <span id="qnr">1</span> / 30</h2>
 
 <div class="card">
+<div id="badge" class="badge green">EASY</div>
+
 <div id="question"></div>
 <div id="options"></div>
 <div id="explanation"></div>
@@ -163,99 +185,49 @@ color:#333;
 Score: <span id="score">0</span>
 </div>
 
-<button onclick="restart()">Restart</button>
-<button onclick="next()">Next</button>
-<button onclick="goAnatomy()">Anatomy</button>
-
-</section>
-
-<!-- ANATOMY -->
-<section id="anatomy">
-
-<h2 style="font-size:60px;color:#d90429;margin-bottom:40px;">
-🫀 Anatomy Explorer
-</h2>
-
-<div class="anatomy-card">
-
-<div class="anatomy-item">
-<h3>Human Body</h3>
-<iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
+<div class="button-row">
+<button onclick="next()">⬅ NEXT</button>
+<button onclick="restart()">↻ RESTART</button>
 </div>
 
-<div class="anatomy-item">
-<h3>Heart Anatomy</h3>
-<iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
-</div>
-
-<div class="anatomy-item">
-<h3>Human Organs</h3>
-<iframe src="https://sketchfab.com/3d-models/human-anatomy-organs-pack-7fd440196fe3480587de330967737848/embed"></iframe>
-</div>
-
-</div>
 </section>
 
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves. They are tiny sacs with very thin walls designed for fast diffusion."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC carries oxygen."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body."},
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Pancreas produces insulin."},
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry blood away."},
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood."},
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls body."},
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange gases."},
 
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"The heart pumps blood continuously, delivering oxygen and nutrients to every cell in the body."},
+{q:"SA node?",a:["Pacemaker","Filter","Pump","Neuron"],c:0,e:"Controls heartbeat."},
+{q:"Platelets?",a:["Clotting","Oxygen","Digestion","Hormones"],c:0,e:"Clot blood."},
+{q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Detoxifies body."},
+{q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Starts in mouth."},
+{q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Sends signals."},
 
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephrons filter blood, remove waste and regulate water balance."},
+{q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,e:"Carries oxygen."},
+{q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,e:"Balance control."},
+{q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries high pressure."},
+{q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,e:"Brain + spinal cord."},
+{q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"Starts heartbeat."},
 
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"Red blood cells transport oxygen using hemoglobin."},
+{q:"Urea formed in?",a:["Liver","Kidney","Heart","Lungs"],c:0,e:"Liver makes urea."},
+{q:"Pulmonary?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart","Liver-heart"],c:0,e:"Blood goes to lungs."},
+{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"~120 days life."},
+{q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,e:"High to low movement."},
+{q:"Insulin role?",a:["Lower sugar","Increase oxygen","Make blood","Digest fats"],c:0,e:"Lowers glucose."},
 
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects the body and regulates temperature."},
-
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin controls blood sugar levels."},
-
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry blood away from the heart."},
-
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to the heart."},
-
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all body functions."},
-
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange oxygen and CO2."},
-
-{q:"SA node?",a:["Pacemaker","Filter","Pump","Neuron"],c:0,e:"SA node controls heartbeat rhythm."},
-
-{q:"Platelets?",a:["Clotting","Oxygen transport","Digestion","Hormones"],c:0,e:"Platelets help blood clot."},
-
-{q:"Liver function?",a:["Detoxification","Breathing","Movement","Vision"],c:0,e:"Liver removes toxins from blood."},
-
-{q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Digestion starts in the mouth."},
-
-{q:"Neuron function?",a:["Signal transmission","Blood flow","Clotting","Digestion"],c:0,e:"Neurons transmit signals."},
-
-{q:"Hemoglobin carries?",a:["Oxygen","Sugar","Fat","Water"],c:0,e:"Hemoglobin binds oxygen."},
-
-{q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,e:"Controls balance and coordination."},
-
-{q:"Blood pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries have highest pressure."},
-
-{q:"CNS includes?",a:["Brain + spinal cord","Nerves","Muscles","Heart"],c:0,e:"Brain and spinal cord."},
-
-{q:"Heart pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"SA node starts heartbeat."},
-
-{q:"Urea formed in?",a:["Liver","Kidney","Heart","Lungs"],c:0,e:"Liver produces urea."},
-
-{q:"Pulmonary circulation?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart-brain","Liver-heart-liver"],c:0,e:"Blood goes heart → lungs → heart."},
-
-{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"RBC lives ~120 days."},
-
-{q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,e:"Movement from high to low concentration."},
-
-{q:"Insulin role?",a:["Lower blood sugar","Increase oxygen","Make blood","Digest fats"],c:0,e:"Insulin lowers glucose."},
-
-{q:"Nephron function?",a:["Filtration","Digestion","Breathing","Movement"],c:0,e:"Filters blood in kidneys."},
-
-{q:"Oxygen binds to?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"Oxygen binds iron in hemoglobin."},
-
-{q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,e:"Veins have low pressure."},
-
-{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body."}
+{q:"Nephron?",a:["Filtration","Digestion","Breathing","Movement"],c:0,e:"Filters blood."},
+{q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"Binds iron."},
+{q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,e:"Low pressure."},
+{q:"Skin?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body."}
 ];
 
 let i=0;
@@ -267,17 +239,33 @@ document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
 }
 
-function goAnatomy(){
-document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
+function setBadge(){
+let b=document.getElementById("badge");
+
+if(i<10){
+b.innerText="EASY";
+b.className="badge green";
+}
+else if(i<20){
+b.innerText="MEDIUM";
+b.className="badge yellow";
+}
+else{
+b.innerText="HARD";
+b.className="badge red";
+}
 }
 
 function load(){
 locked=false;
+
 let q=quiz[i];
 
 document.getElementById("qnr").innerText=i+1;
 document.getElementById("question").innerText=q.q;
 document.getElementById("score").innerText=score;
+
+setBadge();
 
 let html="";
 q.a.forEach((a,idx)=>{
@@ -298,7 +286,10 @@ document.getElementById("score").innerText=score;
 }
 
 document.getElementById("explanation").innerText=quiz[i].e;
-document.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
+
+document.querySelectorAll(".option").forEach(o=>{
+o.style.pointerEvents="none";
+});
 }
 
 function next(){
