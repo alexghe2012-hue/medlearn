@@ -13,6 +13,7 @@ background:linear-gradient(135deg,#eef7ff,#dcefff,#ffe9e9);
 scroll-behavior:smooth;
 }
 
+/* HERO */
 .hero{
 height:100vh;
 display:flex;
@@ -111,16 +112,18 @@ color:white;
 .yellow{background:#f1c40f}
 .red{background:#e74c3c}
 
-/* BUTTONS */
+/* BUTTON LAYOUT FIXED */
 .button-row{
 display:flex;
-justify-content:center;
-gap:15px;
+flex-direction:column;
+align-items:center;
+gap:12px;
 margin-top:20px;
 }
 
-.button-row button{
-width:150px;
+.row{
+display:flex;
+gap:15px;
 }
 
 /* SCORE */
@@ -146,8 +149,8 @@ gap:80px;
 
 .anatomy-item h3{
 font-size:34px;
-color:#111;
 margin:0;
+color:#111;
 }
 
 iframe{
@@ -166,7 +169,7 @@ box-shadow:0 10px 40px rgba(0,0,0,0.15);
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
-<button onclick="goQuiz()">Start Quiz</button>
+<button onclick="goQuiz()">Start</button>
 </div>
 
 <!-- QUIZ -->
@@ -187,9 +190,16 @@ Score: <span id="score">0</span>
 </div>
 
 <div class="button-row">
-<button onclick="next()">⬅ NEXT</button>
-<button onclick="restart()">↻ RESTART</button>
+
+<div class="row">
+<button onclick="next()"> NEXT</button>
+<button onclick="restart()"> RESTART</button>
+</div>
+
+<div class="row">
 <button onclick="goAnatomy()">🫀 ANATOMY</button>
+</div>
+
 </div>
 
 </section>
@@ -224,11 +234,24 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC carries oxygen."},
-{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body."}
+{
+q:"Heart function?",
+a:["Pump blood","Digest food","Store oxygen","Make bile"],
+c:0,
+e:"The heart is a muscular organ responsible for pumping blood throughout the body. It maintains circulation, delivering oxygen and nutrients to tissues and removing waste. Without this continuous pumping, organs would fail within minutes due to lack of oxygen supply."
+},
+{
+q:"Gas exchange occurs in?",
+a:["Alveoli","Heart","Liver","Trachea"],
+c:0,
+e:"Alveoli are tiny air sacs in the lungs where oxygen diffuses into the blood and carbon dioxide is removed. They provide a large surface area and extremely thin walls for efficient gas exchange."
+},
+{
+q:"Kidney unit?",
+a:["Nephron","Neuron","Cell","Tissue"],
+c:0,
+e:"The nephron is the functional unit of the kidney responsible for filtering blood. It regulates water balance, electrolytes, and removes waste by producing urine."
+}
 ];
 
 let i=0;
