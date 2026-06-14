@@ -209,99 +209,42 @@ Score: <span id="score">0</span>
 
 const quiz = [
 
-/* 🟢 EASY (1–10) */
+/* 🟢 EASY */
 {d:"EASY",q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
-e:"Alveoli are microscopic air sacs where oxygen diffuses into blood and carbon dioxide is removed."},
+e:"Gas exchange occurs in the alveoli, which are microscopic air sacs located at the end of the bronchioles in the lungs. Their walls are extremely thin and surrounded by a dense network of capillaries. This structure allows oxygen to diffuse rapidly into the blood while carbon dioxide diffuses out. The process is essential for cellular respiration, because every cell in the body depends on oxygen to produce energy (ATP) through metabolism."},
 
 {d:"EASY",q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart pumps blood continuously through the body delivering oxygen and nutrients."},
+e:"The heart is a muscular organ whose primary function is to pump blood continuously throughout the body. It works like a double pump: the right side sends blood to the lungs for oxygenation, while the left side sends oxygen-rich blood to the entire body. This continuous circulation ensures that every tissue receives oxygen and nutrients while waste products like carbon dioxide are removed."},
 
 {d:"EASY",q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"Nephron filters blood, removes waste and controls water balance."},
+e:"The nephron is the functional unit of the kidney, and each kidney contains around one million nephrons. A nephron filters blood, removes waste substances, regulates water and electrolyte balance, and helps maintain blood pressure. It performs processes like filtration, reabsorption, and secretion, ensuring the body maintains a stable internal environment (homeostasis)."},
 
 {d:"EASY",q:"RBC carries?",a:["Oxygen","Sugar","Fat","Hormones"],c:0,
-e:"Red blood cells transport oxygen using hemoglobin."},
+e:"Red blood cells (RBCs) carry oxygen from the lungs to tissues using a special protein called hemoglobin. Hemoglobin contains iron, which binds oxygen molecules reversibly. This allows oxygen to be picked up in the lungs and released where it is needed in the body. RBCs also help transport a small amount of carbon dioxide back to the lungs."},
 
 {d:"EASY",q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,
-e:"Skin protects body, regulates temperature and prevents water loss."},
+e:"The skin is the largest organ of the human body and acts as a protective barrier against bacteria, viruses, and physical injury. It also prevents water loss, regulates body temperature through sweating, and contains sensory receptors that detect touch, pain, and temperature changes. Without skin, the body would quickly lose homeostasis and become vulnerable to infection."},
 
-{d:"EASY",q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
-e:"Brain controls all voluntary and involuntary body functions."},
-
-{d:"EASY",q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
-e:"Lungs exchange oxygen and carbon dioxide during respiration."},
-
-{d:"EASY",q:"Arteries carry?",a:["Away from heart","To heart","Both","None"],c:0,
-e:"Arteries carry blood away from the heart under high pressure."},
-
-{d:"EASY",q:"Veins carry?",a:["To heart","Away","Oxygen only","CO2 only"],c:0,
-e:"Veins return blood to heart using valves."},
-
-{d:"EASY",q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
-e:"Skin is the largest organ protecting entire body."},
-
-/* 🟡 MEDIUM (11–20) */
+/* 🟡 MEDIUM */
 {d:"MEDIUM",q:"SA node?",a:["Pacemaker","Filter","Pump","Valve"],c:0,
-e:"SA node generates electrical impulses controlling heartbeat rhythm."},
+e:"The SA node (sinoatrial node) is a small group of specialized cells located in the right atrium of the heart. It acts as the natural pacemaker by generating electrical impulses that trigger each heartbeat. These impulses spread through the atria and then to the ventricles, ensuring the heart contracts in a coordinated and efficient rhythm necessary for proper blood circulation."},
 
 {d:"MEDIUM",q:"Platelets?",a:["Clotting","Oxygen","Digestion","Hormones"],c:0,
-e:"Platelets help blood clot and stop bleeding."},
+e:"Platelets are small blood cell fragments that play a critical role in blood clotting. When a blood vessel is injured, platelets quickly gather at the site, stick together, and release chemicals that activate clotting factors. This forms a fibrin clot that stops bleeding and allows tissue repair to begin. Without platelets, even small injuries could lead to dangerous blood loss."},
 
-{d:"MEDIUM",q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,
-e:"Liver detoxifies blood, produces bile and stores glycogen."},
+{d:"MEDIUM",q:"Liver?",a:["Detox","Breathing","Movement","Vision"],c:0,
+e:"The liver is a vital organ responsible for detoxifying harmful substances such as drugs and alcohol. It also produces bile, which helps digest fats, stores glucose in the form of glycogen, and produces essential proteins for blood clotting. It is one of the most metabolically active organs in the body, performing hundreds of biochemical processes."},
 
 {d:"MEDIUM",q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,
-e:"Digestion starts in mouth with chewing and saliva enzymes."},
+e:"Digestion begins in the mouth, where mechanical breakdown occurs through chewing and chemical digestion begins with saliva. Saliva contains enzymes like amylase that start breaking down carbohydrates into simpler sugars. This early stage is essential because it prepares food for further digestion in the stomach and intestines."},
 
 {d:"MEDIUM",q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,
-e:"Neurons transmit electrical signals in nervous system."},
+e:"Neurons are specialized cells that transmit electrical and chemical signals throughout the nervous system. They communicate using electrical impulses along their axons and chemical neurotransmitters across synapses. This allows the brain to control movement, sensation, memory, and all bodily functions with extremely fast communication."},
 
-{d:"MEDIUM",q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,
-e:"Hemoglobin carries oxygen in red blood cells."},
-
-{d:"MEDIUM",q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,
-e:"Cerebellum controls balance and coordination."},
-
-{d:"MEDIUM",q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,
-e:"Arteries have highest blood pressure."},
-
-{d:"MEDIUM",q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,
-e:"Central nervous system controls all body functions."},
-
-{d:"MEDIUM",q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,
-e:"SA node initiates heartbeat impulses."},
-
-/* 🔴 HARD (21–30) */
+/* 🔴 HARD */
 {d:"HARD",q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,
-e:"Nephron filters blood and regulates water, ions and waste precisely."},
-
-{d:"HARD",q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,
-e:"Oxygen binds to iron in hemoglobin inside red blood cells."},
-
-{d:"HARD",q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,
-e:"Veins have low pressure and rely on valves and muscle movement."},
-
-{d:"HARD",q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,
-e:"CNS includes brain and spinal cord controlling entire body."},
-
-{d:"HARD",q:"Urea formed?",a:["Liver","Kidney","Heart","Lungs"],c:0,
-e:"Liver converts ammonia into urea for excretion."},
-
-{d:"HARD",q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,
-e:"Diffusion is movement from high to low concentration."},
-
-{d:"HARD",q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,
-e:"Red blood cells live about 120 days."},
-
-{d:"HARD",q:"Pulmonary circulation?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart","Liver-heart"],c:0,
-e:"Blood goes from heart to lungs and back for oxygenation."},
-
-{d:"HARD",q:"Skin role?",a:["Protection","Digestion","Respiration","Circulation"],c:0,
-e:"Skin protects body and regulates temperature and hydration."},
-
-{d:"HARD",q:"Neurons do?",a:["Transmit signals","Store fat","Make blood","Digest food"],c:0,
-e:"Neurons transmit electrical and chemical signals."}
-
+e:"The nephron is a highly specialized structure that performs filtration, reabsorption, and secretion to form urine. Blood enters the glomerulus where filtration occurs, removing waste and excess substances. Useful molecules like glucose and water are reabsorbed back into the bloodstream, while toxins are secreted into the urine. This process is essential for maintaining fluid balance, electrolyte levels, and blood pressure."},
+  
 ];
 
 let i=0;
