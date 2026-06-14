@@ -35,6 +35,7 @@ font-size:20px;
 color:#333;
 }
 
+/* BUTTONS */
 button{
 padding:12px 18px;
 border:none;
@@ -97,22 +98,15 @@ line-height:1.8;
 font-weight:500;
 }
 
-/* BADGE */
-.badge{
-position:absolute;
-top:-15px;
-left:-15px;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-color:white;
+/* SCORE */
+.score-bottom{
+margin-top:25px;
+font-size:20px;
+font-weight:700;
+color:#333;
 }
-.green{background:#2ecc71}
-.yellow{background:#f1c40f}
-.red{background:#e74c3c}
 
-/* BUTTON LAYOUT FIXED */
+/* BUTTON ROW */
 .button-row{
 display:flex;
 flex-direction:column;
@@ -126,14 +120,6 @@ display:flex;
 gap:15px;
 }
 
-/* SCORE */
-.score-bottom{
-margin-top:25px;
-font-size:20px;
-font-weight:700;
-color:#333;
-}
-
 /* ANATOMY */
 .anatomy-card{
 background:white;
@@ -144,13 +130,7 @@ max-width:1400px;
 box-shadow:0 20px 60px rgba(0,0,0,0.18);
 display:flex;
 flex-direction:column;
-gap:80px;
-}
-
-.anatomy-item h3{
-font-size:34px;
-margin:0;
-color:#111;
+gap:70px;
 }
 
 iframe{
@@ -158,7 +138,6 @@ width:100%;
 height:800px;
 border:none;
 border-radius:25px;
-box-shadow:0 10px 40px rgba(0,0,0,0.15);
 }
 </style>
 </head>
@@ -178,11 +157,11 @@ box-shadow:0 10px 40px rgba(0,0,0,0.15);
 <h2>🧠 Question <span id="qnr">1</span> / 30</h2>
 
 <div class="card">
-<div id="badge" class="badge green">EASY</div>
 
 <div id="question"></div>
 <div id="options"></div>
 <div id="explanation"></div>
+
 </div>
 
 <div class="score-bottom">
@@ -190,16 +169,14 @@ Score: <span id="score">0</span>
 </div>
 
 <div class="button-row">
-
 <div class="row">
-<button onclick="next()"> NEXT</button>
-<button onclick="restart()"> RESTART</button>
+<button onclick="next()">NEXT</button>
+<button onclick="restart()">RESTART</button>
 </div>
 
 <div class="row">
-<button onclick="goAnatomy()">🫀 ANATOMY</button>
+<button onclick="goAnatomy()">ANATOMY</button>
 </div>
-
 </div>
 
 </section>
@@ -207,9 +184,7 @@ Score: <span id="score">0</span>
 <!-- ANATOMY -->
 <section id="anatomy">
 
-<h2 style="font-size:60px;color:#d90429;margin-bottom:40px;">
-🫀 Anatomy Explorer
-</h2>
+<h2 style="font-size:60px;color:#d90429;">🫀 Anatomy</h2>
 
 <div class="anatomy-card">
 
@@ -219,7 +194,7 @@ Score: <span id="score">0</span>
 </div>
 
 <div>
-<h3>Heart Anatomy</h3>
+<h3>Heart</h3>
 <iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
 </div>
 
@@ -234,29 +209,43 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{
-q:"Heart function?",
-a:["Pump blood","Digest food","Store oxygen","Make bile"],
-c:0,
-e:"The heart is a muscular organ responsible for pumping blood throughout the body. It maintains circulation, delivering oxygen and nutrients to tissues and removing waste. Without this continuous pumping, organs would fail within minutes due to lack of oxygen supply."
-},
-{
-q:"Gas exchange occurs in?",
-a:["Alveoli","Heart","Liver","Trachea"],
-c:0,
-e:"Alveoli are tiny air sacs in the lungs where oxygen diffuses into the blood and carbon dioxide is removed. They provide a large surface area and extremely thin walls for efficient gas exchange."
-},
-{
-q:"Kidney unit?",
-a:["Nephron","Neuron","Cell","Tissue"],
-c:0,
-e:"The nephron is the functional unit of the kidney responsible for filtering blood. It regulates water balance, electrolytes, and removes waste by producing urine."
-}
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli perform gas exchange with very thin walls allowing oxygen to enter blood and CO2 to leave."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"The heart is a muscular pump that circulates blood continuously through the body."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephrons filter blood and regulate water, salts, and waste removal."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","Hormones"],c:0,e:"Red blood cells carry oxygen using hemoglobin."},
+{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Skin protects the body, regulates temperature and prevents water loss."},
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin regulates blood glucose levels."},
+{q:"Arteries carry?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry blood away from the heart under high pressure."},
+{q:"Veins carry?",a:["To heart","Away","Oxygen only","CO2 only"],c:0,e:"Veins return blood to the heart using valves."},
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all body functions."},
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange oxygen and carbon dioxide."},
+
+{q:"SA node is?",a:["Pacemaker","Filter","Pump","Valve"],c:0,e:"SA node controls heartbeat rhythm."},
+{q:"Platelets function?",a:["Clotting","Oxygen","Digestion","Hormones"],c:0,e:"Platelets stop bleeding by forming clots."},
+{q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Liver detoxifies blood and produces bile."},
+{q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Digestion begins in the mouth."},
+{q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Neurons transmit signals."},
+
+{q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,e:"Hemoglobin carries oxygen."},
+{q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,e:"Controls balance and coordination."},
+{q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries have highest pressure."},
+{q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,e:"Central nervous system controls body."},
+{q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"Starts heartbeat impulses."},
+
+{q:"Urea formed?",a:["Liver","Kidney","Heart","Lungs"],c:0,e:"Liver produces urea."},
+{q:"Pulmonary?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart","Liver-heart"],c:0,e:"Blood goes to lungs for oxygenation."},
+{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Red blood cells live ~120 days."},
+{q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,e:"Movement from high to low concentration."},
+{q:"Insulin role?",a:["Lower sugar","Increase oxygen","Make blood","Digest fats"],c:0,e:"Insulin lowers blood glucose."},
+
+{q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,e:"Filters blood and forms urine."},
+{q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"Oxygen binds iron in hemoglobin."},
+{q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,e:"Veins have low pressure."},
+{q:"Skin?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body from environment."}
 ];
 
 let i=0;
 let score=0;
-let locked=false;
 
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
@@ -267,78 +256,52 @@ function goAnatomy(){
 document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
 }
 
-function setBadge(){
-let b=document.getElementById("badge");
-
-if(i<10){
-b.innerText="EASY";
-b.className="badge green";
-}
-else if(i<20){
-b.innerText="MEDIUM";
-b.className="badge yellow";
-}
-else{
-b.innerText="HARD";
-b.className="badge red";
-}
-}
-
 function load(){
-locked=false;
 
-let q=quiz[i];
+let q = quiz[i];
 
-document.getElementById("qnr").innerText=i+1;
-document.getElementById("question").innerText=q.q;
-document.getElementById("score").innerText=score;
+document.getElementById("qnr").innerText = i+1;
+document.getElementById("question").innerText = q.q;
+document.getElementById("score").innerText = score;
 
-setBadge();
-
-let html="";
+let html = "";
 q.a.forEach((a,idx)=>{
-html+=`<div class="option" onclick="answer(${idx})">${a}</div>`;
+html += `<div class="option" onclick="answer(${idx})">${a}</div>`;
 });
 
-document.getElementById("options").innerHTML=html;
-document.getElementById("explanation").innerText="";
+document.getElementById("options").innerHTML = html;
+document.getElementById("explanation").innerText = "";
 }
 
 function answer(idx){
-if(locked) return;
-locked=true;
 
-if(idx===quiz[i].c){
+if(idx === quiz[i].c){
 score++;
-document.getElementById("score").innerText=score;
+document.getElementById("score").innerText = score;
 }
 
-document.getElementById("explanation").innerText=quiz[i].e;
-
-document.querySelectorAll(".option").forEach(o=>{
-o.style.pointerEvents="none";
-});
+document.getElementById("explanation").innerText = quiz[i].e;
 }
 
 function next(){
-if(i<quiz.length-1){
+if(i < quiz.length-1){
 i++;
 load();
 }else{
-alert("Final Score: "+score+"/"+quiz.length);
-i=0;
-score=0;
+alert("Final Score: " + score + "/30");
+i = 0;
+score = 0;
 load();
 }
 }
 
 function restart(){
-i=0;
-score=0;
+i = 0;
+score = 0;
 load();
 }
 
-window.onload=load;
+window.onload = load;
 
 </script>
 
