@@ -55,7 +55,6 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* QUIZ */
 .card{
 background:white;
 padding:70px;
@@ -89,14 +88,28 @@ margin-bottom:10px;
 
 #explanation{
 margin-top:25px;
-min-height:200px;
+min-height:220px;
 font-size:20px;
 color:#333;
 line-height:1.8;
 font-weight:500;
 }
 
-/* ANATOMY */
+.badge{
+position:absolute;
+top:-15px;
+left:-15px;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+color:white;
+}
+
+.green{background:#2ecc71}
+.yellow{background:#f1c40f}
+.red{background:#e74c3c}
+
 .anatomy-card{
 background:white;
 padding:35px;
@@ -122,39 +135,20 @@ height:650px;
 border:none;
 border-radius:20px;
 }
-
-/* BADGE */
-.badge{
-position:absolute;
-top:-15px;
-left:-15px;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-color:white;
-}
-
-.green{background:#2ecc71}
-.yellow{background:#f1c40f}
-.red{background:#e74c3c}
-
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 <button onclick="goQuiz()">Start Quiz</button>
 </div>
 
-<!-- QUIZ -->
 <section id="quiz">
 
-<h2>🧠 Question <span id="qnr">1</span> / <span id="total"></span></h2>
+<h2>🧠 Question <span id="qnr">1</span> / 30</h2>
 
 <div class="card">
 <div id="badge" class="badge green">EASY</div>
@@ -169,24 +163,23 @@ color:white;
 
 </section>
 
-<!-- ANATOMY -->
 <section id="anatomy">
 <h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
 
 <div class="anatomy-card">
 
 <div class="anatomy-item">
-<h3>🫁 Human Body (Circulatory System)</h3>
+<h3>Human Body (Circulatory System)</h3>
 <iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
 </div>
 
 <div class="anatomy-item">
-<h3>🫀 Heart Model</h3>
+<h3>Heart Model</h3>
 <iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
 </div>
 
 <div class="anatomy-item">
-<h3>🧍 Complete Human Anatomy</h3>
+<h3>Complete Human Anatomy</h3>
 <iframe src="https://sketchfab.com/3d-models/complete-human-anatomy-c904a5a65ae145a0bc535645c7e693af/embed"></iframe>
 </div>
 
@@ -196,24 +189,66 @@ color:white;
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Gas exchange happens in alveoli where oxygen enters blood and CO2 is removed."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood continuously through the body."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood and removes waste."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC transports oxygen via hemoglobin."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects the body."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are tiny air sacs in the lungs where oxygen enters the blood and carbon dioxide is removed through diffusion across thin membranes."},
 
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin regulates blood sugar."},
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","None"],c:0,e:"Arteries carry blood away from heart."},
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to heart."},
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all functions."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs handle respiration."}
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"The heart is a muscular pump that continuously circulates blood, ensuring oxygen and nutrients reach all tissues."},
+
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"The nephron filters blood, removes waste, balances fluids, and maintains electrolyte balance in the body."},
+
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"Red blood cells transport oxygen using hemoglobin, enabling cellular respiration throughout the body."},
+
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"The skin acts as a protective barrier, regulates temperature, and prevents dehydration."},
+
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin is a hormone that regulates blood glucose levels by allowing cells to absorb sugar."},
+
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","None"],c:0,e:"Arteries carry oxygen-rich blood away from the heart under high pressure."},
+
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return deoxygenated blood to the heart and contain valves to prevent backflow."},
+
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"The brain is the central control system responsible for movement, thought, and vital functions."},
+
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"The lungs perform respiration by exchanging oxygen and carbon dioxide with the blood."},
+
+{q:"SA node function?",a:["Pacemaker","Filter","Pump","Sensor"],c:0,e:"The SA node regulates heartbeat by generating electrical impulses."},
+
+{q:"Platelets?",a:["Clotting","Oxygen","Hormones","Digestion"],c:0,e:"Platelets help blood clot to prevent bleeding after injury."},
+
+{q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"The liver detoxifies blood, produces bile, and processes nutrients."},
+
+{q:"Neuron function?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Neurons transmit electrical signals throughout the nervous system."},
+
+{q:"Hemoglobin?",a:["Oxygen","Glucose","Fat","Hormones"],c:0,e:"Hemoglobin binds oxygen molecules in red blood cells for transport."},
+
+{q:"Cerebellum?",a:["Balance","Vision","Digestion","Speech"],c:0,e:"The cerebellum controls balance, coordination, and posture."},
+
+{q:"Blood pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries experience the highest blood pressure due to direct pumping from the heart."},
+
+{q:"CNS?",a:["Brain+spine","Nerves","Heart","Muscles"],c:0,e:"The central nervous system includes the brain and spinal cord."},
+
+{q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"The SA node initiates and controls heartbeat rhythm."},
+
+{q:"Urea formed?",a:["Liver","Kidney","Heart","Lung"],c:0,e:"The liver converts ammonia into urea for safe excretion."},
+
+{q:"Pulmonary?",a:["Heart-lungs-heart","Heart-body-heart","Lungs-brain-heart","Heart-liver"],c:0,e:"Pulmonary circulation moves blood between heart and lungs for oxygenation."},
+
+{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Red blood cells live about 120 days before being recycled."},
+
+{q:"Diffusion?",a:["Gas movement","Active transport","Osmosis","Pump"],c:0,e:"Diffusion is the passive movement of molecules from high to low concentration."},
+
+{q:"Insulin?",a:["Sugar control","Fat storage","Breathing","Digestion"],c:0,e:"Insulin regulates glucose uptake in cells."},
+
+{q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,e:"Nephrons filter blood and form urine."},
+
+{q:"Oxygen binds?",a:["Hemoglobin","Plasma","Platelets","DNA"],c:0,e:"Oxygen binds to iron in hemoglobin molecules."},
+
+{q:"Veins pressure?",a:["Low","High","Equal","None"],c:0,e:"Veins operate at lower pressure compared to arteries."},
+
+{q:"Skin?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Skin protects the body and regulates temperature."}
 ];
 
 let i=0;
 let score=0;
 let timer;
-
-document.getElementById("total").innerText = quiz.length;
 
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
@@ -261,7 +296,9 @@ document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
 clearTimeout(timer);
-timer=setTimeout(()=>next(),25000);
+
+/* ⏱️ 60 SECUNDES */
+timer=setTimeout(()=>next(),60000);
 }
 
 function answer(correct){
@@ -273,14 +310,14 @@ document.querySelectorAll(".option")
 .forEach(o=>o.style.pointerEvents="none");
 
 clearTimeout(timer);
-setTimeout(next,2500);
+setTimeout(next,3000);
 }
 
 function next(){
 i++;
 
 if(i>=quiz.length){
-alert("Quiz finished! Score: "+score+"/"+quiz.length);
+alert("Final Score: "+score+"/"+quiz.length);
 i=0;
 score=0;
 }
