@@ -13,7 +13,6 @@ background:linear-gradient(135deg,#eef7ff,#dcefff,#ffe9e9);
 scroll-behavior:smooth;
 }
 
-/* HERO */
 .hero{
 height:100vh;
 display:flex;
@@ -30,12 +29,6 @@ margin:0;
 font-weight:900;
 }
 
-.hero p{
-font-size:20px;
-color:#333;
-}
-
-/* BUTTONS */
 button{
 padding:12px 18px;
 border:none;
@@ -91,14 +84,29 @@ margin-bottom:10px;
 
 #explanation{
 margin-top:25px;
-min-height:260px;
 font-size:18px;
 color:#333;
 line-height:1.8;
 font-weight:500;
+min-height:200px;
 }
 
-/* SCORE */
+/* BULINE DIFICULTATE */
+#badge{
+position:absolute;
+top:-15px;
+left:-15px;
+padding:8px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:bold;
+color:white;
+}
+
+.green{background:#2ecc71}
+.yellow{background:#f1c40f}
+.red{background:#e74c3c}
+
 .score-bottom{
 margin-top:25px;
 font-size:20px;
@@ -106,7 +114,6 @@ font-weight:700;
 color:#333;
 }
 
-/* BUTTON ROW */
 .button-row{
 display:flex;
 flex-direction:column;
@@ -144,19 +151,19 @@ border-radius:25px;
 
 <body>
 
-<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 <button onclick="goQuiz()">Start</button>
 </div>
 
-<!-- QUIZ -->
 <section id="quiz">
 
-<h2>🧠 Question <span id="qnr">1</span> / 30</h2>
+<h2>🧠 Question <span id="qnr">1</span>/30</h2>
 
 <div class="card">
+
+<div id="badge" class="green">🟢 EASY</div>
 
 <div id="question"></div>
 <div id="options"></div>
@@ -173,7 +180,6 @@ Score: <span id="score">0</span>
 <button onclick="next()">NEXT</button>
 <button onclick="restart()">RESTART</button>
 </div>
-
 <div class="row">
 <button onclick="goAnatomy()">ANATOMY</button>
 </div>
@@ -181,27 +187,20 @@ Score: <span id="score">0</span>
 
 </section>
 
-<!-- ANATOMY -->
 <section id="anatomy">
 
 <h2 style="font-size:60px;color:#d90429;">🫀 Anatomy</h2>
 
 <div class="anatomy-card">
 
-<div>
 <h3>Human Body</h3>
 <iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
-</div>
 
-<div>
 <h3>Heart</h3>
 <iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
-</div>
 
-<div>
 <h3>Human Organs</h3>
 <iframe src="https://sketchfab.com/3d-models/human-anatomy-organs-pack-7fd440196fe3480587de330967737848/embed"></iframe>
-</div>
 
 </div>
 </section>
@@ -209,39 +208,100 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli perform gas exchange with very thin walls allowing oxygen to enter blood and CO2 to leave."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"The heart is a muscular pump that circulates blood continuously through the body."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephrons filter blood and regulate water, salts, and waste removal."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","Hormones"],c:0,e:"Red blood cells carry oxygen using hemoglobin."},
-{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Skin protects the body, regulates temperature and prevents water loss."},
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin regulates blood glucose levels."},
-{q:"Arteries carry?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry blood away from the heart under high pressure."},
-{q:"Veins carry?",a:["To heart","Away","Oxygen only","CO2 only"],c:0,e:"Veins return blood to the heart using valves."},
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all body functions."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange oxygen and carbon dioxide."},
 
-{q:"SA node is?",a:["Pacemaker","Filter","Pump","Valve"],c:0,e:"SA node controls heartbeat rhythm."},
-{q:"Platelets function?",a:["Clotting","Oxygen","Digestion","Hormones"],c:0,e:"Platelets stop bleeding by forming clots."},
-{q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Liver detoxifies blood and produces bile."},
-{q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Digestion begins in the mouth."},
-{q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Neurons transmit signals."},
+/* 🟢 EASY (1–10) */
+{d:"EASY",q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
+e:"Alveoli are microscopic air sacs where oxygen diffuses into blood and carbon dioxide is removed."},
 
-{q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,e:"Hemoglobin carries oxygen."},
-{q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,e:"Controls balance and coordination."},
-{q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries have highest pressure."},
-{q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,e:"Central nervous system controls body."},
-{q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"Starts heartbeat impulses."},
+{d:"EASY",q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
+e:"The heart pumps blood continuously through the body delivering oxygen and nutrients."},
 
-{q:"Urea formed?",a:["Liver","Kidney","Heart","Lungs"],c:0,e:"Liver produces urea."},
-{q:"Pulmonary?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart","Liver-heart"],c:0,e:"Blood goes to lungs for oxygenation."},
-{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Red blood cells live ~120 days."},
-{q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,e:"Movement from high to low concentration."},
-{q:"Insulin role?",a:["Lower sugar","Increase oxygen","Make blood","Digest fats"],c:0,e:"Insulin lowers blood glucose."},
+{d:"EASY",q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
+e:"Nephron filters blood, removes waste and controls water balance."},
 
-{q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,e:"Filters blood and forms urine."},
-{q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"Oxygen binds iron in hemoglobin."},
-{q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,e:"Veins have low pressure."},
-{q:"Skin?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body from environment."}
+{d:"EASY",q:"RBC carries?",a:["Oxygen","Sugar","Fat","Hormones"],c:0,
+e:"Red blood cells transport oxygen using hemoglobin."},
+
+{d:"EASY",q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,
+e:"Skin protects body, regulates temperature and prevents water loss."},
+
+{d:"EASY",q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
+e:"Brain controls all voluntary and involuntary body functions."},
+
+{d:"EASY",q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
+e:"Lungs exchange oxygen and carbon dioxide during respiration."},
+
+{d:"EASY",q:"Arteries carry?",a:["Away from heart","To heart","Both","None"],c:0,
+e:"Arteries carry blood away from the heart under high pressure."},
+
+{d:"EASY",q:"Veins carry?",a:["To heart","Away","Oxygen only","CO2 only"],c:0,
+e:"Veins return blood to heart using valves."},
+
+{d:"EASY",q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
+e:"Skin is the largest organ protecting entire body."},
+
+/* 🟡 MEDIUM (11–20) */
+{d:"MEDIUM",q:"SA node?",a:["Pacemaker","Filter","Pump","Valve"],c:0,
+e:"SA node generates electrical impulses controlling heartbeat rhythm."},
+
+{d:"MEDIUM",q:"Platelets?",a:["Clotting","Oxygen","Digestion","Hormones"],c:0,
+e:"Platelets help blood clot and stop bleeding."},
+
+{d:"MEDIUM",q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,
+e:"Liver detoxifies blood, produces bile and stores glycogen."},
+
+{d:"MEDIUM",q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,
+e:"Digestion starts in mouth with chewing and saliva enzymes."},
+
+{d:"MEDIUM",q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,
+e:"Neurons transmit electrical signals in nervous system."},
+
+{d:"MEDIUM",q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,
+e:"Hemoglobin carries oxygen in red blood cells."},
+
+{d:"MEDIUM",q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,
+e:"Cerebellum controls balance and coordination."},
+
+{d:"MEDIUM",q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,
+e:"Arteries have highest blood pressure."},
+
+{d:"MEDIUM",q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,
+e:"Central nervous system controls all body functions."},
+
+{d:"MEDIUM",q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,
+e:"SA node initiates heartbeat impulses."},
+
+/* 🔴 HARD (21–30) */
+{d:"HARD",q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,
+e:"Nephron filters blood and regulates water, ions and waste precisely."},
+
+{d:"HARD",q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,
+e:"Oxygen binds to iron in hemoglobin inside red blood cells."},
+
+{d:"HARD",q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,
+e:"Veins have low pressure and rely on valves and muscle movement."},
+
+{d:"HARD",q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,
+e:"CNS includes brain and spinal cord controlling entire body."},
+
+{d:"HARD",q:"Urea formed?",a:["Liver","Kidney","Heart","Lungs"],c:0,
+e:"Liver converts ammonia into urea for excretion."},
+
+{d:"HARD",q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,
+e:"Diffusion is movement from high to low concentration."},
+
+{d:"HARD",q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,
+e:"Red blood cells live about 120 days."},
+
+{d:"HARD",q:"Pulmonary circulation?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart","Liver-heart"],c:0,
+e:"Blood goes from heart to lungs and back for oxygenation."},
+
+{d:"HARD",q:"Skin role?",a:["Protection","Digestion","Respiration","Circulation"],c:0,
+e:"Skin protects body and regulates temperature and hydration."},
+
+{d:"HARD",q:"Neurons do?",a:["Transmit signals","Store fat","Make blood","Digest food"],c:0,
+e:"Neurons transmit electrical and chemical signals."}
+
 ];
 
 let i=0;
@@ -252,57 +312,66 @@ document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
 }
 
-function goAnatomy(){
-document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
+function setBadge(){
+let b=document.getElementById("badge");
+
+if(quiz[i].d==="EASY"){
+b.innerText="🟢 EASY";
+b.className="green";
+}
+else if(quiz[i].d==="MEDIUM"){
+b.innerText="🟡 MEDIUM";
+b.className="yellow";
+}
+else{
+b.innerText="🔴 HARD";
+b.className="red";
+}
 }
 
 function load(){
+let q=quiz[i];
 
-let q = quiz[i];
+document.getElementById("qnr").innerText=i+1;
+document.getElementById("question").innerText=q.q;
+document.getElementById("score").innerText=score;
 
-document.getElementById("qnr").innerText = i+1;
-document.getElementById("question").innerText = q.q;
-document.getElementById("score").innerText = score;
+setBadge();
 
-let html = "";
+let html="";
 q.a.forEach((a,idx)=>{
-html += `<div class="option" onclick="answer(${idx})">${a}</div>`;
+html+=`<div class="option" onclick="answer(${idx})">${a}</div>`;
 });
 
-document.getElementById("options").innerHTML = html;
-document.getElementById("explanation").innerText = "";
+document.getElementById("options").innerHTML=html;
+document.getElementById("explanation").innerText="";
 }
 
 function answer(idx){
-
-if(idx === quiz[i].c){
+if(idx===quiz[i].c){
 score++;
-document.getElementById("score").innerText = score;
+document.getElementById("score").innerText=score;
 }
-
-document.getElementById("explanation").innerText = quiz[i].e;
+document.getElementById("explanation").innerText=quiz[i].e;
 }
 
 function next(){
-if(i < quiz.length-1){
+if(i<quiz.length-1){
 i++;
 load();
 }else{
-alert("Final Score: " + score + "/30");
-i = 0;
-score = 0;
+alert("Final Score: "+score+"/30");
+i=0;
+score=0;
 load();
 }
 }
 
 function restart(){
-i = 0;
-score = 0;
+i=0;
+score=0;
 load();
 }
-
-window.onload = load;
-
 </script>
 
 </body>
