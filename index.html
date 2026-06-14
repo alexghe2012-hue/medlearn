@@ -55,6 +55,7 @@ padding:80px 20px;
 text-align:center;
 }
 
+/* QUIZ CARD */
 .card{
 background:white;
 padding:70px;
@@ -93,12 +94,6 @@ font-size:20px;
 color:#333;
 line-height:1.8;
 font-weight:500;
-}
-
-#scoreBox{
-margin-top:10px;
-font-weight:700;
-color:#444;
 }
 
 .badge{
@@ -142,17 +137,27 @@ height:650px;
 border:none;
 border-radius:20px;
 }
+
+/* SCORE (jos, nu sus) */
+.score-bottom{
+margin-top:25px;
+font-size:20px;
+font-weight:700;
+color:#333;
+}
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 <button onclick="goQuiz()">Start Quiz</button>
 </div>
 
+<!-- QUIZ -->
 <section id="quiz">
 
 <h2>🧠 Question <span id="qnr">1</span> / 30</h2>
@@ -162,12 +167,12 @@ border-radius:20px;
 
 <div id="question"></div>
 
-<div id="scoreBox">
-Score: <span id="score">0</span>
-</div>
-
 <div id="options"></div>
 <div id="explanation"></div>
+</div>
+
+<div class="score-bottom">
+Score: <span id="score">0</span>
 </div>
 
 <button onclick="restart()">Restart</button>
@@ -175,7 +180,7 @@ Score: <span id="score">0</span>
 
 </section>
 
-<!-- ✅ FIXED ANATOMY -->
+<!-- ANATOMY -->
 <section id="anatomy">
 
 <h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
@@ -203,20 +208,63 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
-e:"Alveoli are tiny air sacs where oxygen enters blood and CO2 is removed. This is the main site of respiration and is essential for survival."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are tiny air sacs where oxygen enters blood and carbon dioxide leaves. This is essential for respiration and energy production in the body."},
 
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart pumps blood throughout the entire body, delivering oxygen and nutrients and removing waste products continuously."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"The heart pumps blood continuously to deliver oxygen and nutrients to tissues and remove waste products."},
 
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"The nephron is the functional unit of the kidney responsible for filtration, waste removal, and maintaining fluid balance."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"The nephron filters blood, removes waste, and controls water and salt balance in the body."},
 
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,
-e:"Red blood cells transport oxygen using hemoglobin, which binds oxygen molecules and carries them from lungs to tissues."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"Red blood cells transport oxygen using hemoglobin, which binds oxygen in the lungs and releases it in tissues."},
 
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
-e:"The skin is the largest organ of the body, acting as a protective barrier, regulating temperature, and preventing dehydration."}
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"The skin protects the body, regulates temperature, and prevents dehydration and infection."},
+
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin regulates blood glucose levels and is produced by the pancreas."},
+
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry oxygenated blood away from the heart under high pressure."},
+
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood back to the heart and contain valves to prevent backflow."},
+
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"The brain controls movement, thought, memory, and all vital body functions."},
+
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"The lungs exchange oxygen and carbon dioxide during breathing."},
+
+{q:"SA node?",a:["Pacemaker","Filter","Pump","Neuron"],c:0,e:"SA node controls heart rhythm and acts as the natural pacemaker."},
+
+{q:"Platelets?",a:["Clotting","Oxygen transport","Digestion","Hormones"],c:0,e:"Platelets help stop bleeding by forming blood clots."},
+
+{q:"Liver function?",a:["Detoxification","Breathing","Movement","Vision"],c:0,e:"The liver removes toxins and processes nutrients from blood."},
+
+{q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Digestion starts in the mouth with chewing and enzymes in saliva."},
+
+{q:"Neuron function?",a:["Signal transmission","Blood flow","Clotting","Digestion"],c:0,e:"Neurons transmit electrical signals throughout the body."},
+
+{q:"Hemoglobin carries?",a:["Oxygen","Sugar","Fat","Water"],c:0,e:"Hemoglobin binds and transports oxygen molecules."},
+
+{q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,e:"Cerebellum controls balance and coordination."},
+
+{q:"Blood pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries have the highest blood pressure in circulation."},
+
+{q:"CNS includes?",a:["Brain + spinal cord","Nerves","Muscles","Heart"],c:0,e:"Central nervous system includes brain and spinal cord."},
+
+{q:"Heart pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"SA node initiates and regulates heartbeat."},
+
+{q:"Urea formed in?",a:["Liver","Kidney","Heart","Lungs"],c:0,e:"Urea is produced in the liver from protein metabolism."},
+
+{q:"Pulmonary circulation?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart-brain","Liver-heart-liver"],c:0,e:"Blood flows from heart to lungs and back for oxygenation."},
+
+{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Red blood cells live about 120 days before being replaced."},
+
+{q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,e:"Diffusion is passive movement from high to low concentration."},
+
+{q:"Insulin role?",a:["Lower blood sugar","Increase oxygen","Make blood","Digest fats"],c:0,e:"Insulin lowers blood glucose levels."},
+
+{q:"Nephron function?",a:["Filtration","Digestion","Breathing","Movement"],c:0,e:"Nephron filters blood in kidneys."},
+
+{q:"Oxygen binds to?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"Oxygen binds to iron in hemoglobin."},
+
+{q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,e:"Veins have low pressure compared to arteries."},
+
+{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Skin protects internal organs and regulates body temperature."}
 ];
 
 let i=0;
@@ -274,7 +322,7 @@ document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
 clearTimeout(timer);
-timer=setTimeout(()=>next(),200000);
+timer=setTimeout(()=>next(),90000);
 }
 
 function answer(correct){
