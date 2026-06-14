@@ -96,20 +96,38 @@ line-height:1.8;
 font-weight:500;
 }
 
-.badge{
-position:absolute;
-top:-15px;
-left:-15px;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-color:white;
+/* ANATOMY – FIX MARE */
+.anatomy-card{
+background:white;
+padding:50px;
+border-radius:30px;
+width:95%;
+max-width:1400px;
+box-shadow:0 20px 60px rgba(0,0,0,0.18);
+display:flex;
+flex-direction:column;
+gap:80px;
 }
 
-.green{background:#2ecc71}
-.yellow{background:#f1c40f}
-.red{background:#e74c3c}
+.anatomy-item{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.anatomy-item h3{
+font-size:34px;
+color:#111;
+margin:0;
+}
+
+iframe{
+width:100%;
+height:800px;
+border:none;
+border-radius:25px;
+box-shadow:0 10px 40px rgba(0,0,0,0.15);
+}
 
 /* SCORE */
 .score-bottom{
@@ -123,21 +141,20 @@ color:#333;
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 <button onclick="goQuiz()">Start Quiz</button>
 </div>
 
+<!-- QUIZ -->
 <section id="quiz">
 
 <h2>🧠 Question <span id="qnr">1</span> / 30</h2>
 
 <div class="card">
-<div id="badge" class="badge green">EASY</div>
-
 <div id="question"></div>
-
 <div id="options"></div>
 <div id="explanation"></div>
 </div>
@@ -152,9 +169,12 @@ Score: <span id="score">0</span>
 
 </section>
 
+<!-- ANATOMY -->
 <section id="anatomy">
 
-<h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
+<h2 style="font-size:60px;color:#d90429;margin-bottom:40px;">
+🫀 Anatomy Explorer
+</h2>
 
 <div class="anatomy-card">
 
@@ -179,21 +199,21 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves. This is essential for respiration."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves. They are tiny sacs with very thin walls designed for fast diffusion."},
 
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood to deliver oxygen and nutrients."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"The heart pumps blood continuously, delivering oxygen and nutrients to every cell in the body."},
 
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood and produces urine."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephrons filter blood, remove waste and regulate water balance."},
 
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC transports oxygen using hemoglobin."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"Red blood cells transport oxygen using hemoglobin."},
 
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body and regulates temperature."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects the body and regulates temperature."},
 
 {q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin controls blood sugar levels."},
 
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry blood away from heart."},
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Both","None"],c:0,e:"Arteries carry blood away from the heart."},
 
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to heart."},
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to the heart."},
 
 {q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all body functions."},
 
@@ -252,14 +272,11 @@ document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
 }
 
 function load(){
-
 locked=false;
-
 let q=quiz[i];
 
 document.getElementById("qnr").innerText=i+1;
 document.getElementById("question").innerText=q.q;
-
 document.getElementById("score").innerText=score;
 
 let html="";
@@ -272,7 +289,6 @@ document.getElementById("explanation").innerText="";
 }
 
 function answer(idx){
-
 if(locked) return;
 locked=true;
 
@@ -282,17 +298,14 @@ document.getElementById("score").innerText=score;
 }
 
 document.getElementById("explanation").innerText=quiz[i].e;
-
-document.querySelectorAll(".option")
-.forEach(o=>o.style.pointerEvents="none");
+document.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
 }
 
 function next(){
 if(i<quiz.length-1){
 i++;
 load();
-}
-else{
+}else{
 alert("Final Score: "+score+"/"+quiz.length);
 i=0;
 score=0;
