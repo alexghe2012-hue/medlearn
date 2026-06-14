@@ -310,7 +310,7 @@ e:"Neurons transmit electrical and chemical signals throughout the nervous syste
 let i=0;
 let score=0;
 
-/* 🔥 shuffle corect */
+/* shuffle */
 function shuffleArray(arr){
 let a = arr.slice();
 for(let i = a.length - 1; i > 0; i--){
@@ -320,11 +320,17 @@ let j = Math.floor(Math.random() * (i + 1));
 return a;
 }
 
+/* NAV */
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
 }
 
+function goAnatomy(){
+document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
+}
+
+/* BADGE */
 function setBadge(){
 let b=document.getElementById("badge");
 
@@ -342,6 +348,7 @@ b.className="red";
 }
 }
 
+/* LOAD QUESTION */
 function load(){
 
 let q=quiz[i];
@@ -352,7 +359,7 @@ document.getElementById("score").innerText=score;
 
 setBadge();
 
-/* 🔥 RANDOM ANSWERS REAL */
+/* random answers */
 let options = q.a.map((text, idx) => {
 return {
 text: text,
@@ -371,16 +378,16 @@ document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 }
 
+/* ANSWER */
 function answer(isCorrect){
-
 if(isCorrect){
 score++;
 document.getElementById("score").innerText=score;
 }
-
 document.getElementById("explanation").innerText=quiz[i].e;
 }
 
+/* NEXT */
 function next(){
 if(i < quiz.length-1){
 i++;
@@ -393,18 +400,14 @@ load();
 }
 }
 
+/* RESTART */
 function restart(){
 i=0;
 score=0;
 load();
-}
 }
 
-function restart(){
-i=0;
-score=0;
-load();
-}
+window.onload=load;
 </script>
 
 </body>
