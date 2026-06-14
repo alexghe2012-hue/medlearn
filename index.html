@@ -1,4 +1,3 @@
-html id="medlearn_full_app"
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +13,7 @@ background: linear-gradient(180deg,#f5f7ff 0%,#e8f0ff 50%,#fff3f3 100%);
 scroll-behavior:smooth;
 }
 
-/* HEADER TITLE (HERO) */
+/* HERO */
 .hero{
 height:100vh;
 display:flex;
@@ -29,13 +28,11 @@ font-size:100px;
 color:#e31212;
 margin:0;
 font-weight:900;
-letter-spacing:3px;
 }
 
 .hero p{
-font-size:22px;
+font-size:20px;
 color:#444;
-margin-top:10px;
 }
 
 /* SECTIONS */
@@ -49,7 +46,7 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* QUIZ CARD */
+/* CARD QUIZ */
 .card{
 background:white;
 padding:30px;
@@ -58,7 +55,6 @@ width:520px;
 box-shadow:0 10px 35px rgba(0,0,0,0.12);
 }
 
-/* OPTIONS */
 .option{
 background:#f3f3f3;
 padding:14px;
@@ -74,23 +70,26 @@ transform:scale(1.03);
 background:#ffe5e5;
 }
 
-/* EXPLANATION */
 #explanation{
 margin-top:15px;
 font-size:15px;
 color:#444;
 min-height:60px;
-line-height:1.4;
 }
 
-/* BADGE */
-.badge{
-font-weight:800;
-font-size:18px;
-margin-bottom:10px;
+/* BUTTONS */
+button{
+padding:12px 18px;
+border:none;
+border-radius:12px;
+background:#e31212;
+color:white;
+cursor:pointer;
+margin:6px;
+font-size:15px;
 }
 
-/* ANATOMY */
+/* ANATOMY FIXED */
 .anatomy-card{
 background:white;
 padding:25px;
@@ -101,10 +100,10 @@ box-shadow:0 10px 35px rgba(0,0,0,0.12);
 
 iframe{
 width:100%;
-height:500px;
+height:450px;
 border:none;
 border-radius:15px;
-margin-top:15px;
+margin-top:10px;
 }
 </style>
 </head>
@@ -115,14 +114,13 @@ margin-top:15px;
 <div class="hero">
 <h1>MED LEARN</h1>
 <p>Medical learning platform for students</p>
+
+<button onclick="goQuiz()">Start Quiz</button>
 </div>
 
 <!-- QUIZ -->
-<section>
-
-<div class="badge" id="difficulty"></div>
-
-<h2>Question <span id="qnr">1</span>/30</h2>
+<section id="quiz">
+<h2>🧠 Question <span id="qnr">1</span>/30</h2>
 
 <div class="card">
 <div id="question"></div>
@@ -132,12 +130,12 @@ margin-top:15px;
 
 <p>Score: <span id="score">0</span></p>
 
+<button onclick="goAnatomy()">Go to Anatomy</button>
 <button onclick="restart()">Restart</button>
 </section>
 
 <!-- ANATOMY -->
-<section>
-
+<section id="anatomy">
 <h2>🫀 Anatomy</h2>
 
 <div class="anatomy-card">
@@ -154,47 +152,55 @@ margin-top:15px;
 <script>
 
 const quiz = [
-
-{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,e:"Gas exchange happens in alveoli where oxygen enters blood and CO2 leaves."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood continuously through the body."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood and forms urine."},
-{q:"RBC carries?",a:["Oxygen","Glucose","Waste","Hormones"],c:0,e:"RBC carries oxygen using hemoglobin."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body and regulates temperature."},
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Pancreas controls blood sugar."},
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,e:"Arteries carry blood away from heart."},
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to heart."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange oxygen and CO2."},
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all body functions."},
+{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,e:"Gas exchange happens in alveoli."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
+{q:"RBC carries?",a:["Oxygen","Glucose","Waste","Hormones"],c:0,e:"RBC carries oxygen."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body."},
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Pancreas produces insulin."},
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,e:"Arteries carry blood away."},
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood."},
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange gases."},
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls body."},
 
 {q:"Kidney unit?",a:["Nephron","Neuron","Alveolus","Muscle"],c:0,e:"Nephron filters blood."},
-{q:"SA node?",a:["Pacemaker","Filter","Pump","Sensor"],c:0,e:"Controls heartbeat rhythm."},
-{q:"Platelets?",a:["Clotting","Oxygen","Hormones","Digestion"],c:0,e:"Platelets stop bleeding."},
-{q:"Liver?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Liver detoxifies blood."},
+{q:"SA node?",a:["Pacemaker","Filter","Pump","Sensor"],c:0,e:"Controls heartbeat."},
+{q:"Platelets?",a:["Clotting","Oxygen","Hormones","Digestion"],c:0,e:"Stops bleeding."},
+{q:"Liver?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Detoxifies body."},
 {q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,e:"Starts in mouth."},
-{q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Neurons transmit signals."},
+{q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Sends signals."},
 {q:"Hemoglobin?",a:["Oxygen","Glucose","Fat","Hormones"],c:0,e:"Carries oxygen."},
 {q:"Cerebellum?",a:["Balance","Vision","Digestion","Speech"],c:0,e:"Controls balance."},
 {q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"Arteries highest pressure."},
 {q:"CNS?",a:["Brain+spine","Nerves","Heart","Muscles"],c:0,e:"Brain + spinal cord."},
 
 {q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,e:"Starts heartbeat."},
-{q:"Urea formed?",a:["Liver","Kidney","Heart","Lung"],c:0,e:"Liver produces urea."},
+{q:"Urea formed?",a:["Liver","Kidney","Heart","Lung"],c:0,e:"Liver makes urea."},
 {q:"Pulmonary?",a:["Heart-lungs-heart","Heart-body-heart","Lungs-brain-heart","Heart-liver"],c:0,e:"Heart → lungs → heart."},
-{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Lives ~120 days."},
-{q:"Diffusion?",a:["Gas movement","Active transport","Osmosis","Pump"],c:0,e:"Gas movement by diffusion."},
-{q:"Insulin?",a:["Sugar control","Fat storage","Breathing","Digestion"],c:0,e:"Lowers glucose."},
+{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Lives 120 days."},
+{q:"Diffusion?",a:["Gas movement","Active transport","Osmosis","Pump"],c:0,e:"Gas movement."},
+{q:"Insulin?",a:["Sugar control","Fat storage","Breathing","Digestion"],c:0,e:"Lowers sugar."},
 {q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,e:"Filters blood."},
 {q:"Oxygen binds?",a:["Hemoglobin","Plasma","Platelets","DNA"],c:0,e:"Binds iron."},
 {q:"Veins pressure?",a:["Low","High","Equal","None"],c:0,e:"Low pressure."},
 {q:"Skin?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body."}
-
 ];
 
-let i = 0;
-let score = 0;
+let i=0;
+let score=0;
 let timer;
 
-/* shuffle answers */
+/* navigation */
+function goQuiz(){
+document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
+load();
+}
+
+function goAnatomy(){
+document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
+}
+
+/* shuffle */
 function shuffle(arr){
 return arr.sort(()=>Math.random()-0.5);
 }
@@ -208,31 +214,23 @@ return "🔴 HARD";
 
 function load(){
 
-document.getElementById("difficulty").innerText = difficulty();
+let q=quiz[i];
 
-let q = quiz[i];
-
-document.getElementById("qnr").innerText = i+1;
-document.getElementById("question").innerText = q.q;
+document.getElementById("qnr").innerText=i+1;
+document.getElementById("question").innerText=q.q;
 
 /* random answers */
-let answers = q.a.map((a,idx)=>({
-text:a,
-correct:idx===q.c
-}));
-
-answers = shuffle(answers);
+let answers=q.a.map((a,idx)=>({text:a,correct:idx===q.c}));
+answers=shuffle(answers);
 
 let html="";
-
 answers.forEach(ans=>{
-html += `<div class="option" onclick="answer(${ans.correct})">${ans.text}</div>`;
+html+=`<div class="option" onclick="answer(${ans.correct})">${ans.text}</div>`;
 });
 
-document.getElementById("options").innerHTML = html;
+document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
-/* auto next 10 sec */
 clearTimeout(timer);
 timer=setTimeout(()=>next(),10000);
 }
@@ -255,14 +253,12 @@ setTimeout(next,2000);
 
 function next(){
 i++;
-
 if(i>=quiz.length){
 alert("Final Score: "+score+"/30");
 i=0;
 score=0;
 document.getElementById("score").innerText=0;
 }
-
 load();
 }
 
@@ -273,15 +269,9 @@ document.getElementById("score").innerText=0;
 load();
 }
 
-function startQuiz(){
-window.scrollTo({top:window.innerHeight,behavior:"smooth"});
-load();
-}
-
 window.onload=load;
 
 </script>
 
 </body>
 </html>
-
