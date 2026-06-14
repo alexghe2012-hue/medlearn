@@ -175,23 +175,25 @@ Score: <span id="score">0</span>
 
 </section>
 
+<!-- ✅ FIXED ANATOMY -->
 <section id="anatomy">
+
 <h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
 
 <div class="anatomy-card">
 
 <div class="anatomy-item">
-<h3>Human Body (Circulatory System)</h3>
+<h3>Human Body</h3>
 <iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
 </div>
 
 <div class="anatomy-item">
-<h3>Heart Anatomy and Functions</h3>
+<h3>Heart Anatomy</h3>
 <iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
 </div>
 
 <div class="anatomy-item">
-<h3>Human Anatomy Organs Pack</h3>
+<h3>Human Organs</h3>
 <iframe src="https://sketchfab.com/3d-models/human-anatomy-organs-pack-7fd440196fe3480587de330967737848/embed"></iframe>
 </div>
 
@@ -202,34 +204,19 @@ Score: <span id="score">0</span>
 
 const quiz = [
 {q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
-e:"Alveoli are tiny air sacs where oxygen enters the blood and carbon dioxide is removed. This process is essential for life and happens continuously with every breath."},
+e:"Alveoli are tiny air sacs where oxygen enters blood and CO2 is removed. This is the main site of respiration and is essential for survival."},
 
 {q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart is a muscular pump that circulates blood throughout the body. It ensures oxygen and nutrients reach tissues and removes waste like carbon dioxide."},
+e:"The heart pumps blood throughout the entire body, delivering oxygen and nutrients and removing waste products continuously."},
 
 {q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"The nephron is the functional unit of the kidney. It filters blood, removes waste, regulates water balance and maintains electrolyte levels."},
+e:"The nephron is the functional unit of the kidney responsible for filtration, waste removal, and maintaining fluid balance."},
 
 {q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,
-e:"Red blood cells carry oxygen using hemoglobin, transporting it from lungs to tissues for energy production and metabolism."},
+e:"Red blood cells transport oxygen using hemoglobin, which binds oxygen molecules and carries them from lungs to tissues."},
 
 {q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
-e:"The skin is the largest organ in the human body. It protects internal organs, regulates temperature and prevents dehydration and infection."},
-
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,
-e:"Insulin is a hormone produced by the pancreas that regulates blood glucose levels by allowing cells to absorb sugar from the bloodstream."},
-
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","None"],c:0,
-e:"Arteries carry oxygen-rich blood away from the heart under high pressure to supply organs and tissues throughout the body."},
-
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,
-e:"Veins return deoxygenated blood back to the heart and contain valves that prevent backward flow of blood."},
-
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
-e:"The brain is the control center of the body, managing movement, thought, memory, and vital functions like breathing."},
-
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
-e:"The lungs perform gas exchange, taking oxygen into the bloodstream and removing carbon dioxide during breathing."}
+e:"The skin is the largest organ of the body, acting as a protective barrier, regulating temperature, and preventing dehydration."}
 ];
 
 let i=0;
@@ -237,7 +224,7 @@ let score=0;
 let timer;
 let locked=false;
 
-document.getElementById("score").innerText = score;
+document.getElementById("score").innerText=score;
 
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
@@ -287,9 +274,7 @@ document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
 clearTimeout(timer);
-
-/* ⏱️ 90 SEC */
-timer=setTimeout(()=>next(),90000);
+timer=setTimeout(()=>next(),200000);
 }
 
 function answer(correct){
