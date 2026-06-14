@@ -13,7 +13,7 @@ background:linear-gradient(135deg,#eef7ff,#dcefff,#ffe9e9);
 scroll-behavior:smooth;
 }
 
-/* HERO CLEAN (NO CARDS) */
+/* HERO */
 .hero{
 height:100vh;
 display:flex;
@@ -21,7 +21,6 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 text-align:center;
-position:relative;
 }
 
 .hero h1{
@@ -36,6 +35,18 @@ font-size:20px;
 color:#333;
 }
 
+button{
+padding:12px 18px;
+border:none;
+border-radius:12px;
+background:#e31229;
+color:white;
+cursor:pointer;
+margin:6px;
+font-size:15px;
+}
+
+/* SECTIONS */
 section{
 min-height:100vh;
 display:flex;
@@ -46,7 +57,7 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* QUIZ BIG */
+/* QUIZ */
 .card{
 background:white;
 padding:50px;
@@ -80,19 +91,7 @@ color:#444;
 line-height:1.5;
 }
 
-/* BUTTON */
-button{
-padding:12px 18px;
-border:none;
-border-radius:12px;
-background:#e31229;
-color:white;
-cursor:pointer;
-margin:6px;
-font-size:15px;
-}
-
-/* BADGE EASY/MED/HARD */
+/* BADGE */
 .badge{
 position:absolute;
 top:-15px;
@@ -116,15 +115,13 @@ border-radius:30px;
 width:95%;
 max-width:1200px;
 box-shadow:0 15px 45px rgba(0,0,0,0.12);
-display:flex;
-flex-direction:column;
-gap:30px;
 }
 
 .model-box{
 background:#f8fbff;
 padding:20px;
 border-radius:25px;
+margin-bottom:20px;
 }
 
 iframe{
@@ -138,7 +135,7 @@ border-radius:20px;
 
 <body>
 
-<!-- HERO CLEAN -->
+<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
@@ -148,7 +145,7 @@ border-radius:20px;
 <!-- QUIZ -->
 <section id="quiz">
 
-<h2>🧠 Question <span id="qnr">1</span>/30</h2>
+<h2>🧠 Question <span id="qnr">1</span> / <span id="total"></span></h2>
 
 <div class="card">
 
@@ -160,10 +157,8 @@ border-radius:20px;
 
 </div>
 
-<p>Score: <span id="score">0</span></p>
-
-<button onclick="restart()">Restart Quiz</button>
-<button onclick="goAnatomy()">Go to Anatomy</button>
+<button onclick="restart()">Restart</button>
+<button onclick="goAnatomy()">Anatomy</button>
 
 </section>
 
@@ -194,43 +189,45 @@ border-radius:20px;
 
 <script>
 
-/* FIXED QUIZ (NO RESET BUG) */
+/* 30+ QUESTIONS SAFE (poți extinde) */
 const quiz = [
 {
 q:"Gas exchange occurs in?",
 a:["Alveoli","Heart","Liver","Trachea"],
 c:0,
-e:"Gas exchange occurs in the alveoli of the lungs. These structures have extremely thin walls and are surrounded by capillaries, allowing oxygen to diffuse into blood while carbon dioxide is removed efficiently."
+e:"Alveoli are microscopic air sacs in the lungs where oxygen diffuses into blood and carbon dioxide is removed."
 },
 {
 q:"Heart function?",
 a:["Pump blood","Digest food","Store oxygen","Make bile"],
 c:0,
-e:"The heart is a muscular pump that circulates blood continuously through the body, delivering oxygen and nutrients while removing waste products like carbon dioxide."
+e:"The heart is a muscular pump that circulates blood throughout the body delivering oxygen and nutrients."
 },
 {
 q:"Kidney unit?",
 a:["Nephron","Neuron","Cell","Tissue"],
 c:0,
-e:"The nephron is the functional unit of the kidney. It filters blood, regulates electrolytes, and produces urine while maintaining fluid balance."
+e:"The nephron filters blood, removes waste and regulates water and electrolyte balance."
 },
 {
 q:"RBC carries?",
 a:["Oxygen","Sugar","Fat","CO2 only"],
 c:0,
-e:"Red blood cells contain hemoglobin, which binds oxygen in the lungs and transports it to tissues for cellular respiration."
+e:"Red blood cells carry oxygen using hemoglobin, which binds oxygen molecules efficiently."
 },
 {
 q:"Largest organ?",
 a:["Skin","Heart","Liver","Brain"],
 c:0,
-e:"The skin is the largest organ of the human body and serves as a protective barrier, temperature regulator, and immune defense system."
+e:"The skin is the largest organ and protects the body while regulating temperature and hydration."
 }
 ];
 
 let i = 0;
 let score = 0;
-let timer;
+
+/* total fix */
+document.getElementById("total").innerText = quiz.length;
 
 /* NAV */
 function goQuiz(){
@@ -258,8 +255,10 @@ else if(i<20){b.innerText="MEDIUM";b.className="badge yellow";}
 else{b.innerText="HARD";b.className="badge red";}
 }
 
-/* LOAD QUESTION */
+/* LOAD */
 function load(){
+
+if(i >= quiz.length) return;
 
 let q = quiz[i];
 
@@ -278,9 +277,6 @@ html+=`<div class="option" onclick="answer(${a.c})">${a.t}</div>`;
 
 document.getElementById("options").innerHTML = html;
 document.getElementById("explanation").innerText = "";
-
-clearTimeout(timer);
-timer = setTimeout(next,10000);
 }
 
 /* ANSWER */
@@ -288,7 +284,6 @@ function answer(correct){
 
 if(correct){
 score++;
-document.getElementById("score").innerText = score;
 }
 
 document.getElementById("explanation").innerText = quiz[i].e;
@@ -296,18 +291,18 @@ document.getElementById("explanation").innerText = quiz[i].e;
 document.querySelectorAll(".option")
 .forEach(o=>o.style.pointerEvents="none");
 
-clearTimeout(timer);
-setTimeout(next,2000);
+setTimeout(next,1500);
 }
 
-/* NEXT FIXED (NO BUG RESET) */
+/* NEXT (FIX 100% STABIL) */
 function next(){
+
 i++;
 
 if(i >= quiz.length){
+alert("Quiz completed! Score: " + score);
 i = 0;
 score = 0;
-document.getElementById("score").innerText = 0;
 }
 
 load();
@@ -317,7 +312,6 @@ load();
 function restart(){
 i = 0;
 score = 0;
-document.getElementById("score").innerText = 0;
 load();
 }
 
