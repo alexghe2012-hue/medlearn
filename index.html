@@ -55,7 +55,7 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* 🔥 MAI MARE QUIZ CARD */
+/* QUIZ */
 .card{
 background:white;
 padding:70px;
@@ -88,13 +88,42 @@ margin-bottom:10px;
 }
 
 #explanation{
-margin-top:20px;
-min-height:160px;
-font-size:15px;
-color:#444;
-line-height:1.6;
+margin-top:25px;
+min-height:200px;
+font-size:20px;
+color:#333;
+line-height:1.8;
+font-weight:500;
 }
 
+/* ANATOMY */
+.anatomy-card{
+background:white;
+padding:35px;
+border-radius:30px;
+width:95%;
+max-width:1200px;
+box-shadow:0 15px 45px rgba(0,0,0,0.12);
+}
+
+.anatomy-item{
+margin-bottom:60px;
+}
+
+.anatomy-item h3{
+margin-bottom:15px;
+font-size:24px;
+color:#222;
+}
+
+iframe{
+width:100%;
+height:650px;
+border:none;
+border-radius:20px;
+}
+
+/* BADGE */
 .badge{
 position:absolute;
 top:-15px;
@@ -110,32 +139,19 @@ color:white;
 .yellow{background:#f1c40f}
 .red{background:#e74c3c}
 
-.anatomy-card{
-background:white;
-padding:35px;
-border-radius:30px;
-width:95%;
-max-width:1200px;
-box-shadow:0 15px 45px rgba(0,0,0,0.12);
-}
-
-iframe{
-width:100%;
-height:650px;
-border:none;
-border-radius:20px;
-}
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 <button onclick="goQuiz()">Start Quiz</button>
 </div>
 
+<!-- QUIZ -->
 <section id="quiz">
 
 <h2>🧠 Question <span id="qnr">1</span> / <span id="total"></span></h2>
@@ -153,16 +169,26 @@ border-radius:20px;
 
 </section>
 
+<!-- ANATOMY -->
 <section id="anatomy">
 <h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
 
 <div class="anatomy-card">
 
+<div class="anatomy-item">
+<h3>🫁 Human Body (Circulatory System)</h3>
 <iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
+</div>
 
+<div class="anatomy-item">
+<h3>🫀 Heart Model</h3>
 <iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
+</div>
 
+<div class="anatomy-item">
+<h3>🧍 Complete Human Anatomy</h3>
 <iframe src="https://sketchfab.com/3d-models/complete-human-anatomy-c904a5a65ae145a0bc535645c7e693af/embed"></iframe>
+</div>
 
 </div>
 </section>
@@ -170,35 +196,17 @@ border-radius:20px;
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
-e:"Gas exchange takes place in alveoli. Here oxygen passes into blood while carbon dioxide is removed. This process happens through thin membranes that allow rapid diffusion."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Gas exchange happens in alveoli where oxygen enters blood and CO2 is removed."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood continuously through the body."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood and removes waste."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC transports oxygen via hemoglobin."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects the body."},
 
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart is a muscular organ that continuously pumps blood. It delivers oxygen and nutrients to tissues and removes waste products like carbon dioxide."},
-
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"The nephron is the functional unit of the kidney. It filters blood, removes waste, balances electrolytes and regulates water levels in the body."},
-
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,
-e:"Red blood cells carry oxygen using hemoglobin. This oxygen is transported from lungs to all tissues in the body for energy production."},
-
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
-e:"The skin is the largest organ in the human body. It protects internal organs, regulates temperature and prevents water loss."},
-
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,
-e:"Insulin is produced by the pancreas. It regulates blood glucose by allowing cells to absorb sugar from the blood."},
-
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,
-e:"Arteries carry blood away from the heart under high pressure. Most arteries carry oxygen-rich blood."},
-
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,
-e:"Veins return blood back to the heart. They often contain valves to prevent backflow."},
-
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
-e:"The brain controls all body functions including movement, thinking, breathing and coordination."},
-
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
-e:"Lungs are responsible for respiration. They take oxygen into the blood and remove carbon dioxide."}
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Insulin regulates blood sugar."},
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","None"],c:0,e:"Arteries carry blood away from heart."},
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood to heart."},
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls all functions."},
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs handle respiration."}
 ];
 
 let i=0;
@@ -224,7 +232,6 @@ else if(i<20){b.innerText="MEDIUM";b.className="badge yellow";}
 else{b.innerText="HARD";b.className="badge red";}
 }
 
-/* shuffle */
 function shuffle(arr){
 for(let j=arr.length-1;j>0;j--){
 let k=Math.floor(Math.random()*(j+1));
@@ -235,7 +242,7 @@ return arr;
 
 function load(){
 
-let q = quiz[i];
+let q=quiz[i];
 
 document.getElementById("qnr").innerText=i+1;
 document.getElementById("question").innerText=q.q;
@@ -254,13 +261,10 @@ document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
 clearTimeout(timer);
-
-/* ⏱️ 15 SECONDS PAUSE */
-timer=setTimeout(()=>next(),15000);
+timer=setTimeout(()=>next(),25000);
 }
 
 function answer(correct){
-
 if(correct) score++;
 
 document.getElementById("explanation").innerText=quiz[i].e;
