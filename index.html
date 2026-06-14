@@ -9,7 +9,16 @@
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background: linear-gradient(180deg,#f5f7ff 0%,#e8f0ff 50%,#fff3f3 100%);
+
+background:
+linear-gradient(
+135deg,
+#eef7ff 0%,
+#dcefff 30%,
+#f4f8ff 60%,
+#ffe9e9 100%
+);
+
 scroll-behavior:smooth;
 }
 
@@ -24,10 +33,12 @@ text-align:center;
 }
 
 .hero h1{
-font-size:100px;
-color:#e31212;
+font-size:110px;
+color:#d90429;
 margin:0;
 font-weight:900;
+letter-spacing:1px;
+text-shadow:0 8px 25px rgba(217,4,41,0.15);
 }
 
 .hero p{
@@ -46,7 +57,7 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* CARD QUIZ */
+/* QUIZ CARD */
 .card{
 background:white;
 padding:30px;
@@ -89,21 +100,31 @@ margin:6px;
 font-size:15px;
 }
 
-/* ANATOMY FIXED */
+/* ANATOMY */
 .anatomy-card{
 background:white;
-padding:25px;
+padding:35px;
+border-radius:30px;
+width:95%;
+max-width:1200px;
+box-shadow:0 15px 45px rgba(0,0,0,0.12);
+display:flex;
+flex-direction:column;
+gap:30px;
+}
+
+.model-box{
+background:#f8fbff;
+padding:20px;
 border-radius:25px;
-width:850px;
-box-shadow:0 10px 35px rgba(0,0,0,0.12);
 }
 
 iframe{
 width:100%;
-height:450px;
+height:650px;
 border:none;
-border-radius:15px;
-margin-top:10px;
+border-radius:20px;
+background:#eee;
 }
 </style>
 </head>
@@ -112,7 +133,7 @@ margin-top:10px;
 
 <!-- HERO -->
 <div class="hero">
-<h1>MED LEARN</h1>
+<h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
 
 <button onclick="goQuiz()">Start Quiz</button>
@@ -136,17 +157,25 @@ margin-top:10px;
 
 <!-- ANATOMY -->
 <section id="anatomy">
-<h2>🫀 Anatomy</h2>
+
+<h2 style="font-size:48px;color:#d90429;">
+🫀 Anatomy Explorer
+</h2>
 
 <div class="anatomy-card">
 
+<div class="model-box">
 <h3>Circulatory System</h3>
-<iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
+<iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed?autostart=1"></iframe>
+</div>
 
+<div class="model-box">
 <h3>Full Human Body Anatomy</h3>
-<iframe src="https://sketchfab.com/3d-models/animated-full-human-body-anatomy-9b0b079953b840bc9a13f524b60041e4"></iframe>
+<iframe src="https://sketchfab.com/models/9b0b079953b840bc9a13f524b60041e4/embed?autostart=1"></iframe>
+</div>
 
 </div>
+
 </section>
 
 <script>
@@ -190,7 +219,6 @@ let i=0;
 let score=0;
 let timer;
 
-/* navigation */
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
@@ -200,16 +228,8 @@ function goAnatomy(){
 document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
 }
 
-/* shuffle */
 function shuffle(arr){
 return arr.sort(()=>Math.random()-0.5);
-}
-
-/* difficulty */
-function difficulty(){
-if(i<10) return "🟢 EASY";
-if(i<20) return "🟡 MEDIUM";
-return "🔴 HARD";
 }
 
 function load(){
@@ -219,7 +239,6 @@ let q=quiz[i];
 document.getElementById("qnr").innerText=i+1;
 document.getElementById("question").innerText=q.q;
 
-/* random answers */
 let answers=q.a.map((a,idx)=>({text:a,correct:idx===q.c}));
 answers=shuffle(answers);
 
