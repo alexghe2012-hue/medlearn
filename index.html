@@ -25,50 +25,46 @@ position:relative;
 overflow:hidden;
 }
 
-/* medical background (A) */
-.hero::before{
-content:"";
-position:absolute;
-inset:0;
-background:
-url("https://images.unsplash.com/photo-1580281657527-47f249e8f3e0") center/cover no-repeat;
-opacity:0.18;
-z-index:0;
-}
-
 .hero h1{
 font-size:120px;
 color:#d90429;
 margin:0;
 font-weight:900;
-z-index:1;
-text-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 .hero p{
 font-size:20px;
 color:#333;
-z-index:1;
 }
 
-/* medical cards (B) */
+/* MED CARDS */
 .med-cards{
 display:flex;
 gap:15px;
 margin-top:20px;
-z-index:1;
 }
 
 .med-card{
 background:white;
-padding:15px;
-border-radius:15px;
-width:140px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-font-weight:bold;
+padding:22px;
+border-radius:18px;
+width:150px;
+box-shadow:0 10px 25px rgba(0,0,0,0.12);
+cursor:pointer;
+transition:0.25s;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:700;
+color:#222;
 }
 
-/* sections */
+.med-card:hover{
+transform:translateY(-6px) scale(1.05);
+background:#fff5f5;
+}
+
+/* SECTIONS */
 section{
 min-height:100vh;
 display:flex;
@@ -82,10 +78,11 @@ text-align:center;
 /* QUIZ BIGGER */
 .card{
 background:white;
-padding:40px;
-border-radius:25px;
-width:650px;
-box-shadow:0 10px 35px rgba(0,0,0,0.12);
+padding:50px;
+border-radius:28px;
+width:750px;
+min-height:320px;
+box-shadow:0 10px 40px rgba(0,0,0,0.15);
 position:relative;
 }
 
@@ -123,7 +120,7 @@ margin:6px;
 font-size:15px;
 }
 
-/* EASY MED HARD */
+/* BADGE */
 .badge{
 position:absolute;
 top:-15px;
@@ -139,7 +136,7 @@ color:white;
 .yellow{background:#f1c40f}
 .red{background:#e74c3c}
 
-/* anatomy */
+/* ANATOMY */
 .anatomy-card{
 background:white;
 padding:35px;
@@ -176,13 +173,11 @@ border-radius:20px;
 <p>Medical learning platform for students</p>
 
 <div class="med-cards">
-<div class="med-card">🫀 Heart</div>
-<div class="med-card">🧠 Brain</div>
-<div class="med-card">🦴 Anatomy</div>
-<div class="med-card">📚 Quiz</div>
+<div class="med-card">Heart</div>
+<div class="med-card">Brain</div>
+<div class="med-card">Anatomy</div>
+<div class="med-card" onclick="goQuiz()">Quiz</div>
 </div>
-
-<button onclick="goQuiz()">Start Quiz</button>
 
 </div>
 
@@ -236,38 +231,11 @@ border-radius:20px;
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli allow oxygen and CO2 exchange through diffusion."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood through the entire body."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood and produces urine."},
-
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2 only"],c:0,e:"Hemoglobin carries oxygen efficiently."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects the body and regulates temperature."},
-
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Controls blood glucose levels."},
-{q:"Arteries carry?",a:["Away from heart","To heart","Both","None"],c:0,e:"Carry oxygenated blood away."},
-{q:"Veins carry?",a:["To heart","Away","Only oxygen","None"],c:0,e:"Return blood to heart."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtering","Movement"],c:0,e:"Exchange oxygen and CO2."},
-{q:"Brain controls?",a:["Body","Heart","Liver","Nothing"],c:0,e:"Controls all body functions."},
-
-{q:"SA node?",a:["Pacemaker","Filter","Pump","Valve"],c:0,e:"Controls heartbeat rhythm."},
-{q:"Platelets?",a:["Clotting","Oxygen","Hormones","Digestion"],c:0,e:"Help blood clot."},
-{q:"Liver?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Removes toxins."},
-{q:"Neuron?",a:["Signal","Blood","Fat","Gas"],c:0,e:"Transmits nerve signals."},
-{q:"Cerebellum?",a:["Balance","Vision","Digestion","Speech"],c:0,e:"Controls balance and coordination."},
-
-{q:"CNS includes?",a:["Brain+spine","Heart","Lungs","Muscles"],c:0,e:"Central nervous system."},
-{q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,e:"Carries oxygen in blood."},
-{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Lives around 120 days."},
-{q:"Diffusion?",a:["Movement","Pump","Active transport","Digestion"],c:0,e:"Passive movement of particles."},
-{q:"Insulin?",a:["Sugar control","Breathing","Movement","Vision"],c:0,e:"Lowers blood glucose."},
-
-{q:"Urea formed?",a:["Liver","Kidney","Heart","Lung"],c:0,e:"Produced in liver."},
-{q:"Pulmonary flow?",a:["Heart-lung-heart","Heart-body-heart","Lung-brain-heart","None"],c:0,e:"Blood oxygenation cycle."},
-{q:"Nephron?",a:["Filtration","Digestion","Movement","Breathing"],c:0,e:"Filters blood in kidneys."},
-{q:"Oxygen binds?",a:["Hemoglobin","Plasma","Platelets","DNA"],c:0,e:"Binds to iron in hemoglobin."},
-{q:"Vein pressure?",a:["Low","High","Equal","None"],c:0,e:"Veins have low pressure."},
-
-{q:"Skin function?",a:["Protection","Digestion","Respiration","Blood"],c:0,e:"Protects body from environment."}
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli handle oxygen/CO2 exchange."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart circulates blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Filters blood."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2 only"],c:0,e:"Hemoglobin carries oxygen."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Protective barrier of body."}
 ];
 
 let i=0;
@@ -280,24 +248,16 @@ return arr.map(a=>({a,r:Math.random()}))
 .map(x=>x.a);
 }
 
-/* EASY MED HARD */
+/* BADGE */
 function setBadge(){
 let b=document.getElementById("badge");
 
-if(i<10){
-b.innerText="🟢 EASY";
-b.className="badge green";
-}
-else if(i<20){
-b.innerText="🟡 MEDIUM";
-b.className="badge yellow";
-}
-else{
-b.innerText="🔴 HARD";
-b.className="badge red";
-}
+if(i<10){b.innerText="EASY";b.className="badge green";}
+else if(i<20){b.innerText="MEDIUM";b.className="badge yellow";}
+else{b.innerText="HARD";b.className="badge red";}
 }
 
+/* NAV */
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
@@ -307,6 +267,7 @@ function goAnatomy(){
 document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
 }
 
+/* LOAD */
 function load(){
 
 let q=quiz[i];
@@ -331,6 +292,7 @@ clearTimeout(timer);
 timer=setTimeout(next,10000);
 }
 
+/* ANSWER */
 function answer(correct){
 
 if(correct){
@@ -340,24 +302,25 @@ document.getElementById("score").innerText=score;
 
 document.getElementById("explanation").innerText=quiz[i].e;
 
-document.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
+document.querySelectorAll(".option")
+.forEach(o=>o.style.pointerEvents="none");
 
 clearTimeout(timer);
 setTimeout(next,2000);
 }
 
+/* NEXT */
 function next(){
 i++;
-
 if(i>=quiz.length){
 i=0;
 score=0;
 document.getElementById("score").innerText=0;
 }
-
 load();
 }
 
+/* RESTART */
 function restart(){
 i=0;
 score=0;
