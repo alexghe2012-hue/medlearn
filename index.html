@@ -87,7 +87,6 @@ font-weight:700;
 margin-bottom:10px;
 }
 
-/* EXPLANATION BIGGER */
 #explanation{
 margin-top:25px;
 min-height:260px;
@@ -112,6 +111,18 @@ color:white;
 .yellow{background:#f1c40f}
 .red{background:#e74c3c}
 
+/* BUTTONS */
+.button-row{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:20px;
+}
+
+.button-row button{
+width:150px;
+}
+
 /* SCORE */
 .score-bottom{
 margin-top:25px;
@@ -120,7 +131,7 @@ font-weight:700;
 color:#333;
 }
 
-/* ANATOMY FIXED */
+/* ANATOMY */
 .anatomy-card{
 background:white;
 padding:50px;
@@ -130,13 +141,13 @@ max-width:1400px;
 box-shadow:0 20px 60px rgba(0,0,0,0.18);
 display:flex;
 flex-direction:column;
-gap:70px;
+gap:80px;
 }
 
 .anatomy-item h3{
 font-size:34px;
-margin:0;
 color:#111;
+margin:0;
 }
 
 iframe{
@@ -175,6 +186,12 @@ box-shadow:0 10px 40px rgba(0,0,0,0.15);
 Score: <span id="score">0</span>
 </div>
 
+<div class="button-row">
+<button onclick="next()">⬅ NEXT</button>
+<button onclick="restart()">↻ RESTART</button>
+<button onclick="goAnatomy()">🫀 ANATOMY</button>
+</div>
+
 </section>
 
 <!-- ANATOMY -->
@@ -186,17 +203,17 @@ Score: <span id="score">0</span>
 
 <div class="anatomy-card">
 
-<div class="anatomy-item">
+<div>
 <h3>Human Body</h3>
 <iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
 </div>
 
-<div class="anatomy-item">
+<div>
 <h3>Heart Anatomy</h3>
 <iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
 </div>
 
-<div class="anatomy-item">
+<div>
 <h3>Human Organs</h3>
 <iframe src="https://sketchfab.com/3d-models/human-anatomy-organs-pack-7fd440196fe3480587de330967737848/embed"></iframe>
 </div>
@@ -207,61 +224,11 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{
-q:"Where does gas exchange occur?",
-a:["Alveoli","Heart","Liver","Trachea"],
-c:0,
-e:{
-easy:"Alveoli are tiny air sacs where oxygen enters blood.",
-medium:"Gas exchange happens in alveoli where oxygen diffuses into capillaries and carbon dioxide leaves blood due to pressure gradients.",
-hard:"Alveoli provide a massive surface area (~70m²) with extremely thin epithelial walls enabling rapid diffusion of oxygen into pulmonary capillaries and removal of CO2 from blood based on partial pressure differences."
-}
-},
-
-{
-q:"Heart function?",
-a:["Pump blood","Digest food","Store oxygen","Make bile"],
-c:0,
-e:{
-easy:"Heart pumps blood.",
-medium:"The heart is a muscular organ that pumps blood through pulmonary and systemic circulation to deliver oxygen and nutrients.",
-hard:"Through coordinated contraction of myocardium, the heart generates pressure gradients maintaining systemic and pulmonary circulation essential for oxygen delivery, waste removal, and homeostasis."
-}
-},
-
-{
-q:"Kidney unit?",
-a:["Nephron","Neuron","Cell","Tissue"],
-c:0,
-e:{
-easy:"Nephron filters blood.",
-medium:"Nephrons are microscopic functional units of the kidney responsible for filtration and urine formation.",
-hard:"Each nephron performs ultrafiltration, selective reabsorption, and secretion, regulating osmotic balance, electrolyte concentration, and acid-base homeostasis."
-}
-},
-
-{
-q:"RBC carries?",
-a:["Oxygen","Sugar","Fat","CO2"],
-c:0,
-e:{
-easy:"RBC carries oxygen.",
-medium:"Red blood cells transport oxygen using hemoglobin.",
-hard:"Hemoglobin’s iron-containing heme groups bind oxygen reversibly, enabling efficient oxygen transport from lungs to tissues."
-}
-},
-
-{
-q:"Skin function?",
-a:["Protection","Digestion","Respiration","Circulation"],
-c:0,
-e:{
-easy:"Protects body.",
-medium:"Skin acts as a protective barrier and regulates temperature.",
-hard:"The integumentary system provides immune defense, thermoregulation via sweat glands, and prevents dehydration through lipid-rich epidermal layers."
-}
-}
-
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC carries oxygen."},
+{q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body."}
 ];
 
 let i=0;
@@ -271,6 +238,10 @@ let locked=false;
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
+}
+
+function goAnatomy(){
+document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
 }
 
 function setBadge(){
@@ -314,27 +285,34 @@ function answer(idx){
 if(locked) return;
 locked=true;
 
-let exp = quiz[i].e;
-
 if(idx===quiz[i].c){
 score++;
-}
-
 document.getElementById("score").innerText=score;
+}
 
-if(i<10){
-document.getElementById("explanation").innerText=exp.easy;
-}
-else if(i<20){
-document.getElementById("explanation").innerText=exp.medium;
-}
-else{
-document.getElementById("explanation").innerText=exp.hard;
-}
+document.getElementById("explanation").innerText=quiz[i].e;
 
 document.querySelectorAll(".option").forEach(o=>{
 o.style.pointerEvents="none";
 });
+}
+
+function next(){
+if(i<quiz.length-1){
+i++;
+load();
+}else{
+alert("Final Score: "+score+"/"+quiz.length);
+i=0;
+score=0;
+load();
+}
+}
+
+function restart(){
+i=0;
+score=0;
+load();
 }
 
 window.onload=load;
