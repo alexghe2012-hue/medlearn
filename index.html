@@ -13,7 +13,7 @@ background:linear-gradient(135deg,#eef7ff,#dcefff,#ffe9e9);
 scroll-behavior:smooth;
 }
 
-/* HERO */
+/* HERO CLEAN (NO CARDS) */
 .hero{
 height:100vh;
 display:flex;
@@ -22,7 +22,6 @@ justify-content:center;
 align-items:center;
 text-align:center;
 position:relative;
-overflow:hidden;
 }
 
 .hero h1{
@@ -37,34 +36,6 @@ font-size:20px;
 color:#333;
 }
 
-/* MED CARDS */
-.med-cards{
-display:flex;
-gap:15px;
-margin-top:20px;
-}
-
-.med-card{
-background:white;
-padding:22px;
-border-radius:18px;
-width:150px;
-box-shadow:0 10px 25px rgba(0,0,0,0.12);
-cursor:pointer;
-transition:0.25s;
-display:flex;
-justify-content:center;
-align-items:center;
-font-weight:700;
-color:#222;
-}
-
-.med-card:hover{
-transform:translateY(-6px) scale(1.05);
-background:#fff5f5;
-}
-
-/* SECTIONS */
 section{
 min-height:100vh;
 display:flex;
@@ -75,7 +46,7 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* QUIZ BIGGER */
+/* QUIZ BIG */
 .card{
 background:white;
 padding:50px;
@@ -103,12 +74,13 @@ background:#ffe5e5;
 
 #explanation{
 margin-top:15px;
-min-height:90px;
+min-height:110px;
 font-size:15px;
 color:#444;
-line-height:1.4;
+line-height:1.5;
 }
 
+/* BUTTON */
 button{
 padding:12px 18px;
 border:none;
@@ -120,7 +92,7 @@ margin:6px;
 font-size:15px;
 }
 
-/* BADGE */
+/* BADGE EASY/MED/HARD */
 .badge{
 position:absolute;
 top:-15px;
@@ -166,19 +138,11 @@ border-radius:20px;
 
 <body>
 
-<!-- HERO -->
+<!-- HERO CLEAN -->
 <div class="hero">
-
 <h1>MedLearn</h1>
 <p>Medical learning platform for students</p>
-
-<div class="med-cards">
-<div class="med-card">Heart</div>
-<div class="med-card">Brain</div>
-<div class="med-card">Anatomy</div>
-<div class="med-card" onclick="goQuiz()">Quiz</div>
-</div>
-
+<button onclick="goQuiz()">Start Quiz</button>
 </div>
 
 <!-- QUIZ -->
@@ -230,18 +194,55 @@ border-radius:20px;
 
 <script>
 
+/* FIXED QUIZ (NO RESET BUG) */
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli handle oxygen/CO2 exchange."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart circulates blood."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Filters blood."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2 only"],c:0,e:"Hemoglobin carries oxygen."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Protective barrier of body."}
+{
+q:"Gas exchange occurs in?",
+a:["Alveoli","Heart","Liver","Trachea"],
+c:0,
+e:"Gas exchange occurs in the alveoli of the lungs. These structures have extremely thin walls and are surrounded by capillaries, allowing oxygen to diffuse into blood while carbon dioxide is removed efficiently."
+},
+{
+q:"Heart function?",
+a:["Pump blood","Digest food","Store oxygen","Make bile"],
+c:0,
+e:"The heart is a muscular pump that circulates blood continuously through the body, delivering oxygen and nutrients while removing waste products like carbon dioxide."
+},
+{
+q:"Kidney unit?",
+a:["Nephron","Neuron","Cell","Tissue"],
+c:0,
+e:"The nephron is the functional unit of the kidney. It filters blood, regulates electrolytes, and produces urine while maintaining fluid balance."
+},
+{
+q:"RBC carries?",
+a:["Oxygen","Sugar","Fat","CO2 only"],
+c:0,
+e:"Red blood cells contain hemoglobin, which binds oxygen in the lungs and transports it to tissues for cellular respiration."
+},
+{
+q:"Largest organ?",
+a:["Skin","Heart","Liver","Brain"],
+c:0,
+e:"The skin is the largest organ of the human body and serves as a protective barrier, temperature regulator, and immune defense system."
+}
 ];
 
-let i=0;
-let score=0;
+let i = 0;
+let score = 0;
 let timer;
 
+/* NAV */
+function goQuiz(){
+document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
+load();
+}
+
+function goAnatomy(){
+document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
+}
+
+/* SHUFFLE */
 function shuffle(arr){
 return arr.map(a=>({a,r:Math.random()}))
 .sort((x,y)=>x.r-y.r)
@@ -257,39 +258,29 @@ else if(i<20){b.innerText="MEDIUM";b.className="badge yellow";}
 else{b.innerText="HARD";b.className="badge red";}
 }
 
-/* NAV */
-function goQuiz(){
-document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
-load();
-}
-
-function goAnatomy(){
-document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
-}
-
-/* LOAD */
+/* LOAD QUESTION */
 function load(){
 
-let q=quiz[i];
+let q = quiz[i];
 
-document.getElementById("qnr").innerText=i+1;
-document.getElementById("question").innerText=q.q;
+document.getElementById("qnr").innerText = i+1;
+document.getElementById("question").innerText = q.q;
 
 setBadge();
 
-let answers=q.a.map((a,idx)=>({t:a,c:idx===q.c}));
-answers=shuffle(answers);
+let answers = q.a.map((a,idx)=>({t:a,c:idx===q.c}));
+answers = shuffle(answers);
 
 let html="";
 answers.forEach(a=>{
 html+=`<div class="option" onclick="answer(${a.c})">${a.t}</div>`;
 });
 
-document.getElementById("options").innerHTML=html;
-document.getElementById("explanation").innerText="";
+document.getElementById("options").innerHTML = html;
+document.getElementById("explanation").innerText = "";
 
 clearTimeout(timer);
-timer=setTimeout(next,10000);
+timer = setTimeout(next,10000);
 }
 
 /* ANSWER */
@@ -297,10 +288,10 @@ function answer(correct){
 
 if(correct){
 score++;
-document.getElementById("score").innerText=score;
+document.getElementById("score").innerText = score;
 }
 
-document.getElementById("explanation").innerText=quiz[i].e;
+document.getElementById("explanation").innerText = quiz[i].e;
 
 document.querySelectorAll(".option")
 .forEach(o=>o.style.pointerEvents="none");
@@ -309,26 +300,28 @@ clearTimeout(timer);
 setTimeout(next,2000);
 }
 
-/* NEXT */
+/* NEXT FIXED (NO BUG RESET) */
 function next(){
 i++;
-if(i>=quiz.length){
-i=0;
-score=0;
-document.getElementById("score").innerText=0;
+
+if(i >= quiz.length){
+i = 0;
+score = 0;
+document.getElementById("score").innerText = 0;
 }
+
 load();
 }
 
 /* RESTART */
 function restart(){
-i=0;
-score=0;
-document.getElementById("score").innerText=0;
+i = 0;
+score = 0;
+document.getElementById("score").innerText = 0;
 load();
 }
 
-window.onload=load;
+window.onload = load;
 
 </script>
 
