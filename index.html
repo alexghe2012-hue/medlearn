@@ -55,7 +55,6 @@ padding:80px 20px;
 text-align:center;
 }
 
-/* QUIZ CARD */
 .card{
 background:white;
 padding:70px;
@@ -87,24 +86,21 @@ font-weight:700;
 margin-bottom:10px;
 }
 
-/* EXPLANATION */
 #explanation{
 margin-top:25px;
-min-height:200px;
+min-height:260px;
 font-size:20px;
 color:#333;
 line-height:1.8;
 font-weight:500;
 }
 
-/* SCORE FIX */
 #scoreBox{
 margin-top:10px;
 font-weight:700;
 color:#444;
 }
 
-/* BADGE */
 .badge{
 position:absolute;
 top:-15px;
@@ -131,7 +127,7 @@ box-shadow:0 15px 45px rgba(0,0,0,0.12);
 }
 
 .anatomy-item{
-margin-bottom:60px;
+margin-bottom:70px;
 }
 
 .anatomy-item h3{
@@ -190,13 +186,13 @@ Score: <span id="score">0</span>
 </div>
 
 <div class="anatomy-item">
-<h3>Heart Model</h3>
-<iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
+<h3>Heart Anatomy and Functions</h3>
+<iframe src="https://sketchfab.com/3d-models/heart-anatomy-and-functions-2e6726aca3e64c56b8f8d7cceae17a28/embed"></iframe>
 </div>
 
 <div class="anatomy-item">
-<h3>Complete Human Anatomy</h3>
-<iframe src="https://sketchfab.com/3d-models/complete-human-anatomy-c904a5a65ae145a0bc535645c7e693af/embed"></iframe>
+<h3>Human Anatomy Organs Pack</h3>
+<iframe src="https://sketchfab.com/3d-models/human-anatomy-organs-pack-7fd440196fe3480587de330967737848/embed"></iframe>
 </div>
 
 </div>
@@ -205,17 +201,35 @@ Score: <span id="score">0</span>
 <script>
 
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli are where oxygen enters blood and CO2 leaves."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood constantly."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC transports oxygen via hemoglobin."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects the body."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
+e:"Alveoli are tiny air sacs where oxygen enters the blood and carbon dioxide is removed. This process is essential for life and happens continuously with every breath."},
 
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Controls blood sugar."},
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","None"],c:0,e:"Arteries carry blood away."},
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood."},
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Controls all functions."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Respiration system."}
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
+e:"The heart is a muscular pump that circulates blood throughout the body. It ensures oxygen and nutrients reach tissues and removes waste like carbon dioxide."},
+
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
+e:"The nephron is the functional unit of the kidney. It filters blood, removes waste, regulates water balance and maintains electrolyte levels."},
+
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,
+e:"Red blood cells carry oxygen using hemoglobin, transporting it from lungs to tissues for energy production and metabolism."},
+
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
+e:"The skin is the largest organ in the human body. It protects internal organs, regulates temperature and prevents dehydration and infection."},
+
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,
+e:"Insulin is a hormone produced by the pancreas that regulates blood glucose levels by allowing cells to absorb sugar from the bloodstream."},
+
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","None"],c:0,
+e:"Arteries carry oxygen-rich blood away from the heart under high pressure to supply organs and tissues throughout the body."},
+
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,
+e:"Veins return deoxygenated blood back to the heart and contain valves that prevent backward flow of blood."},
+
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
+e:"The brain is the control center of the body, managing movement, thought, memory, and vital functions like breathing."},
+
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
+e:"The lungs perform gas exchange, taking oxygen into the bloodstream and removing carbon dioxide during breathing."}
 ];
 
 let i=0;
@@ -274,8 +288,8 @@ document.getElementById("explanation").innerText="";
 
 clearTimeout(timer);
 
-/* ⏱️ 60 SEC */
-timer=setTimeout(()=>next(),60000);
+/* ⏱️ 90 SEC */
+timer=setTimeout(()=>next(),90000);
 }
 
 function answer(correct){
@@ -295,7 +309,6 @@ document.querySelectorAll(".option")
 
 clearTimeout(timer);
 
-/* safe next */
 setTimeout(()=>{
 next();
 },3000);
