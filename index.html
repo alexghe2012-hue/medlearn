@@ -181,7 +181,7 @@ Score: <span id="score">0</span>
 <button onclick="restart()">RESTART</button>
 </div>
 <div class="row">
-<button onclick="goAnatomy()">ANATOMY</button>
+<button onclick="goAnatomy()"> 🫀ANATOMY</button>
 </div>
 </div>
 
@@ -210,102 +210,115 @@ Score: <span id="score">0</span>
 const quiz = [
 
 /* 🟢 EASY (1–10) */
+
 {d:"EASY",q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
-e:"Gas exchange takes place in the alveoli, which are tiny air sacs in the lungs surrounded by capillaries. Oxygen diffuses into blood while carbon dioxide is removed. This process is essential for cellular respiration because oxygen is needed for ATP production in every cell of the body."},
+e:"Gas exchange occurs in the alveoli, which are microscopic air sacs located at the end of the respiratory tree inside the lungs. These alveoli are surrounded by an extremely dense network of capillaries, forming a very thin barrier between air and blood. Because the wall is only one cell thick, oxygen can easily diffuse from inhaled air into the bloodstream, while carbon dioxide diffuses in the opposite direction to be exhaled. This process is fundamental for life because every single cell in the human body depends on oxygen to produce energy through cellular respiration (ATP production)."},
 
 {d:"EASY",q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart is a muscular pump that circulates blood throughout the body. It ensures oxygen and nutrients reach tissues and removes waste products like carbon dioxide. It works continuously through electrical impulses that coordinate contractions."},
+e:"The heart is a muscular organ whose main function is to pump blood continuously throughout the entire body. It works as a double pump system: the right side sends deoxygenated blood to the lungs for oxygenation, while the left side distributes oxygen-rich blood to all organs and tissues. This continuous circulation ensures that oxygen, nutrients, and hormones reach every cell while waste products like carbon dioxide are efficiently removed. Without the heart, circulation would stop within minutes, making it one of the most vital organs in the body."},
 
 {d:"EASY",q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"The nephron is the functional unit of the kidney responsible for filtering blood, removing waste, balancing water and electrolytes, and maintaining homeostasis through filtration, reabsorption, and secretion."},
+e:"The nephron is the structural and functional unit of the kidney, and each kidney contains around one million nephrons. Its main role is to filter blood and maintain homeostasis by regulating water balance, electrolyte levels, and waste removal. The nephron performs three major processes: filtration (removing waste from blood), reabsorption (returning useful substances like glucose and water), and secretion (eliminating additional toxins). This ensures that the internal environment of the body remains stable."},
 
 {d:"EASY",q:"RBC carries?",a:["Oxygen","Sugar","Fat","Hormones"],c:0,
-e:"Red blood cells carry oxygen using hemoglobin, a protein containing iron. Oxygen binds in the lungs and is released in tissues where it is needed for energy production."},
+e:"Red blood cells (RBCs) are specialized cells designed to transport oxygen from the lungs to all tissues of the body. They contain a protein called hemoglobin, which has iron atoms that bind oxygen molecules. This binding is reversible, meaning oxygen is picked up in the lungs and released where it is needed. RBCs also help transport a portion of carbon dioxide back to the lungs. Their biconcave shape increases surface area, making oxygen exchange more efficient."},
 
 {d:"EASY",q:"Skin function?",a:["Protection","Digestion","Respiration","Circulation"],c:0,
-e:"Skin protects the body from pathogens, prevents water loss, regulates temperature through sweating, and contains sensory receptors for touch and pain."},
+e:"The skin is the largest organ of the human body and serves multiple essential functions. It acts as a protective barrier against bacteria, viruses, UV radiation, and physical injuries. It also prevents excessive water loss, regulates body temperature through sweating and blood vessel dilation, and contains sensory receptors that detect pain, temperature, and touch. Without the skin, the body would be highly vulnerable to infection and dehydration."},
 
 {d:"EASY",q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
-e:"The brain controls all voluntary and involuntary functions, including movement, breathing, memory, emotions, and organ activity through the nervous system."},
+e:"The brain is the central control system of the human body. It processes sensory information, generates thoughts, controls voluntary movements, and regulates involuntary functions such as breathing and heartbeat. It communicates with the entire body through the nervous system using electrical and chemical signals. Every action, emotion, memory, and reflex originates or is coordinated by the brain."},
 
 {d:"EASY",q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
-e:"The lungs are responsible for gas exchange, bringing oxygen into the blood and removing carbon dioxide during respiration."},
+e:"The lungs are responsible for respiration, specifically gas exchange between air and blood. When we inhale, oxygen enters the alveoli and diffuses into the bloodstream. At the same time, carbon dioxide moves from the blood into the lungs to be exhaled. This process is essential for maintaining oxygen supply to cells and removing metabolic waste gases."},
 
 {d:"EASY",q:"Arteries carry?",a:["Away from heart","To heart","Both","None"],c:0,
-e:"Arteries carry oxygenated blood away from the heart under high pressure to supply organs and tissues."},
+e:"Arteries are blood vessels that carry blood away from the heart under high pressure. Most arteries carry oxygen-rich blood, except pulmonary arteries, which carry deoxygenated blood to the lungs. Their thick, muscular walls help withstand and maintain the pressure generated by the heart’s pumping action."},
 
 {d:"EASY",q:"Veins carry?",a:["To heart","Away","Oxygen only","CO2 only"],c:0,
-e:"Veins return deoxygenated blood back to the heart and contain valves to prevent backflow."},
+e:"Veins are blood vessels that return blood back to the heart. They usually carry deoxygenated blood, except pulmonary veins, which carry oxygenated blood from the lungs. Veins contain valves that prevent backflow of blood and help blood return to the heart despite low pressure."},
 
 {d:"EASY",q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
-e:"The skin is the largest organ of the human body and acts as a protective barrier against external threats."},
+e:"The skin is the largest organ of the human body in terms of surface area and weight. It covers the entire body and acts as the first line of defense against environmental threats while also helping regulate temperature and hydration."},
 
 /* 🟡 MEDIUM (11–20) */
+
 {d:"MEDIUM",q:"SA node?",a:["Pacemaker","Filter","Pump","Valve"],c:0,
-e:"The SA node is the natural pacemaker of the heart. It generates electrical impulses that control heartbeat rhythm and ensure coordinated contraction of heart chambers."},
+e:"The sinoatrial (SA) node is a specialized group of cells located in the right atrium of the heart. It acts as the natural pacemaker by generating electrical impulses that initiate each heartbeat. These impulses spread through the atria, causing them to contract, and then travel to the ventricles, ensuring coordinated pumping of blood. Without the SA node, the heart would lose its rhythmic beating pattern."},
 
 {d:"MEDIUM",q:"Platelets?",a:["Clotting","Oxygen","Digestion","Hormones"],c:0,
-e:"Platelets are responsible for blood clotting. They form plugs at injury sites and activate clotting proteins to prevent bleeding."},
+e:"Platelets are small cell fragments in the blood that play a key role in hemostasis, the process of stopping bleeding. When a blood vessel is damaged, platelets quickly accumulate at the injury site, stick together, and release chemicals that activate clotting proteins. This leads to the formation of a fibrin clot, which seals the wound and prevents blood loss while healing occurs."},
 
 {d:"MEDIUM",q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,
-e:"The liver detoxifies harmful substances, produces bile for fat digestion, stores glycogen for energy, and synthesizes important proteins."},
+e:"The liver is a vital metabolic organ responsible for detoxifying harmful substances such as drugs and alcohol. It also produces bile for fat digestion, stores energy in the form of glycogen, and synthesizes important proteins needed for blood clotting. It plays a central role in metabolism and maintaining chemical balance in the body."},
 
 {d:"MEDIUM",q:"Digestion starts?",a:["Mouth","Stomach","Intestine","Liver"],c:0,
-e:"Digestion starts in the mouth where food is mechanically broken and chemically processed by saliva enzymes like amylase."},
+e:"Digestion begins in the mouth, where both mechanical and chemical digestion occur. Teeth break food into smaller pieces while saliva moistens it. Saliva contains enzymes like amylase that start breaking down carbohydrates into simpler sugars. This early stage is important because it prepares food for further digestion in the stomach and intestines."},
 
 {d:"MEDIUM",q:"Neuron?",a:["Signal","Blood","Digestion","Clotting"],c:0,
-e:"Neurons transmit electrical and chemical signals through synapses, enabling communication between brain and body."},
+e:"Neurons are specialized nerve cells that transmit information throughout the nervous system. They send electrical impulses along their axons and communicate with other neurons using chemical messengers called neurotransmitters. This allows fast communication between the brain, spinal cord, and the rest of the body, enabling movement, sensation, and cognition."},
 
 {d:"MEDIUM",q:"Hemoglobin?",a:["Oxygen","Sugar","Fat","Water"],c:0,
-e:"Hemoglobin is the protein in red blood cells that binds oxygen for transport from lungs to tissues."},
+e:"Hemoglobin is a protein found in red blood cells that binds to oxygen molecules in the lungs and transports them to tissues throughout the body. Its iron-containing structure allows reversible binding, making oxygen delivery highly efficient and essential for survival."},
 
 {d:"MEDIUM",q:"Cerebellum?",a:["Balance","Vision","Digestion","Breathing"],c:0,
-e:"The cerebellum controls balance, posture, and coordination of movements."},
+e:"The cerebellum is a part of the brain responsible for coordination, balance, and fine motor control. It ensures smooth and precise movements by integrating sensory input with motor commands, helping maintain posture and stability during activities like walking or writing."},
 
 {d:"MEDIUM",q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,
-e:"Blood pressure is highest in arteries because blood is pumped directly from the heart under force."},
+e:"Blood pressure is highest in arteries because they receive blood directly from the heart’s powerful contractions. Their thick, elastic walls are designed to withstand this pressure and maintain continuous blood flow to organs."},
 
 {d:"MEDIUM",q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,
-e:"The central nervous system includes the brain and spinal cord, responsible for processing and sending signals."},
+e:"The central nervous system (CNS) consists of the brain and spinal cord. It is responsible for processing all incoming information and coordinating responses. It acts as the control center of the body, integrating sensory input and motor output."},
 
 {d:"MEDIUM",q:"Pacemaker?",a:["SA node","AV node","Purkinje","Bundle"],c:0,
-e:"The SA node initiates electrical impulses that control heart rhythm."},
+e:"The SA node acts as the natural pacemaker of the heart by generating rhythmic electrical impulses. These impulses control the timing of heart contractions and ensure efficient blood circulation."},
 
 /* 🔴 HARD (21–30) */
+
 {d:"HARD",q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,
-e:"The nephron performs filtration, reabsorption, and secretion to regulate water, salts, and waste, maintaining internal balance of the body."},
+e:"The nephron is the microscopic functional unit of the kidney that performs blood filtration and urine formation. It regulates water balance, electrolytes, and removes metabolic waste. It works through filtration in the glomerulus, reabsorption of useful substances, and secretion of toxins, maintaining strict homeostasis in the body."},
 
 {d:"HARD",q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,
-e:"Oxygen binds to iron in hemoglobin inside red blood cells, allowing efficient transport through the bloodstream."},
+e:"Oxygen binds to the iron atoms within hemoglobin molecules inside red blood cells. This binding is reversible, allowing oxygen to be picked up in the lungs and released in tissues where oxygen levels are low and demand is high."},
 
 {d:"HARD",q:"Veins pressure?",a:["Low","High","Medium","None"],c:0,
-e:"Veins operate under low pressure and rely on valves and muscle contractions to return blood to the heart."},
+e:"Veins carry blood at low pressure because most of the force from the heart is lost after blood passes through capillaries. To compensate, veins use valves and muscle contractions to push blood back toward the heart."},
 
 {d:"HARD",q:"CNS?",a:["Brain+spine","Nerves","Muscles","Heart"],c:0,
-e:"The CNS controls all body functions and processes information from sensory inputs to generate responses."},
+e:"The central nervous system (CNS) integrates sensory information and coordinates body responses. The brain processes information while the spinal cord transmits signals between the brain and the rest of the body."},
 
 {d:"HARD",q:"Urea formed?",a:["Liver","Kidney","Heart","Lungs"],c:0,
-e:"The liver converts toxic ammonia into urea, which is then excreted by the kidneys."},
+e:"Urea is produced in the liver through the urea cycle, which converts toxic ammonia (a waste product of protein metabolism) into urea. This urea is then transported to the kidneys for excretion in urine."},
 
 {d:"HARD",q:"Diffusion?",a:["Passive movement","Active pump","Muscle force","Heartbeat"],c:0,
-e:"Diffusion is the passive movement of particles from high concentration to low concentration without energy."},
+e:"Diffusion is the passive movement of molecules from an area of high concentration to an area of low concentration. It does not require energy and is essential for processes like gas exchange in the lungs."},
 
 {d:"HARD",q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,
-e:"Red blood cells live about 120 days before being removed and recycled by the spleen and liver."},
+e:"Red blood cells circulate for approximately 120 days before being broken down by the spleen and liver. Their components are recycled, especially iron from hemoglobin, which is reused to form new RBCs."},
 
 {d:"HARD",q:"Pulmonary circulation?",a:["Heart-lungs-heart","Heart-body-heart","Brain-heart","Liver-heart"],c:0,
-e:"Pulmonary circulation carries blood from the heart to the lungs for oxygenation and back to the heart."},
+e:"Pulmonary circulation is the pathway where blood travels from the right side of the heart to the lungs for oxygenation and then returns to the left side of the heart. This process ensures oxygen enrichment of blood."},
 
 {d:"HARD",q:"Skin role?",a:["Protection","Digestion","Respiration","Circulation"],c:0,
-e:"Skin protects the body, regulates temperature, prevents dehydration, and acts as a sensory organ."},
+e:"The skin protects the body from physical damage, pathogens, and dehydration. It also regulates temperature and contains sensory receptors that detect environmental stimuli."},
 
 {d:"HARD",q:"Neurons do?",a:["Transmit signals","Store fat","Make blood","Digest food"],c:0,
-e:"Neurons transmit electrical and chemical signals throughout the nervous system for communication."}
+e:"Neurons transmit electrical and chemical signals throughout the nervous system. This allows rapid communication between different parts of the body and enables all functions from movement to thinking."}
 
 ];
 
 let i=0;
 let score=0;
+
+/* 🔥 shuffle corect */
+function shuffleArray(arr){
+let a = arr.slice();
+for(let i = a.length - 1; i > 0; i--){
+let j = Math.floor(Math.random() * (i + 1));
+[a[i], a[j]] = [a[j], a[i]];
+}
+return a;
+}
 
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
@@ -330,6 +343,7 @@ b.className="red";
 }
 
 function load(){
+
 let q=quiz[i];
 
 document.getElementById("qnr").innerText=i+1;
@@ -338,29 +352,48 @@ document.getElementById("score").innerText=score;
 
 setBadge();
 
+/* 🔥 RANDOM ANSWERS REAL */
+let options = q.a.map((text, idx) => {
+return {
+text: text,
+correct: idx === q.c
+};
+});
+
+options = shuffleArray(options);
+
 let html="";
-q.a.forEach((a,idx)=>{
-html+=`<div class="option" onclick="answer(${idx})">${a}</div>`;
+options.forEach(opt=>{
+html += `<div class="option" onclick="answer(${opt.correct})">${opt.text}</div>`;
 });
 
 document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 }
 
-function answer(idx){
-if(idx===quiz[i].c){
+function answer(isCorrect){
+
+if(isCorrect){
 score++;
 document.getElementById("score").innerText=score;
 }
+
 document.getElementById("explanation").innerText=quiz[i].e;
 }
 
 function next(){
-if(i<quiz.length-1){
+if(i < quiz.length-1){
 i++;
 load();
 }else{
 alert("Final Score: "+score+"/30");
+i=0;
+score=0;
+load();
+}
+}
+
+function restart(){
 i=0;
 score=0;
 load();
