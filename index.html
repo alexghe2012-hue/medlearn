@@ -8,11 +8,8 @@
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-
-background:
-linear-gradient(135deg,#eef7ff 0%,#dcefff 30%,#f4f8ff 60%,#ffe9e9 100%);
-
+font-family:Arial;
+background:linear-gradient(135deg,#eef7ff,#dcefff,#ffe9e9);
 scroll-behavior:smooth;
 }
 
@@ -26,15 +23,9 @@ text-align:center;
 }
 
 .hero h1{
-font-size:110px;
+font-size:100px;
 color:#d90429;
 margin:0;
-font-weight:900;
-}
-
-.hero p{
-font-size:20px;
-color:#444;
 }
 
 section{
@@ -43,221 +34,239 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:80px 20px;
-text-align:center;
+padding:40px;
 }
 
 .card{
 background:white;
-padding:30px;
-border-radius:25px;
+padding:25px;
+border-radius:20px;
 width:520px;
-box-shadow:0 10px 35px rgba(0,0,0,0.12);
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
 .option{
 background:#f3f3f3;
-padding:14px;
-margin-top:12px;
-border-radius:12px;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
 cursor:pointer;
-font-weight:600;
-transition:0.2s;
 }
 
-.option:hover{
-transform:scale(1.03);
-background:#ffe5e5;
-}
-
-#explanation{
-margin-top:15px;
-font-size:15px;
-color:#444;
-min-height:90px;
-line-height:1.4;
-}
+.option:hover{background:#ffe5e5}
 
 button{
-padding:12px 18px;
+padding:10px 15px;
+margin:5px;
 border:none;
-border-radius:12px;
-background:#e31212;
+border-radius:10px;
+background:#d90429;
 color:white;
 cursor:pointer;
-margin:6px;
 }
 
-.anatomy-card{
+.bar{
+width:520px;
+height:10px;
+background:#ddd;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+.bar-fill{
+height:100%;
+background:#d90429;
+width:0%;
+transition:0.3s;
+}
+
+.badge{
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.bullet{
+display:inline-block;
+width:10px;
+height:10px;
+border-radius:50%;
+margin-right:6px;
+}
+
+.green{background:#2ecc71}
+.yellow{background:#f1c40f}
+.red{background:#e74c3c}
+
+.review{
+text-align:left;
+max-width:600px;
 background:white;
-padding:35px;
-border-radius:30px;
-width:95%;
-max-width:1200px;
-box-shadow:0 15px 45px rgba(0,0,0,0.12);
-display:flex;
-flex-direction:column;
-gap:30px;
-}
-
-.model-box{
-background:#f8fbff;
 padding:20px;
-border-radius:25px;
-}
-
-iframe{
-width:100%;
-height:650px;
-border:none;
-border-radius:20px;
+border-radius:15px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <div class="hero">
 <h1>MedLearn</h1>
-<p>Medical learning platform for students</p>
-
-<button onclick="goQuiz()">Start Quiz</button>
+<p>Medical learning platform</p>
+<button onclick="startQuiz()">Start Quiz</button>
+<button onclick="toggleMode()">Toggle Exam Mode</button>
 </div>
 
-<!-- QUIZ -->
 <section id="quiz">
-<h2>🧠 Question <span id="qnr">1</span>/30</h2>
+
+<div class="badge" id="levelInfo"></div>
+<div class="badge">XP: <span id="xp">0</span> | Level: <span id="lvl">1</span> | 🔥 Streak: <span id="streak">0</span></div>
+
+<div class="bar"><div class="bar-fill" id="progress"></div></div>
+
+<h2 id="qtext"></h2>
 
 <div class="card">
-<div id="question"></div>
 <div id="options"></div>
 <div id="explanation"></div>
 </div>
 
-<p>Score: <span id="score">0</span></p>
-
-<button onclick="goAnatomy()">Go to Anatomy</button>
-<button onclick="restart()">Restart</button>
+<button onclick="next()">Next</button>
 </section>
 
-<!-- ANATOMY -->
-<section id="anatomy">
-
-<h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
-
-<div class="anatomy-card">
-
-<div class="model-box">
-<h3>Circulatory System</h3>
-<iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
-</div>
-
-<div class="model-box">
-<h3>Human Body (Circulatory + Animation)</h3>
-<iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
-</div>
-
-</div>
+<section id="reviewSection" style="display:none;">
+<h2>Review Greșeli</h2>
+<div id="review"></div>
 </section>
 
 <script>
 
 const quiz = [
-{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,
-e:"Gas exchange happens in alveoli where oxygen enters blood and carbon dioxide is removed through extremely thin walls designed for rapid diffusion."},
-
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart is a powerful muscular pump that circulates blood continuously to deliver oxygen and nutrients to every cell in the body."},
-
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"The nephron is the functional unit of the kidney responsible for filtering blood, balancing fluids, and producing urine."},
-
-{q:"RBC carries?",a:["Oxygen","Glucose","Waste","Hormones"],c:0,
-e:"Red blood cells carry oxygen using hemoglobin, which binds oxygen molecules efficiently for transport throughout the body."},
-
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
-e:"The skin is the largest organ of the human body, acting as a protective barrier and regulating temperature and hydration."}
+{q:"Gas exchange?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli allow oxygen/CO2 exchange."},
+{q:"Heart pumps?",a:["Blood","Air","Food","Urine"],c:0,e:"Heart circulates blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2 only"],c:0,e:"Hemoglobin binds oxygen."},
+{q:"Largest organ?",a:["Skin","Liver","Heart","Brain"],c:0,e:"Skin protects body."}
 ];
 
 let i=0;
-let score=0;
-let timer;
+let xp=0;
+let level=1;
+let streak=0;
+let mistakes=[];
+let examMode=false;
 
-/* random shuffle VERY strong */
-function shuffle(arr){
-return arr
-.map(a=>({a,sort:Math.random()}))
-.sort((x,y)=>x.sort-y.sort)
-.map(x=>x.a);
+/* SOUND */
+function beep(ok){
+let ctx=new AudioContext();
+let o=ctx.createOscillator();
+o.type="sine";
+o.frequency.value=ok?800:200;
+o.connect(ctx.destination);
+o.start();
+setTimeout(()=>o.stop(),150);
 }
 
-function goQuiz(){
-document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
-load();
+/* LEVEL */
+function updateLevel(){
+level=Math.floor(xp/50)+1;
+document.getElementById("xp").innerText=xp;
+document.getElementById("lvl").innerText=level;
+document.getElementById("streak").innerText=streak;
 }
 
-function goAnatomy(){
-document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
+/* BULLETS */
+function difficultyLabel(){
+if(i<1) return "🟢 EASY";
+if(i<3) return "🟡 MEDIUM";
+return "🔴 HARD";
 }
 
+/* LOAD */
 function load(){
 
 let q=quiz[i];
 
-document.getElementById("qnr").innerText=i+1;
-document.getElementById("question").innerText=q.q;
+document.getElementById("qtext").innerText=q.q;
+document.getElementById("levelInfo").innerHTML=difficultyLabel();
 
-let answers=q.a.map((a,idx)=>({text:a,correct:idx===q.c}));
-answers=shuffle(answers);
+let answers=q.a.map((a,idx)=>({t:a,c:idx===q.c}));
+
+answers.sort(()=>Math.random()-0.5);
 
 let html="";
-answers.forEach(ans=>{
-html+=`<div class="option" onclick="answer(${ans.correct})">${ans.text}</div>`;
+answers.forEach(a=>{
+html+=`<div class="option" onclick="answer(${a.c},'${a.t}')">${a.t}</div>`;
 });
 
 document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
-clearTimeout(timer);
-timer=setTimeout(()=>next(),10000);
+document.getElementById("progress").style.width=
+((i/quiz.length)*100)+"%";
 }
 
-function answer(isCorrect){
+/* ANSWER */
+function answer(correct,text){
 
-if(isCorrect){
-score++;
-document.getElementById("score").innerText=score;
+if(correct){
+xp+=10;
+streak++;
+beep(true);
+}else{
+streak=0;
+beep(false);
+mistakes.push(quiz[i]);
 }
 
+updateLevel();
+
+if(!examMode){
 document.getElementById("explanation").innerText=quiz[i].e;
-
-document.querySelectorAll(".option")
-.forEach(o=>o.style.pointerEvents="none");
-
-clearTimeout(timer);
-setTimeout(next,2000);
 }
 
+document.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
+}
+
+/* NEXT */
 function next(){
 i++;
+
 if(i>=quiz.length){
-alert("Final Score: "+score);
-i=0;
-score=0;
-document.getElementById("score").innerText=0;
+showReview();
+return;
 }
+
 load();
 }
 
-function restart(){
-i=0;
-score=0;
-document.getElementById("score").innerText=0;
+/* REVIEW */
+function showReview(){
+document.getElementById("quiz").style.display="none";
+document.getElementById("reviewSection").style.display="block";
+
+let html="";
+mistakes.forEach(m=>{
+html+=`<div class="review"><b>${m.q}</b><br>${m.e}</div><br>`;
+});
+
+document.getElementById("review").innerHTML=html;
+}
+
+/* START */
+function startQuiz(){
+document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
 }
 
-window.onload=load;
+/* MODE */
+function toggleMode(){
+examMode=!examMode;
+alert(examMode?"Exam Mode ON":"Exam Mode OFF");
+}
+
+updateLevel();
+load();
 
 </script>
 
