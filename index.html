@@ -53,7 +53,6 @@ padding:30px;
 border-radius:25px;
 width:520px;
 box-shadow:0 10px 35px rgba(0,0,0,0.12);
-position:relative;
 }
 
 .option{
@@ -78,22 +77,6 @@ color:#444;
 min-height:90px;
 line-height:1.4;
 }
-
-/* BULINE */
-.badge{
-position:absolute;
-top:-15px;
-left:-15px;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-color:white;
-}
-
-.green{background:#2ecc71}
-.yellow{background:#f1c40f}
-.red{background:#e74c3c}
 
 button{
 padding:12px 18px;
@@ -144,17 +127,12 @@ border-radius:20px;
 
 <!-- QUIZ -->
 <section id="quiz">
-
 <h2>🧠 Question <span id="qnr">1</span>/30</h2>
 
 <div class="card">
-
-<div id="badge" class="badge green">EASY</div>
-
 <div id="question"></div>
 <div id="options"></div>
 <div id="explanation"></div>
-
 </div>
 
 <p>Score: <span id="score">0</span></p>
@@ -162,21 +140,29 @@ border-radius:20px;
 <button onclick="goAnatomy()">Go to Anatomy</button>
 </section>
 
-<!-- ANATOMY -->
+<!-- ANATOMY (FIXED ORDER) -->
 <section id="anatomy">
 
 <h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
 
 <div class="anatomy-card">
 
+<!-- 1. HUMAN BODY -->
 <div class="model-box">
-<h3>Circulatory System</h3>
+<h3>Human Body</h3>
+<iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
+</div>
+
+<!-- 2. HEART -->
+<div class="model-box">
+<h3>Heart</h3>
 <iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
 </div>
 
+<!-- 3. COMPLETE HUMAN ANATOMY -->
 <div class="model-box">
-<h3>Human Body (Circulatory + Animation)</h3>
-<iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
+<h3>Complete Human Anatomy</h3>
+<iframe src="https://sketchfab.com/3d-models/complete-human-anatomy-c904a5a65ae145a0bc535645c7e693af/embed"></iframe>
 </div>
 
 </div>
@@ -185,14 +171,11 @@ border-radius:20px;
 <script>
 
 const quiz = [
-{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,
-e:"Gas exchange happens in alveoli where oxygen enters blood through diffusion and carbon dioxide is removed efficiently."},
-
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
-e:"The heart is a muscular pump that circulates blood continuously through arteries and veins."},
-
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
-e:"The nephron filters blood, regulates water balance and removes waste through urine formation."}
+{q:"Where does gas exchange occur?",a:["Alveoli","Trachea","Heart","Liver"],c:0,e:"Gas exchange happens in alveoli."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
+{q:"RBC carries?",a:["Oxygen","Glucose","Waste","Hormones"],c:0,e:"RBC carries oxygen."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body."}
 ];
 
 let i=0;
@@ -201,27 +184,9 @@ let timer;
 
 /* shuffle */
 function shuffle(arr){
-return arr.map(a=>({a, r:Math.random()}))
+return arr.map(a=>({a,r:Math.random()}))
 .sort((x,y)=>x.r-y.r)
 .map(x=>x.a);
-}
-
-/* badge difficulty */
-function setBadge(){
-let b=document.getElementById("badge");
-
-if(i<1){
-b.innerText="EASY";
-b.className="badge green";
-}
-else if(i<2){
-b.innerText="MEDIUM";
-b.className="badge yellow";
-}
-else{
-b.innerText="HARD";
-b.className="badge red";
-}
 }
 
 function goQuiz(){
@@ -240,50 +205,45 @@ let q=quiz[i];
 document.getElementById("qnr").innerText=i+1;
 document.getElementById("question").innerText=q.q;
 
-setBadge();
-
-let answers=q.a.map((a,idx)=>({t:a,c:idx===q.c}));
+let answers=q.a.map((a,idx)=>({text:a,correct:idx===q.c}));
 answers=shuffle(answers);
 
 let html="";
-answers.forEach(a=>{
-html+=`<div class="option" onclick="answer(${a.c})">${a.t}</div>`;
+answers.forEach(ans=>{
+html+=`<div class="option" onclick="answer(${ans.correct})">${ans.text}</div>`;
 });
 
 document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
 
 clearTimeout(timer);
-timer=setTimeout(next,10000);
+timer=setTimeout(()=>next(),10000);
 }
 
-function answer(correct){
+function answer(isCorrect){
 
-if(correct){
+if(isCorrect){
 score++;
 document.getElementById("score").innerText=score;
 }
 
 document.getElementById("explanation").innerText=quiz[i].e;
 
-document.querySelectorAll(".option").forEach(o=>o.style.pointerEvents="none");
+document.querySelectorAll(".option")
+.forEach(o=>o.style.pointerEvents="none");
 
 clearTimeout(timer);
-
-/* auto next (NO button) */
 setTimeout(next,2000);
 }
 
 function next(){
 i++;
-
 if(i>=quiz.length){
-alert("Final Score: "+score+"/30");
+alert("Final Score: "+score);
 i=0;
 score=0;
 document.getElementById("score").innerText=0;
 }
-
 load();
 }
 
