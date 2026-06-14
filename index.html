@@ -55,19 +55,20 @@ padding:80px 20px;
 text-align:center;
 }
 
+/* 🔥 MAI MARE QUIZ CARD */
 .card{
 background:white;
-padding:50px;
-border-radius:28px;
-width:750px;
-min-height:320px;
-box-shadow:0 10px 40px rgba(0,0,0,0.15);
+padding:70px;
+border-radius:32px;
+width:900px;
+min-height:420px;
+box-shadow:0 15px 50px rgba(0,0,0,0.18);
 position:relative;
 }
 
 .option{
 background:#f3f3f3;
-padding:15px;
+padding:16px;
 margin-top:12px;
 border-radius:12px;
 cursor:pointer;
@@ -80,12 +81,18 @@ transform:scale(1.03);
 background:#ffe5e5;
 }
 
+#question{
+font-size:22px;
+font-weight:700;
+margin-bottom:10px;
+}
+
 #explanation{
-margin-top:15px;
-min-height:110px;
+margin-top:20px;
+min-height:160px;
 font-size:15px;
 color:#444;
-line-height:1.5;
+line-height:1.6;
 }
 
 .badge{
@@ -134,13 +141,11 @@ border-radius:20px;
 <h2>🧠 Question <span id="qnr">1</span> / <span id="total"></span></h2>
 
 <div class="card">
-
 <div id="badge" class="badge green">EASY</div>
 
 <div id="question"></div>
 <div id="options"></div>
 <div id="explanation"></div>
-
 </div>
 
 <button onclick="restart()">Restart</button>
@@ -149,63 +154,59 @@ border-radius:20px;
 </section>
 
 <section id="anatomy">
-
 <h2 style="font-size:48px;color:#d90429;">🫀 Anatomy Explorer</h2>
 
 <div class="anatomy-card">
 
 <iframe src="https://sketchfab.com/3d-models/animated-human-body-with-circulatory-system-6a7a537a71444f6e8201e18a685a013d/embed"></iframe>
 
+<iframe src="https://sketchfab.com/models/775d6629622740de8a5ed61a959c7506/embed"></iframe>
+
+<iframe src="https://sketchfab.com/3d-models/complete-human-anatomy-c904a5a65ae145a0bc535645c7e693af/embed"></iframe>
+
 </div>
 </section>
 
 <script>
 
-/* 30 QUESTIONS */
 const quiz = [
-{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,e:"Alveoli perform gas exchange."},
-{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,e:"Heart pumps blood."},
-{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,e:"Nephron filters blood."},
-{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,e:"RBC carries oxygen."},
-{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,e:"Skin protects body."},
+{q:"Gas exchange occurs in?",a:["Alveoli","Heart","Liver","Trachea"],c:0,
+e:"Gas exchange takes place in alveoli. Here oxygen passes into blood while carbon dioxide is removed. This process happens through thin membranes that allow rapid diffusion."},
 
-{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,e:"Pancreas produces insulin."},
-{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,e:"Arteries carry blood away."},
-{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,e:"Veins return blood."},
-{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,e:"Brain controls body."},
-{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,e:"Lungs exchange gases."},
+{q:"Heart function?",a:["Pump blood","Digest food","Store oxygen","Make bile"],c:0,
+e:"The heart is a muscular organ that continuously pumps blood. It delivers oxygen and nutrients to tissues and removes waste products like carbon dioxide."},
 
-{q:"SA node function?",a:["Pacemaker","Filter","Pump","Sensor"],c:0,e:"Controls heartbeat."},
-{q:"Platelets function?",a:["Clotting","Oxygen","Hormones","Digestion"],c:0,e:"Blood clotting."},
-{q:"Liver function?",a:["Detox","Breathing","Movement","Vision"],c:0,e:"Detoxifies body."},
-{q:"Neuron function?",a:["Signal","Blood","Digestion","Clotting"],c:0,e:"Signals."},
-{q:"Hemoglobin?",a:["Oxygen","Glucose","Fat","Hormones"],c:0,e:"Carries oxygen."},
+{q:"Kidney unit?",a:["Nephron","Neuron","Cell","Tissue"],c:0,
+e:"The nephron is the functional unit of the kidney. It filters blood, removes waste, balances electrolytes and regulates water levels in the body."},
 
-{q:"Cerebellum?",a:["Balance","Vision","Digestion","Speech"],c:0,e:"Balance control."},
-{q:"Pressure highest?",a:["Arteries","Veins","Capillaries","Lymph"],c:0,e:"High pressure."},
-{q:"CNS?",a:["Brain+spine","Nerves","Heart","Muscles"],c:0,e:"CNS system."},
-{q:"Urea formed?",a:["Liver","Kidney","Heart","Lung"],c:0,e:"Liver forms urea."},
-{q:"Pulmonary?",a:["Heart-lungs-heart","Heart-body-heart","Lungs-brain-heart","Heart-liver"],c:0,e:"Lung circuit."},
+{q:"RBC carries?",a:["Oxygen","Sugar","Fat","CO2"],c:0,
+e:"Red blood cells carry oxygen using hemoglobin. This oxygen is transported from lungs to all tissues in the body for energy production."},
 
-{q:"Diffusion?",a:["Gas movement","Active transport","Pump","Osmosis"],c:0,e:"Passive movement."},
-{q:"RBC lifespan?",a:["120 days","30 days","1 year","10 days"],c:0,e:"Lives 120 days."},
-{q:"Oxygen binds?",a:["Hemoglobin iron","Plasma","Platelets","DNA"],c:0,e:"Iron binding."},
-{q:"Nephron?",a:["Filtration","Digestion","Movement","Oxygen"],c:0,e:"Filters blood."},
-{q:"Skin?",a:["Protection","Digestion","Respiration","Circulation"],c:0,e:"Protects body."},
+{q:"Largest organ?",a:["Skin","Heart","Liver","Brain"],c:0,
+e:"The skin is the largest organ in the human body. It protects internal organs, regulates temperature and prevents water loss."},
 
-{q:"Heart pacemaker?",a:["SA node","AV node","Purkinje","Aorta"],c:0,e:"Controls heartbeat."},
-{q:"CO2 transport?",a:["Bicarbonate","Hemoglobin","Glucose","Fat"],c:0,e:"As bicarbonate."},
-{q:"Capillaries?",a:["Smallest vessels","Largest vessels","Arteries","Veins"],c:0,e:"Exchange vessels."},
-{q:"Blood pH?",a:["7.35-7.45","6-6.5","8-8.5","5-6"],c:0,e:"Normal pH."},
-{q:"Mitochondria?",a:["ATP production","Protein storage","DNA destruction","Clotting"],c:0,e:"Energy production."}
+{q:"Insulin produced by?",a:["Pancreas","Liver","Kidney","Heart"],c:0,
+e:"Insulin is produced by the pancreas. It regulates blood glucose by allowing cells to absorb sugar from the blood."},
+
+{q:"Arteries carry blood?",a:["Away from heart","To heart","Random","Only oxygen"],c:0,
+e:"Arteries carry blood away from the heart under high pressure. Most arteries carry oxygen-rich blood."},
+
+{q:"Veins carry blood?",a:["To heart","Away","Only oxygen","Only CO2"],c:0,
+e:"Veins return blood back to the heart. They often contain valves to prevent backflow."},
+
+{q:"Brain controls?",a:["Body","Heart","Lungs","Nothing"],c:0,
+e:"The brain controls all body functions including movement, thinking, breathing and coordination."},
+
+{q:"Lungs function?",a:["Gas exchange","Digestion","Filtration","Movement"],c:0,
+e:"Lungs are responsible for respiration. They take oxygen into the blood and remove carbon dioxide."}
 ];
 
 let i=0;
 let score=0;
+let timer;
 
 document.getElementById("total").innerText = quiz.length;
 
-/* NAV */
 function goQuiz(){
 document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
 load();
@@ -215,7 +216,6 @@ function goAnatomy(){
 document.getElementById("anatomy").scrollIntoView({behavior:"smooth"});
 }
 
-/* BADGE */
 function setBadge(){
 let b=document.getElementById("badge");
 
@@ -224,7 +224,7 @@ else if(i<20){b.innerText="MEDIUM";b.className="badge yellow";}
 else{b.innerText="HARD";b.className="badge red";}
 }
 
-/* SHUFFLE (REAL RANDOM) */
+/* shuffle */
 function shuffle(arr){
 for(let j=arr.length-1;j>0;j--){
 let k=Math.floor(Math.random()*(j+1));
@@ -233,12 +233,9 @@ let k=Math.floor(Math.random()*(j+1));
 return arr;
 }
 
-/* LOAD */
 function load(){
 
-if(i>=quiz.length) return;
-
-let q=quiz[i];
+let q = quiz[i];
 
 document.getElementById("qnr").innerText=i+1;
 document.getElementById("question").innerText=q.q;
@@ -255,9 +252,13 @@ html+=`<div class="option" onclick="answer(${a.correct})">${a.t}</div>`;
 
 document.getElementById("options").innerHTML=html;
 document.getElementById("explanation").innerText="";
+
+clearTimeout(timer);
+
+/* ⏱️ 15 SECONDS PAUSE */
+timer=setTimeout(()=>next(),15000);
 }
 
-/* ANSWER */
 function answer(correct){
 
 if(correct) score++;
@@ -267,10 +268,10 @@ document.getElementById("explanation").innerText=quiz[i].e;
 document.querySelectorAll(".option")
 .forEach(o=>o.style.pointerEvents="none");
 
-setTimeout(next,1200);
+clearTimeout(timer);
+setTimeout(next,2500);
 }
 
-/* NEXT */
 function next(){
 i++;
 
@@ -283,7 +284,6 @@ score=0;
 load();
 }
 
-/* RESTART */
 function restart(){
 i=0;
 score=0;
